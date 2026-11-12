@@ -13,11 +13,11 @@
  */
 import { createHash } from 'node:crypto'
 
-export const VERSION_AUTONOMIA = 'autonomia-v1-2026-10-31'
-export const AVISO_AUTONOMIA = 'Versión del 31 de octubre de 2026. Si cambia, te la volveremos a pedir.'
+export const VERSION_AUTONOMIA = 'autonomia-v1-alzat-2026-11-12'
+export const AVISO_AUTONOMIA = 'Versión del 12 de noviembre de 2026. Si cambia, te la volveremos a pedir.'
 
-/** Titular de Arbrain (el mismo responsable de src/features/primer-arranque/textos/legales.ts). */
-export const TITULAR = 'Jorge Daniel Carreón Guzmán'
+/** Titular de Alzat (el mismo responsable de src/features/primer-arranque/textos/legales.ts). Alzat, 12 nov 2026. */
+export const TITULAR = 'Juanan Sánchez Lerma (ALZAT)'
 
 export const TITULO_AUTONOMIA = 'Qué significa el modo autónomo'
 
@@ -27,7 +27,7 @@ export const CASILLAS_AUTONOMIA = [
   'Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.',
 ] as const
 
-export const TEXTO_AUTONOMIA = `Arbrain es un programa de código abierto que corre en tu computadora. Tu cerebro (Levy o el nombre que le pongas) usa un modelo de inteligencia artificial con tu llave y actúa en tu computadora: lee y escribe archivos, corre comandos, abre páginas, usa tus aplicaciones y, si se lo pides, manda mensajes en tu nombre.
+export const TEXTO_AUTONOMIA = `Alzat es un programa de código abierto, basado en Arbrain, que corre en tu computadora. Tu cerebro (con el nombre que le pongas) usa un modelo de inteligencia artificial con tu llave y actúa en tu computadora: lee y escribe archivos, corre comandos, abre páginas, usa tus aplicaciones y, si se lo pides, manda mensajes en tu nombre.
 
 ## 1. Qué hace en modo autónomo
 En modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada paso. Eso incluye:
@@ -54,7 +54,7 @@ En modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada pa
 
 ## 4. Lo que tienes de tu lado
 - Pausar todo, a un clic, detiene de inmediato todo lo que esté haciendo.
-- Lo que hizo Levy (Ajustes › Permisos y seguridad) guarda cada acción con su hora, para que revises.
+- Lo que hizo tu asistente (Ajustes › Permisos y seguridad) guarda cada acción con su hora, para que revises.
 - Ver cambios y Deshacer devuelve tus archivos a como estaban antes de un mensaje (lo hecho con comandos y lo enviado afuera no se deshace).
 - Puedes volver a un modo más cuidadoso cuando quieras, en Ajustes › Permisos y seguridad, en la píldora «Autónomo» o desde «Pausar todo».
 
@@ -62,14 +62,14 @@ En modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada pa
 Al elegir el modo autónomo:
 - Entiendes que tu cerebro actuará en tu computadora y en tus cuentas sin pedirte confirmación en cada paso, con las excepciones de la sección 2.
 - Aceptas que tú eres responsable de lo que le pides y de revisar lo que hace, y de las consecuencias de las acciones que realiza a partir de tus pedidos, incluidos mensajes enviados, archivos cambiados o borrados y gasto en tu proveedor de IA.
-- Entiendes que Arbrain se entrega «tal cual» (AS IS), sin garantías de ningún tipo, como dice su licencia Apache-2.0, y que puede tener errores.
-- En la medida que permita la ley aplicable, ${TITULAR}, como titular de Arbrain, y quienes contribuyen a su código no responden por daños indirectos ni por la pérdida de datos, de ingresos, de reputación o de oportunidades que resulten de lo que tu cerebro hace en modo autónomo a partir de tus pedidos.
+- Entiendes que Alzat se entrega «tal cual» (AS IS), sin garantías de ningún tipo, como dice su licencia Apache-2.0, y que puede tener errores.
+- En la medida que permita la ley aplicable, ${TITULAR}, como titular de Alzat, y quienes contribuyen a su código (también al de Arbrain) no responden por daños indirectos ni por la pérdida de datos, de ingresos, de reputación o de oportunidades que resulten de lo que tu cerebro hace en modo autónomo a partir de tus pedidos.
 - Nada de esto excluye la responsabilidad por dolo o culpa grave, ni limita los derechos que la ley te da y que no se pueden renunciar, incluidos los de consumidor.
 - Te comprometes a no usar tu cerebro para enviar spam, suplantar a otros, acceder a sistemas sin permiso ni nada ilegal.
-- Este texto se suma a los Términos de uso y al aviso de privacidad que aceptaste al instalar Arbrain.
+- Este texto se suma a los Términos de uso y al aviso de privacidad que aceptaste al instalar Alzat.
 
 ## 6. Cómo lo aceptas y cómo lo retiras
-Marcas las dos casillas y pulsas «Empezar en modo autónomo». Se guarda en tu computadora la fecha y hora, la versión de este texto, su huella, el modo elegido y la versión de Arbrain; no se nos envía. Puedes ver tu aceptación y retirarla en Ajustes › Permisos y seguridad cuando quieras: al retirarla, tu cerebro vuelve a «Automático en mi carpeta».`
+Marcas las dos casillas y pulsas «Empezar en modo autónomo». Se guarda en tu computadora la fecha y hora, la versión de este texto, su huella, el modo elegido y la versión de Alzat; no se nos envía. Puedes ver tu aceptación y retirarla en Ajustes › Permisos y seguridad cuando quieras: al retirarla, tu cerebro vuelve a «Automático en mi carpeta».`
 
 export const HUELLA_AUTONOMIA = createHash('sha256').update(`${VERSION_AUTONOMIA}\n${TEXTO_AUTONOMIA}`).digest('hex')
 

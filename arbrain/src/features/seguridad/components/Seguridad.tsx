@@ -26,6 +26,7 @@ import {
   type AccionBitacora, type CarpetaAbierta, type EstadoPermisosLevy, type ModoPermisos, type RespuestaGasto, type ViaConsentimiento,
 } from '../lib/seguridad'
 import { EVENTO_PERMISOS, pedir, useModoGlobal, usePausa } from './estado-seguridad'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 
 /** La franja de pausa (con «Reanudar») y, una vez, la tarjeta de migración. Pausar y el modo viven en el menú del modelo. */
 export function FrenoGeneral() {
@@ -350,6 +351,7 @@ function Carpetas() {
 }
 
 function LoQueHizoLevy() {
+  const asistente = useNombreAsistente() // Alzat: el nombre de Ajustes › Diseño.
   const [acciones, setAcciones] = useState<AccionBitacora[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const leer = useCallback(async () => { try { setAcciones((await pedir<{ acciones: AccionBitacora[] }>('/api/seguridad/bitacora?limite=200')).acciones); setError(null) } catch (e) { setError(e instanceof Error ? e.message : 'No se pudo leer.') } }, [])
@@ -360,7 +362,7 @@ function LoQueHizoLevy() {
   }, [leer])
   const tono = { ok: 'text-success', aviso: 'text-amber-300', freno: 'text-red-300' } as const
   return (
-    <Tarjeta titulo="Lo que hizo Levy" icono={ScrollText}>
+    <Tarjeta titulo={`Lo que hizo ${asistente}`} icono={ScrollText}>
       <p className="text-[13px] leading-relaxed text-muted">Cada acción con efecto (escribir, ejecutar comandos, abrir páginas, lo que te pidió confirmar y lo que Alzat bloqueó). Queda solo en tu computadora, sin llaves ni contraseñas.</p>
       {error && <p className="mt-2 text-[12.5px] text-red-300">{error}</p>}
       {acciones?.length === 0 && <p className="mt-3 text-[12.5px] text-muted">Todavía nada.</p>}

@@ -34,7 +34,7 @@ const TEXTO_AUTONOMIA_DEMO: TextoAutonomia = {
   version: 'autonomia-v1-2026-10-31', sha256: 'demo', titulo: 'Qué significa el modo autónomo',
   aviso: 'Versión del 31 de octubre de 2026. Si cambia, te la volveremos a pedir.',
   casillas: ['He leído esto y entiendo que en modo autónomo mi cerebro actúa sin pedirme un clic en cada paso.', 'Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.'],
-  cuerpo: 'Arbrain es un programa de código abierto que corre en tu computadora.\n\n## 1. Qué hace en modo autónomo\nEn modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada paso.',
+  cuerpo: 'Alzat es un programa de código abierto, basado en Arbrain, que corre en tu computadora.\n\n## 1. Qué hace en modo autónomo\nEn modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada paso.',
 }
 
 function leerUrl() {
@@ -213,7 +213,7 @@ export function PrimerArranqueV2() {
                 )}
                 <label className="mt-6 flex max-w-[560px] cursor-pointer items-start gap-3 rounded-2xl border border-border-subtle bg-surface/70 p-4">
                   <input type="checkbox" checked={e.legal} onChange={x => setE(y => ({ ...y, legal: x.target.checked }))} className="mt-0.5 size-4 shrink-0" />
-                  <span className="text-[13.5px] leading-relaxed text-foreground/90">Leí y acepto el aviso de privacidad, los términos de uso y la licencia de Arbrain.</span>
+                  <span className="text-[13.5px] leading-relaxed text-foreground/90">Leí y acepto el aviso de privacidad, los términos de uso y la licencia de Alzat.</span>
                 </label>
                 <button type="button" onClick={() => setLegalAbierto(a => !a)} aria-expanded={legalAbierto} className="mt-1.5 inline-flex min-h-9 items-center rounded-lg px-2 text-[13px] font-semibold text-brand-ink hover:bg-foreground/[0.05]">{legalAbierto ? 'Ocultar los textos' : 'Leer los textos'}</button>
                 {legalAbierto && <div className="mt-3 max-w-[560px]"><DocumentosLegales /></div>}

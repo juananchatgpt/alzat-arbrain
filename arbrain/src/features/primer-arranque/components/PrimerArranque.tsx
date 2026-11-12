@@ -55,7 +55,7 @@ function demoDesdeUrl(): { paso: Paso; permisos: EstadoPermisosLevy } | null {
   if (q.get('demo') !== 'autonomia') return null
   return {
     paso: 'autonomia',
-    permisos: { modo: 'carpeta', modos: ['preguntar', 'carpeta', 'autonomo'], sandbox: q.get('sandbox') !== 'no', texto: { version: 'autonomia-v1-2026-10-31', sha256: 'demo', titulo: 'Qué significa el modo autónomo', aviso: 'Versión del 31 de octubre de 2026. Si cambia, te la volveremos a pedir.', casillas: ['He leído esto y entiendo que en modo autónomo mi cerebro actúa sin pedirme un clic en cada paso.', 'Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.'], cuerpo: 'Arbrain es un programa de código abierto que corre en tu computadora.\n\n## 1. Qué hace en modo autónomo\nEn modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada paso.' } },
+    permisos: { modo: 'carpeta', modos: ['preguntar', 'carpeta', 'autonomo'], sandbox: q.get('sandbox') !== 'no', texto: { version: 'autonomia-v1-2026-10-31', sha256: 'demo', titulo: 'Qué significa el modo autónomo', aviso: 'Versión del 31 de octubre de 2026. Si cambia, te la volveremos a pedir.', casillas: ['He leído esto y entiendo que en modo autónomo mi cerebro actúa sin pedirme un clic en cada paso.', 'Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.'], cuerpo: 'Alzat es un programa de código abierto, basado en Arbrain, que corre en tu computadora.\n\n## 1. Qué hace en modo autónomo\nEn modo autónomo tu cerebro hace lo que le pides sin pedirte un clic en cada paso.' } },
   }
 }
 
@@ -230,7 +230,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
               <DocumentosLegales />
               <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-border-subtle bg-surface/70 p-4">
                 <input type="checkbox" checked={acepto} onChange={e => setAcepto(e.target.checked)} className="mt-0.5 size-4 shrink-0 accent-[var(--brand)]" />
-                <span className="text-[13.5px] leading-relaxed text-foreground/90">Leí y acepto el aviso de privacidad, los términos de uso y la licencia de Arbrain.</span>
+                <span className="text-[13.5px] leading-relaxed text-foreground/90">Leí y acepto el aviso de privacidad, los términos de uso y la licencia de Alzat.</span>
               </label>
             </div>
           )}

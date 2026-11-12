@@ -1,3 +1,15 @@
+Alzat
+Copyright 2026 Juanan Sánchez Lerma (ALZAT, https://alzat.es)
+
+Alzat es una versión modificada de Arbrain. Las modificaciones de ALZAT (Ajustes ›
+Diseño, el nombre Alzat y su logotipo, arreglos para Windows y otras) están en el
+historial de git de este repositorio, en los commits que empiezan por «ALZAT:», y se
+distribuyen bajo la misma Licencia Apache, versión 2.0. «ALZAT», «Alzat» y su logotipo
+son signos distintivos de Juanan Sánchez Lerma; la licencia no concede permiso para
+usarlos.
+
+Basado en:
+
 Arbrain
 Copyright 2026 Daniel Carreón
 
