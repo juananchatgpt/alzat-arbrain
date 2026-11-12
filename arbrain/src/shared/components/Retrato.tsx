@@ -4,7 +4,9 @@
  * px de CSS × la densidad de su pantalla), de 1.5 a 15 KB. Los archivos los genera scripts/retratos.sh con
  * versión en el nombre: se sirven con caché inmutable (next.config.ts).
  */
+'use client'
 import type { CSSProperties } from 'react'
+import { useMiMarca } from '@/lib/mi-marca-cliente'
 
 export type AgenteRetrato = 'levy' | 'trinity' | 'sensei'
 
@@ -31,6 +33,12 @@ export function Retrato({ agente, size, className, style, alt = '', prioridad = 
   prioridad?: boolean
 }) {
   const sizes = typeof size === 'number' ? `${size}px` : size
+  // Mi marca (Ajustes › Diseño, 10 nov 2026): con logo propio, el asistente lleva ese logo en vez del retrato de fábrica.
+  const { logo } = useMiMarca()
+  if (agente === 'levy' && logo) {
+    const lado = typeof size === 'number' ? size : undefined
+    return <img src={logo} alt={alt} className={className} style={style} width={lado} height={lado} loading={prioridad ? 'eager' : 'lazy'} decoding="async" draggable={false} />
+  }
   return (
     <picture>
       <source type="image/avif" srcSet={srcsetRetrato(agente, 'avif')} sizes={sizes} />

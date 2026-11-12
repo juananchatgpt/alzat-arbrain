@@ -121,6 +121,9 @@ export const APIS_CLIENTE = [
   '/api/cabina/trabajos', '/api/cabina/salida',
   // Lienzo local.
   '/api/canvas',
+  // Taller › Memoria › «Ver tu cerebro» (mi Arbrain, 26 oct 2026): el grafo y el detalle de cada nodo, solo lectura sobre
+  // su workspace. «Sintetizar» (`/api/cerebro/synthesize`) sigue fuera.
+  '/api/cerebro/graph', '/api/cerebro/node',
   // Calendario local (21 oct 2026): objetivos, eventos y tareas sobre archivos de su cerebro (lib/planning/local.ts).
   // `/api/planning/crons` queda fuera (APIS_CLIENTE_EXCLUIDAS): es el scheduler de la instalación original.
   '/api/planning',
@@ -146,6 +149,8 @@ export const APIS_CLIENTE = [
   '/api/espejo/conversaciones',
   // Mi marca (29 oct 2026): colores, logo y nombre del dueño desde `mi-marca/` (lib/mi-marca.ts).
   '/api/mi-marca',
+  // Ajustes › Diseño (mi Arbrain, 10 nov 2026): guardar la marca desde un formulario. CON sesión (no va en SIN_SESION_API).
+  '/api/mi-diseno',
   // Rutinas (T8, 29 oct 2026): Taller › Rutinas sobre el scheduler de SU daemon (lib/rutinas-cliente.ts). Distinta de
   // `/api/planning/crons`, que sigue fuera: esa lee el Studio y el historial en Supabase.
   '/api/rutinas',

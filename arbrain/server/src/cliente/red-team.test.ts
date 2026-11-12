@@ -287,7 +287,11 @@ describe('red team 2 (11 oct): C-1, M-2, M-3, M-4, M-5 y volcadores', () => {
   it('C-1: el sandbox tampoco deja escribir ahí (denyWrite), y sí en la memoria y el resto del cerebro', async () => {
     const { opcionesSandbox } = await import('./sandbox.js')
     const deny = (opcionesSandbox(ctx).filesystem as { denyWrite: string[] }).denyWrite
-    const cubre = (rel: string) => deny.some(d => { const p = join(ctx.home, rel); return p === d || p.startsWith(d + '/') })
+    const cubre = (rel: string) => deny.some(d => {
+      const p = join(ctx.home, rel).replace(/\\/g, '/').toLowerCase()
+      const raiz = d.replace(/\\/g, '/').toLowerCase()
+      return p === raiz || p.startsWith(raiz + '/')
+    })
     for (const rel of ['.claude/settings.json', '.claude/hooks/x.py', '.claude/skills/a/scripts/b.py', '.claude/agents/a.md', '.claude/output-styles/o.md', 'CLAUDE.md', 'AGENTS.md', '.mcp.json', '.codex/config.toml', '.git/config', '.git', 'arbrain/server/scripts/calendar/now-snapshot.py', 'arbrain/src/x.ts'])
       expect(cubre(rel), rel).toBe(true)
     for (const rel of ['.claude/memory/x.md', '.claude/daily/d.md', 'arbrain/cerebro/a.md', 'notas.md']) expect(cubre(rel), rel).toBe(false)
@@ -357,3 +361,4 @@ describe('red team 2 (11 oct): C-1, M-2, M-3, M-4, M-5 y volcadores', () => {
     expect(rutaSoloApp('GET', '/chat/backstage')).toBe(true)
   })
 })
+

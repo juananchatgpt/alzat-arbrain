@@ -9,6 +9,7 @@ import { fonemas, palabras, pesosAtlas, pista, type Pista } from '@/features/cha
 import { frasesDe, MovimientoVivo } from '@/features/chat/lib/levy-movimiento'
 import { levyVivoActivo } from '@/features/chat/lib/levy-vivo'
 import { Retrato } from '@/shared/components/Retrato'
+import { NOMBRE_DE_FABRICA, useMiMarca } from '@/lib/mi-marca-cliente'
 import { alCambiarEstado, estadoVentana } from '@/shared/lib/reposo'
 
 // El arte de cada cara va en WebP SIN PÉRDIDA (5 oct 2026, scripts/retratos.sh): los mismos píxeles que el PNG con
@@ -100,7 +101,10 @@ export function LevyFace({ className = '', status = 'idle', engineRef, segmentsR
   const [vivoOn, setVivoOn] = useState(false)
   useEffect(() => { setVivoOn(levyVivoActivo()) }, [])
   const vivo = vivoOn ? cara.vivo ?? null : null
-  const retrato = vivo?.retrato ?? cara.retrato
+  // Mi marca (Ajustes › Diseño, 10 nov 2026): el nombre y el logo del dueño en lugar de los de fábrica.
+  const marca = useMiMarca()
+  const nombre = agent === 'levy' ? marca.nombre ?? NOMBRE_DE_FABRICA : cara.nombre
+  const retrato = agent === 'levy' && marca.logo ? marca.logo : vivo?.retrato ?? cara.retrato
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const statusRef = useRef(status)
   const despertarRef = useRef<(() => void) | null>(null)
@@ -155,7 +159,8 @@ export function LevyFace({ className = '', status = 'idle', engineRef, segmentsR
     }
     const start = async () => {
       stop()
-      if (!alive || motion.matches) return
+      // Mi marca (Ajustes › Diseño): con logo propio el retrato es fijo; el rig de ojos y boca deformaría un logo.
+      if (!alive || motion.matches || (agent === 'levy' && marca.logo)) return
       // El sello del chat vacío (44 px) no compite con el primer pintado: el retrato ligero ya está puesto y el
       // rig (código + texturas, ~3 MB) entra cuando la página terminó de cargar y el navegador está libre.
       if (framing === 'portrait') await despuesDeCargar()
@@ -397,7 +402,7 @@ export function LevyFace({ className = '', status = 'idle', engineRef, segmentsR
     // El cuadro del retrato centrado a toda la altura (o a todo el ancho en vertical), con el ambiente
     // detrás. Imagen fija y lienzo comparten exactamente el mismo cuadro: no hay salto al cargar.
     return (
-      <div className={`relative isolate overflow-hidden bg-[#050109] [container-type:size] ${className}`} role="img" aria-label={cara.nombre} data-levy-face={ready ? 'animated' : 'portrait'}>
+      <div className={`relative isolate overflow-hidden bg-[#050109] [container-type:size] ${className}`} role="img" aria-label={nombre} data-levy-face={ready ? 'animated' : 'portrait'}>
         {ambiente && <div aria-hidden="true" className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[min(100cqw,100cqh)] w-[calc(3*min(100cqw,100cqh))] bg-no-repeat [background-size:100%_100%] [mask-image:linear-gradient(to_bottom,transparent,black_6%,black_90%,transparent)]" style={{ backgroundImage: `url(${ambiente})` }} />}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-[min(100cqw,100cqh)] [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent),linear-gradient(to_bottom,transparent,black_6%,black_90%,transparent)] [mask-composite:intersect]">
           <img src={retrato} alt="" className="absolute inset-0 size-full" draggable={false} />
@@ -407,7 +412,7 @@ export function LevyFace({ className = '', status = 'idle', engineRef, segmentsR
     )
   }
   return (
-    <div className={`relative isolate aspect-square overflow-hidden rounded-full ${className}`} role="img" aria-label={cara.nombre} data-levy-face={ready ? 'animated' : 'portrait'}>
+    <div className={`relative isolate aspect-square overflow-hidden rounded-full ${className}`} role="img" aria-label={nombre} data-levy-face={ready ? 'animated' : 'portrait'}>
       <Retrato agente={agent} size="48px" prioridad className="absolute inset-0 size-full object-cover" />
       <canvas key={motionRevision} ref={canvasRef} width={720} height={720} aria-hidden="true" className={`absolute inset-0 size-full transition-opacity duration-500 ${ready ? 'opacity-100' : 'opacity-0'}`} />
     </div>

@@ -15,6 +15,11 @@ import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from '
 import { dirname, join } from 'node:path'
 
 const MAX = 2000
+/** Clave estable para que la procedencia funcione igual con `\` de Windows y `/` de POSIX. */
+const clave = (p: string): string => {
+  const n = p.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
+  return process.platform === 'win32' ? n.toLowerCase() : n
+}
 
 export interface Procedencia {
   marcar(real: string, fuente: string): void
@@ -48,17 +53,27 @@ export function crearProcedencia(archivo: string | null): Procedencia {
   return {
     marcar(real, fuente) {
       const m = cargar()
-      m.delete(real)
+      const k = clave(real)
+      const anterior = [...m.keys()].find(x => clave(x) === k)
+      if (anterior) m.delete(anterior)
       m.set(real, { fuente: fuente.slice(0, 200), t: Date.now() })
       while (m.size > MAX) m.delete(m.keys().next().value as string)
       guardar()
     },
-    de(real) { return cargar().get(real)?.fuente ?? null },
+    de(real) {
+      const k = clave(real)
+      for (const [ruta, v] of cargar()) if (clave(ruta) === k) return v.fuente
+      return null
+    },
     bajo(dir) {
       const m = cargar()
       if (!m.size) return null
-      const pref = dir.endsWith('/') ? dir : dir + '/'
-      for (const [ruta, v] of m) if (ruta === dir || ruta.startsWith(pref)) return v.fuente
+      const d = clave(dir)
+      const pref = d.endsWith('/') ? d : d + '/'
+      for (const [ruta, v] of m) {
+        const r = clave(ruta)
+        if (r === d || r.startsWith(pref)) return v.fuente
+      }
       return null
     },
   }

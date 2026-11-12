@@ -579,6 +579,18 @@ const RM_RECURSIVO = (args: string[]) => args.some(w => w === '--recursive' || /
 export function borradoMasivo(cmd: string, ctx: ContextoPolitica): string | null {
   if (/\bfind\b[^|;&]*\s-delete\b/.test(cmd)) return 'borrar con find -delete no se puede acotar: borra archivo por archivo o pídele a la persona que lo haga'
   if (/(?:^|[;&|]\s*)(?:del|erase|rd|rmdir)\s+\/[sq]/i.test(cmd)) return 'borrado recursivo del Explorador (del /s, rd /s)'
+  // En Windows, el analizador de shell trata `\` como escape. Detecta antes las raíces literales para no dejar pasar
+  // `rm -r C:\\...\\Arbrain` aunque el parser haya perdido los separadores.
+  const texto = cmd.replace(/\\/g, '/').toLowerCase()
+  const recursivo = /\brm\b[^|;&]*\s(?:-[-a-z]*r[-a-z]*|--recursive)\b/i.test(cmd)
+  if (recursivo) {
+    for (const raiz of [ctx.home, ...(ctx.abiertas ?? [])]) {
+      const r = raiz.replace(/\\/g, '/').replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&').toLowerCase()
+      if (new RegExp(`(?:^|[\\s"']|[;&|])${r}(?:$|[\\s"']|[;&|])`, 'i').test(texto)) {
+        return `rm -r de ${raiz === ctx.home ? 'la carpeta entera de tu cerebro' : `una carpeta abierta entera (${raiz})`}`
+      }
+    }
+  }
   const a = analizarShell(cmd, ctx.usuario)
   if (!a.ok) return /\brm\s+-[a-zA-Z]*[rR]/.test(cmd) ? 'rm -r dentro de un comando que no se puede verificar entero' : null
   const cwds = [ctx.cwd]
@@ -811,7 +823,8 @@ export function fuenteExterna(herramienta: string, input: unknown, ctx: Contexto
     return fuenteDeArchivo(rutaReal(expandirRuta(v, ctx)), ctx)
   }
   if (herramienta === 'Bash' && typeof i.command === 'string') {
-    const a = analizarShell(i.command, ctx.usuario)
+    const cmd = i.command
+    const a = analizarShell(cmd, ctx.usuario)
     if (!a.ok) return null
     const PROGRAMAS_RED = /^(curl|wget|gh|git|npx|npm|pnpm|yarn|pip|pip3|lynx|w3m|ssh|scp|rsync|nc|ncat|node|python3?|deno|bun|yt-dlp|http|httpie)$/
     for (const c of a.comandos) {
@@ -828,6 +841,14 @@ export function fuenteExterna(herramienta: string, input: unknown, ctx: Contexto
         const f = fuenteDeArchivo(real, ctx)
         if (f) return f
       }
+    }
+    // El lexer de shell interpreta `\` como escape. Recupera rutas absolutas de Windows del literal original para que
+    // `cat C:\\...\\Downloads\\factura.pdf` no pierda la detección de descargas/adjuntos.
+    for (const ruta of cmd.match(/[A-Za-z]:\\[^\s"'|;&]+/g) ?? []) {
+      const real = rutaReal(ruta)
+      if (!existsSync(real)) continue
+      const f = fuenteDeArchivo(real, ctx)
+      if (f) return f
     }
   }
   return null
@@ -1498,3 +1519,4 @@ function rutasRecursivas(base: string, args: string[]): string[] {
   if (['grep', 'egrep', 'fgrep', 'zgrep', 'rg', 'ag', 'ack'].includes(base) && !args.some(a => /^(-e|-f|--regexp|--file)(=|$)/.test(a))) return pos.slice(1)
   return pos
 }
+

@@ -10,6 +10,7 @@ import { createPortal, flushSync } from 'react-dom'
 import { usePathname, useRouter } from 'next/navigation'
 import { ArrowLeft, MessageCircle, X } from 'lucide-react'
 import { useLayoutStore } from '@/shared/stores/layout-store'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 import type { MostrarInput } from '../model'
 import { useConversacionActiva, useTituloConversacion } from '../conversaciones'
 import { usePanelFijadas } from './fijadas'
@@ -150,11 +151,12 @@ export function PantallaCompleta() {
   }, [main])
 
   const salir = () => volver(router.push)
+  const nombre = useNombreAsistente()
 
   return <>
     {!levy && <button className={s.levyBoton} onClick={() => useLayoutStore.getState().setLevyFlotante(true)} data-testid="levy-flotante-abrir"
-      title="Hablar con Levy sin salir (⌘J)" aria-label="Hablar con Levy">
-      <MessageCircle size={16} aria-hidden /><span>Levy</span><kbd>⌘J</kbd>
+      title={`Hablar con ${nombre} sin salir (⌘J)`} aria-label={`Hablar con ${nombre}`}>
+      <MessageCircle size={16} aria-hidden /><span>{nombre}</span><kbd>⌘J</kbd>
     </button>}
     {main && createPortal(<CabeceraLevy onVolver={salir} />, main)}
   </>
@@ -163,11 +165,12 @@ export function PantallaCompleta() {
 /** Cabecera del cajón: de qué conversación es, volver al chat completo y esconderlo. Vive dentro de `[data-shell-main]`. */
 function CabeceraLevy({ onVolver }: { onVolver: () => void }) {
   const conversacion = useConversacionActiva()
+  const nombre = useNombreAsistente()
   return <div className={s.levyCabecera} data-cabecera-levy>
     <MessageCircle size={14} aria-hidden />
-    <b>Levy</b>{conversacion && <TituloHilo id={conversacion} />}
+    <b>{nombre}</b>{conversacion && <TituloHilo id={conversacion} />}
     <button className={s.levyAccion} onClick={onVolver} title="Volver al chat completo (Esc · ⌘.)" data-testid="levy-flotante-volver">Chat completo</button>
-    <button className={s.icono} onClick={() => useLayoutStore.getState().setLevyFlotante(false)} title="Esconder a Levy (⌘J · Esc)" aria-label="Esconder a Levy" data-testid="levy-flotante-cerrar"><X size={14} /></button>
+    <button className={s.icono} onClick={() => useLayoutStore.getState().setLevyFlotante(false)} title={`Esconder a ${nombre} (⌘J · Esc)`} aria-label={`Esconder a ${nombre}`} data-testid="levy-flotante-cerrar"><X size={14} /></button>
   </div>
 }
 

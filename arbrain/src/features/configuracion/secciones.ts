@@ -8,7 +8,7 @@ import { capital, NOMBRE_DUENO, NOMBRE_SEGUNDA } from '@/config'
 
 const CLIENTE = esEdicionCliente()
 
-export type IdSeccion = 'norte' | 'equipo' | 'clientes' | 'oferta' | 'embudo' | 'modelo' | 'apariencia' | 'cuenta' | 'avisos' | 'mac' | 'atajos' | 'panel' | 'llaves' | 'voz' | 'sinfiltro' | 'privacidad' | 'seguridad' | 'telefono' | 'maquinas' | 'autonomia' | 'directo'
+export type IdSeccion = 'norte' | 'equipo' | 'clientes' | 'oferta' | 'embudo' | 'modelo' | 'apariencia' | 'cuenta' | 'avisos' | 'mac' | 'atajos' | 'panel' | 'llaves' | 'voz' | 'sinfiltro' | 'privacidad' | 'seguridad' | 'telefono' | 'maquinas' | 'autonomia' | 'directo' | 'diseno'
 
 export interface DefSeccion { id: IdSeccion; nombre: string; detalle: string; ajustes: string[] }
 export interface DefGrupo { id: string; titulo: string; secciones: IdSeccion[] }
@@ -22,6 +22,8 @@ const TODAS: ReadonlyArray<DefSeccion> = [
   { id: 'cuenta', nombre: 'Cuenta', detalle: 'Tu nombre y tu foto', ajustes: ['Nombre', 'Foto de perfil', 'Correo'] },
   // Modo directo (7 nov 2026): antes de grabar o transmitir. Tapa nombres, dinero y secretos; niega Finanzas, Cohorte, Casa y Perro.
   { id: 'directo', nombre: 'Modo directo', detalle: 'Antes de grabar o transmitir: tapa clientes, dinero y secretos', ajustes: ['Modo directo', 'En directo', 'Transmitir', 'Grabar pantalla', 'Stream', 'Live', 'Directo', 'Ocultar datos', 'Ocultar clientes', 'Ocultar dinero', 'Ocultar secretos', '⌘⇧D'] },
+  // Diseño (mi Arbrain, 10 nov 2026, Juanan): la marca del dueño sin tocar archivos (lib/mi-diseno/).
+  { id: 'diseno', nombre: 'Diseño', detalle: 'El nombre de tu asistente, tu logo, tu color, tu web y tus redes', ajustes: ['Diseño', 'Configuración de diseño', 'Marca', 'Mi marca', 'Nombre del asistente', 'Logo', 'Logotipo', 'Color principal', 'Colores', 'Página web', 'Redes sociales', 'Instagram', 'LinkedIn', 'Facebook', 'YouTube', 'TikTok', 'Quién soy', 'A quién ayudo', 'Objetivo'] },
   { id: 'apariencia', nombre: 'Apariencia', detalle: 'Tema claro u oscuro', ajustes: ['Tema', 'Modo oscuro', 'Modo claro', 'Tema del sistema'] },
   { id: 'avisos', nombre: 'Notificaciones', detalle: CLIENTE ? 'Los avisos de Levy en tu teléfono: activar, probar y apagar' : 'Reportes y avisos en tu teléfono: activar, probar y apagar', ajustes: ['Activar notificaciones', 'Notificaciones push', 'Avisos en el teléfono', 'Avisos de Levy', 'Enviarme una prueba', 'Desactivar notificaciones', ...(CLIENTE ? ['Rutinas', 'Decisiones pendientes'] : ['Reportes']), 'iPhone', 'Pantalla de inicio'] },
   { id: 'modelo', nombre: 'Modelos', detalle: 'Qué modelos salen en el chat y en qué motor nacen', ajustes: ['Motores', 'Conversaciones nuevas', 'Modelo por defecto', 'Claude', 'DeepSeek', 'OpenRouter'] },
@@ -59,7 +61,7 @@ const GRUPOS_ORIGINAL: ReadonlyArray<DefGrupo> = [
  * en su teléfono, junto a «Tu cerebro en el teléfono».
  */
 const GRUPOS_CLIENTE: ReadonlyArray<DefGrupo> = [
-  { id: 'tu', titulo: 'Tú', secciones: ['llaves', 'voz', 'sinfiltro', 'telefono', 'maquinas', 'avisos', 'seguridad', 'privacidad', 'apariencia'] },
+  { id: 'tu', titulo: 'Tú', secciones: ['llaves', 'diseno', 'voz', 'sinfiltro', 'telefono', 'maquinas', 'avisos', 'seguridad', 'privacidad', 'apariencia'] },
   { id: 'arbrain', titulo: 'Arbrain', secciones: ['modelo', 'panel', 'atajos'] },
   { id: 'computadora', titulo: 'Esta computadora', secciones: ['mac'] },
 ]
@@ -72,7 +74,7 @@ export const SECCIONES: ReadonlyArray<DefSeccion> = TODAS.filter((d) => GRUPOS.s
 export const SECCION_INICIAL: IdSeccion = CLIENTE ? 'llaves' : 'cuenta'
 
 /** Enlaces viejos que siguen vivos: `permisos` → Mac y sistema (en la edición cliente, Permisos y seguridad), `modelos` → Modelos, `notificaciones` → Notificaciones (id `avisos`). `labels` se fue al Board. */
-const ALIAS: Record<string, IdSeccion> = { notificaciones: 'avisos', permisos: CLIENTE ? 'seguridad' : 'mac', modelos: 'modelo', general: 'apariencia', teclado: 'atajos', 'en-directo': 'directo', stream: 'directo' }
+const ALIAS: Record<string, IdSeccion> = { notificaciones: 'avisos', permisos: CLIENTE ? 'seguridad' : 'mac', modelos: 'modelo', general: 'apariencia', teclado: 'atajos', 'en-directo': 'directo', stream: 'directo', marca: 'diseno', 'mi-marca': 'diseno' }
 
 export const defDe = (id: IdSeccion): DefSeccion => TODAS.find((s) => s.id === id)!
 

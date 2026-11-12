@@ -20,6 +20,8 @@ import type {
   CerebroNodeType,
 } from '../types'
 import { instalacion } from '@/config'
+import { esEdicionCliente } from '@/lib/edicion'
+import { raizWorkspace } from '@/lib/rutas-instalacion'
 
 const ROOT_CANDIDATES = [
   process.env.BUSINESS_OS_ROOT,
@@ -29,7 +31,9 @@ const ROOT_CANDIDATES = [
 ].filter(Boolean) as string[]
 
 function resolveRoot(): string | null {
-  for (const candidate of ROOT_CANDIDATES) {
+  // Edición cliente (mi Arbrain, 26 oct 2026): el cerebro es el workspace del alumno (ARBRAIN_HOME), no el repo de Daniel.
+  const candidatos = esEdicionCliente() ? [raizWorkspace()] : ROOT_CANDIDATES
+  for (const candidate of candidatos) {
     if (existsSync(path.join(candidate, '.claude', 'memory', 'MEMORY.md'))) {
       return candidate
     }

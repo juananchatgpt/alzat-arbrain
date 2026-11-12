@@ -19,6 +19,7 @@ import type { CanvasElement } from '@/features/canvas/model/element'
 import * as Nube from '@/features/canvas/state/nube'
 import { paginaPorDefecto } from '@/features/canvas/state/pagina-por-defecto'
 import { useTheme } from '@/shared/contexts/theme-context'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 
 type Rect = { x: number; y: number; width: number; height: number }
 const ULTIMA = 'arbrain.lienzo.ultima'
@@ -36,6 +37,7 @@ export function LienzoSeccion() {
   /** Lo que la pizarra tiene que mostrar. `encuadre` undefined = aún resolviendo la zona. */
   const [destino, setDestino] = useState<{ pagina: string; encuadre: Rect | null } | null>(null)
   const [vacio, setVacio] = useState(false)
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
 
   // Sin página en la URL: se elige una y se escribe en la URL (recargar cae en el mismo lugar).
   useEffect(() => {
@@ -73,7 +75,7 @@ export function LienzoSeccion() {
         ? <Pizarra pagina={destino.pagina} encuadre={destino.encuadre} temaApp={resolvedTheme === 'dark' ? 'oscuro' : 'claro'} />
         : vacio
           ? <div className="flex h-full flex-col items-center justify-center gap-3 text-sm text-muted-foreground">
-              <p>Aún no hay lienzos. Pídele uno a Levy o empieza uno en blanco.</p>
+              <p>Aún no hay lienzos. Pídele uno a {asistente} o empieza uno en blanco.</p>
               <button className="btn-secondary" onClick={() => void Nube.crearPagina('Lienzo nuevo').then(pg => router.replace(`${pathname}?p=${encodeURIComponent(pg.id)}`)).catch(() => {})}>Lienzo nuevo</button>
             </div>
           : null}

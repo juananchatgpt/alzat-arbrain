@@ -4,6 +4,8 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { hasRole } from '@/lib/auth-utils'
+import { esEdicionCliente } from '@/lib/edicion'
+import { planningOwner } from '@/lib/planning/server'
 import { buildGraph } from '@/features/cerebro/server/graph'
 import type { CerebroCapa } from '@/features/cerebro/types'
 
@@ -12,6 +14,8 @@ const CAPAS: CerebroCapa[] = ['memoria', 'skills', 'documentos', 'knowledge']
 export const dynamic = 'force-dynamic'
 
 async function authorized(): Promise<boolean> {
+  // Edición cliente (mi Arbrain, 26 oct 2026): sin Supabase; el dueño es el mismo que abre su calendario y sus archivos.
+  if (esEdicionCliente()) return planningOwner().then(() => true, () => false)
   const supabase = await createClient()
   const {
     data: { user },

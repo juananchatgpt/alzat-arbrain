@@ -29,9 +29,9 @@ type Conexion = 'online' | 'offline' | 'reconnecting'
 
 /** Qué dice la línea viva: los estados de espera del chat mandan; si no, lo que deriva lib/rastro. */
 export function etiquetaViva(msg: ChatMessage, connection: Conexion = 'online', grupos = agruparHerramientas(msg)): string {
-  if (connection === 'offline') return 'Sin conexión · Levy sigue trabajando en el servidor'
+  if (connection === 'offline') return 'Sin conexión · Jade sigue trabajando en el servidor'
   if (connection === 'reconnecting') return 'Reconectando con el servidor'
-  if (msg.status === 'esperando_tareas' && !msg.content) return 'En fila · sale cuando terminen las tareas de Levy'
+  if (msg.status === 'esperando_tareas' && !msg.content) return 'En fila · sale cuando terminen las tareas de Jade'
   if (msg.status === 'en_fila_turno' && !msg.content) return etiquetaFila(msg.fila)
   return lineaViva(msg, grupos)
 }

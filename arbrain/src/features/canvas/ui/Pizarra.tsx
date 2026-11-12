@@ -57,6 +57,7 @@ import { factorPaneo, factorZoom } from '@/features/canvas/input/sensibilidad'
 import { History } from '@/features/canvas/state/history'
 import { TextEditor } from '@/features/canvas/editing/TextEditor'
 import { Toolbar, TOOL_SHORTCUTS } from '@/features/canvas/ui/Toolbar'
+import { cursorTinta, type HerramientaTinta } from '@/features/canvas/ui/cursorTinta'
 import { StatusBar } from '@/features/canvas/ui/StatusBar'
 import { BarraContextual } from '@/features/canvas/ui/BarraContextual'
 import { filtrarPorCategoria } from '@/features/canvas/model/filtro-seleccion'
@@ -2391,7 +2392,11 @@ export function Pizarra({ pagina, encuadre, incrustada, alAbrirDoc, temaApp, sol
           cursor: gestoActual === 'pan' ? 'grabbing'
             : manoTemporal || metaAbajo || gestoActual === 'pan-o-clic' ? 'grab'
             : enlaceVivo && tool === 'select' ? 'pointer'
-            : cursorManija ?? (dibujando || creando ? 'crosshair' : tool === 'pan' ? 'grab' : 'default'),
+            : cursorManija ?? (dibujando
+              ? cursorTinta(tool as HerramientaTinta, {
+                  color: tool === 'highlighter' ? t.ink.marcador : tinta.color ?? t.ink.lapiz,
+                  grosor: tool === 'highlighter' ? 22 : tinta.size, zoom: camera.zoom })
+              : creando ? 'crosshair' : tool === 'pan' ? 'grab' : 'default'),
         }}
         onPointerEnter={e => { rectRef.current = null; const r = rectoLienzo(); punteroRef.current = puntoLocal(e.clientX, e.clientY, r, vpRef.current.width, vpRef.current.height) }}
         onPointerLeave={() => { punteroRef.current = null; setEnlaceVivo(null) }}

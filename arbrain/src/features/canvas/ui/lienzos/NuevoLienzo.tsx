@@ -12,10 +12,11 @@ import type { Carpeta, ModoNuevo, PaginaResumen } from '../../state/nube'
 import { destinosDePagina, plantillasDisponibles } from '../../state/vista-lienzos'
 import { Miniatura } from './Miniatura'
 import css from './lienzos.module.css'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 
 type Modo = ModoNuevo['modo']
 const MODOS: { modo: Modo; etiqueta: string; nota: string; icono: React.ReactNode }[] = [
-  { modo: 'blanco', etiqueta: 'En blanco', nota: 'Un lienzo vacío para dibujar a mano o pedírselo a Levy.', icono: <Square size={16} aria-hidden /> },
+  { modo: 'blanco', etiqueta: 'En blanco', nota: 'Un lienzo vacío para dibujar a mano o pedírselo a {asistente}.', icono: <Square size={16} aria-hidden /> },
   { modo: 'clase', etiqueta: 'Clase', nota: 'Título y tres bloques: qué van a aprender, cómo funciona y qué hacen hoy.', icono: <Presentation size={16} aria-hidden /> },
   { modo: 'plantilla', etiqueta: 'Desde plantilla', nota: 'Una copia de la plantilla, con tu nombre y en tu carpeta.', icono: <LayoutTemplate size={16} aria-hidden /> },
 ]
@@ -31,6 +32,7 @@ interface Props {
 
 export function NuevoLienzo({ paginas, carpetas, carpeta, onCrear, onCerrar }: Props) {
   const [nombre, setNombre] = useState('')
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
   const [modo, setModo] = useState<Modo>('blanco')
   const [destino, setDestino] = useState<string | null>(carpeta)
   const [desde, setDesde] = useState<string | null>(null)
@@ -60,7 +62,7 @@ export function NuevoLienzo({ paginas, carpetas, carpeta, onCrear, onCerrar }: P
       {MODOS.map(m => <button key={m.modo} type="button" role="radio" aria-checked={modo === m.modo} className={css.modo}
         data-activo={modo === m.modo ? '' : undefined} onClick={() => setModo(m.modo)}>{m.icono}<span>{m.etiqueta}</span></button>)}
     </div>
-    <p className={css.nuevoNota}>{MODOS.find(m => m.modo === modo)!.nota}</p>
+    <p className={css.nuevoNota}>{MODOS.find(m => m.modo === modo)!.nota.replace('{asistente}', asistente)}</p>
     {modo === 'plantilla' && (plantillas.length
       ? <div className={css.plantillas} role="radiogroup" aria-label="Plantilla">
           {plantillas.map(x => <button key={x.id} type="button" role="radio" aria-checked={elegida === x.id} className={css.plantilla}

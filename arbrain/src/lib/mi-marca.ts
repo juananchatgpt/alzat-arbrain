@@ -24,6 +24,8 @@ export const LOGOS = [
   { archivo: 'logo.svg', tipo: 'image/svg+xml' },
   { archivo: 'logo.png', tipo: 'image/png' },
   { archivo: 'logo.webp', tipo: 'image/webp' },
+  // Ajustes › Diseño (mi Arbrain, 10 nov 2026): también JPG, el formato en que suele llegar un logo.
+  { archivo: 'logo.jpg', tipo: 'image/jpeg' },
 ] as const
 export const MAX_TEMA = 256 * 1024
 export const MAX_LOGO = 2 * 1024 * 1024

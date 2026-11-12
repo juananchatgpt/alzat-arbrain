@@ -51,6 +51,10 @@ simples y, si quiere, dale el texto del paso 1 para abrir al cirujano.
    - `mi-negocio/`: tus documentos, procesos, clientes y material.
    - `mi-marca/`: tus colores (`tema.css`), tu logo y tu nombre (`marca.json`). Arbrain los lee al abrir, sin
      compilar. Para la marca, este es el único lugar: no edites `globals.css` ni `layout.tsx`.
+     **Desde la app (mi Arbrain, 10 nov 2026):** Ajustes › **Diseño** lo llena sin tocar archivos: nombre del
+     asistente, logo, color principal (genera el tema claro, oscuro y unificado entre `diseno:inicio` y `diseno:fin`),
+     web, redes y quién es el dueño (un bloque `mi-diseno` en `MEMORY.md`). Lo reemplazado va a `mi-marca/anteriores/`.
+     Código: `arbrain/src/lib/mi-diseno/`; pruebas: `arbrain/tests/mi-marca/mi-diseno.test.ts`.
    - `.claude/memory/`, `.claude/plan/` y tu diario: tu memoria y tu plan.
 5. **Si tienes que editar algo del autor, cambia lo mínimo.** Cambiar una línea de código está bien (la marca, no:
    esa va en `mi-marca/`). Reescribir un archivo entero o moverlo de lugar hace que cada actualización choque ahí. Cuanto

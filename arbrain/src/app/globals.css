@@ -1514,6 +1514,14 @@ html, body {
     --chat-avail: calc(var(--chat-w, 100vw) - 2rem);
     --chat-prose: max(48rem, min(var(--chat-avail), calc((var(--chat-avail) + 52rem) / 2)));
     --chat-col: min(var(--chat-prose), var(--chat-avail));
+    /* Trama de papel muy tenue: da cuerpo al lienzo del chat sin competir con
+       los mensajes. Usa el color primario para seguir el acento elegido. */
+    background-color: var(--background);
+    background-image:
+      linear-gradient(rgba(var(--primary-rgb), 0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--primary-rgb), 0.028) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center top;
     /* 30 sep, 18:35 · Daniel: «debería conservar el ancho de los párrafos». Tablas, código y vistas
        se alinean a la prosa; lo que no cabe se desplaza dentro de su propia caja. */
     --chat-wide: var(--chat-col);

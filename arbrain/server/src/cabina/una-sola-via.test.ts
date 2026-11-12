@@ -17,11 +17,13 @@ const decision = (r: SyncHookJSONOutput) => (r.hookSpecificOutput as { permissio
 const correrGancho = async (m: ReturnType<typeof ganchoViaUnica>, tool: string) => decision(await m.hooks[0](pre(tool), 't', { signal: new AbortController().signal }) as SyncHookJSONOutput)
 
 describe('una sola vía: regla pura', () => {
-  it('Agent y Task quedan prohibidos en el chat, con lo de siempre (crons de sesión y MCPs con popup)', () => {
+  // Mi Arbrain (cirujano 2026-10-29): Agent/Task vuelven al chat (SUBAGENTES_SDK_EN_CHAT).
+  it('Mi Arbrain: Agent y Task se permiten en el chat; lo de siempre sigue prohibido (crons de sesión y MCPs con popup)', () => {
     const l = herramientasProhibidasChat({ durable: true, env: {} })
-    expect(l).toEqual(expect.arrayContaining(['Agent', 'Task', 'CronCreate', 'ScheduleWakeup', 'mcp__claude_ai_Gmail__*']))
+    expect(l).not.toContain('Agent')
+    expect(l).toEqual(expect.arrayContaining(['CronCreate', 'ScheduleWakeup', 'mcp__claude_ai_Gmail__*']))
     expect(l).not.toContain('Workflow')
-    expect(herramientasProhibidasChat({ durable: false, env: {} })).toEqual(expect.arrayContaining(['Agent', 'Task']))
+    expect(herramientasProhibidasChat({ durable: false, env: {} })).not.toContain('Task')
     expect(herramientasProhibidasChat({ durable: false, env: {} })).not.toContain('CronCreate')
     // reversa sin deploy
     expect(herramientasProhibidasChat({ durable: true, env: { ARBRAIN_UNA_SOLA_VIA: '0' } })).not.toContain('Agent')
@@ -35,17 +37,17 @@ describe('una sola vía: regla pura', () => {
     expect(pideUltracode('hola', true)).toBe(true)
   })
 
-  it('el gancho niega Workflow fuera de ultracode y Agent/Task siempre; lo demás sigue', async () => {
+  it('Mi Arbrain: el gancho niega Workflow fuera de ultracode y deja pasar Agent/Task; lo demás sigue', async () => {
     const g = ganchoViaUnica('conv-a')
     marcarTurno('conv-a', 'revisa el repo')
     expect(await correrGancho(g, 'Workflow')).toBe('deny')
-    expect(await correrGancho(g, 'Agent')).toBe('deny')
-    expect(await correrGancho(g, 'Task')).toBe('deny')
+    expect(await correrGancho(g, 'Agent')).toBe('sigue')
+    expect(await correrGancho(g, 'Task')).toBe('sigue')
     expect(await correrGancho(g, 'Bash')).toBe('sigue')
     marcarTurno('conv-a', 'ultracode revisa el repo')
     expect(workflowPermitido('conv-a')).toBe(true)
     expect(await correrGancho(g, 'Workflow')).toBe('sigue')
-    expect(await correrGancho(g, 'Agent')).toBe('deny')
+    expect(await correrGancho(g, 'Agent')).toBe('sigue')
     // el siguiente turno sin la palabra vuelve a cerrarlo (el gancho vive en la sesión, el permiso es del turno)
     marcarTurno('conv-a', 'gracias')
     expect(await correrGancho(g, 'Workflow')).toBe('deny')
@@ -101,10 +103,11 @@ describe('una sola vía: lo que el chat le pasa al SDK', () => {
     return f.opciones.at(-1)!
   }
 
-  it('disallowedTools trae Agent y Task, y la lista no cambia con ultracode (no reabre la sesión del pool)', async () => {
+  it('Mi Arbrain: disallowedTools ya no trae Agent ni Task, y la lista no cambia con ultracode (no reabre la sesión del pool)', async () => {
     const a = await turno('hola Levy')
     const b = await turno('ultracode: haz la migración')
-    expect(a.disallowedTools).toEqual(expect.arrayContaining(['Agent', 'Task']))
+    expect(a.disallowedTools).not.toContain('Agent')
+    expect(a.disallowedTools).not.toContain('Task')
     expect(a.disallowedTools).not.toContain('Workflow')
     expect(b.disallowedTools).toEqual(a.disallowedTools)
     expect(JSON.stringify(a.hooks)).toBe(JSON.stringify(b.hooks))

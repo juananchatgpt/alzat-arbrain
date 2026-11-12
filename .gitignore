@@ -52,3 +52,7 @@ logs/
 test-results/
 playwright-report/
 coverage/
+
+# Caché de Python (se regenera sola)
+__pycache__/
+*.pyc

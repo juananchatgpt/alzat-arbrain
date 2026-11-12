@@ -3,6 +3,7 @@
 import { FileAttachmentCard } from './FileAttachmentCard'
 import { LevyFace } from './LevyFace'
 import { Retrato } from '@/shared/components/Retrato'
+import { nombreAsistenteAhora, useNombreAsistente } from '@/lib/mi-marca-cliente'
 import type { LiveChatController } from '@/features/live/controller'
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, KeyboardEvent, useCallback, memo, startTransition, useMemo, useSyncExternalStore, type ReactNode } from 'react'
 import { Plus, ArrowUp, AlertCircle, Copy, Check, Clock, ChevronDown, ImageIcon, X, ShieldAlert, Pencil, GitBranch, FileText, AlarmClock, BellRing, Sparkles, Mic, MessagesSquare } from 'lucide-react'
@@ -284,6 +285,7 @@ interface MessageBubbleProps {
 
 export const MessageBubble = memo(function MessageBubble({ msg, isFresh = false, onAnswerQuestion, retryText, onRetry, onEdit, connection = 'online' }: MessageBubbleProps) {
   const isUser = msg.role === 'user'
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
   const isVoiceNote = isUser && !!msg.audioUrl
   const hasAssistantAudio = !isUser && !!msg.audioUrl
 
@@ -404,7 +406,7 @@ export const MessageBubble = memo(function MessageBubble({ msg, isFresh = false,
           <div data-testid="despertar-espontaneo" className="flex items-center gap-1.5 mb-1.5">
             <span className="inline-flex max-w-full items-center gap-1 px-2 py-0.5 rounded-full bg-card border border-border text-[10px] font-medium text-muted">
               <BellRing size={10} className="shrink-0 text-brand-ink" />
-              <span className="truncate">{msg.metadata.origen.etiqueta ?? 'Levy retomó por su cuenta'}</span>
+              <span className="truncate">{msg.metadata.origen.etiqueta ?? `${asistente} retomó por su cuenta`}</span>
             </span>
           </div>
         )}
@@ -673,6 +675,7 @@ async function prepararDocumento(file: File): Promise<File> {
 const EMPTY_CHAT_DRAFT={input:'',textFiles:[] as TextAttachment[],imageFiles:[] as File[],imagenesSubidas:[] as string[],editingMsgId:null as string|null}
 export function ChatPanel({ headerAction, onConsejo, liveMode = false, onLiveController }: { headerAction?: ReactNode; onConsejo?: () => void; liveMode?: boolean; onLiveController?: (controller: LiveChatController) => void } = {}) {
   const { chatSessionsPanelOpen, closeChatSessionsPanel } = useLayoutStore()
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
   const { profile } = useAuth()
   // TEMPORAL (2026-07-08): espacio de cuenta (Tú ↔ bro-claude). Filtra el sidebar
   // y decide qué suscripción factura los turnos. Ver stores/account-store.
@@ -2174,7 +2177,7 @@ export function ChatPanel({ headerAction, onConsejo, liveMode = false, onLiveCon
     const trabajando = loading || ocupado() || enviandoRef.current
     // El mismo texto de un turno que sigue sin resolverse no abre otro: duplicaría el trabajo (2 oct 2026).
     if (!desdeCola && !editando && fotos.length === 0 && subidas.length === 0 && repiteTurnoEnCurso(messages, msg)) {
-      showChatError('Ese mismo mensaje ya va en camino y Levy lo está trabajando. Su respuesta aparece aquí al terminar.', 8000)
+      showChatError(`Ese mismo mensaje ya va en camino y ${nombreAsistenteAhora()} lo está trabajando. Su respuesta aparece aquí al terminar.`, 8000)
       return
     }
     const destino = destinoDelEnvio({
@@ -2183,7 +2186,7 @@ export function ChatPanel({ headerAction, onConsejo, liveMode = false, onLiveCon
       filaEsperando: !desdeCola && cola.esperando(),
     })
     if (destino === 'nada') {
-      if (editando && trabajando) showChatError('Para editar un mensaje anterior espera a que Levy termine; lo que escribas nuevo sí entra a la fila.')
+      if (editando && trabajando) showChatError(`Para editar un mensaje anterior espera a que ${nombreAsistenteAhora()} termine; lo que escribas nuevo sí entra a la fila.`)
       return
     }
     const vaciarCaja = () => {
@@ -3224,14 +3227,14 @@ export function ChatPanel({ headerAction, onConsejo, liveMode = false, onLiveCon
               onFocus={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
               onTouchStart={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
               className="flex items-center gap-2.5 rounded-lg px-2 py-1 hover:bg-card-hover active:scale-[0.98] transition-all"
-              title="Hablar con Levy en persona"
-              aria-label="Hablar con Levy en persona"
+              title={`Hablar con ${asistente} en persona`}
+              aria-label={`Hablar con ${asistente} en persona`}
             >
               <span className="relative shrink-0">
                 <Retrato agente="levy" size={32} prioridad className="w-8 h-8 rounded-full object-cover border border-primary/40 shadow-depth-rest-soft" />
                 <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-success border border-background" />
               </span>
-              <span className="text-sm font-semibold text-foreground">Levy</span>
+              <span className="text-sm font-semibold text-foreground">{asistente}</span>
             </button>
             <AgentesTrabajando />
           </div>
@@ -3697,7 +3700,7 @@ export function ChatPanel({ headerAction, onConsejo, liveMode = false, onLiveCon
                     onClick={() => handleSend()}
                     disabled={!composerDraft.ready || loadingSession}
                     aria-label="Enviar"
-                    title={loading ? 'Enviar: sale cuando Levy termine (Enter)' : 'Enviar (Enter)'}
+                    title={loading ? `Enviar: sale cuando ${asistente} termine (Enter)` : 'Enviar (Enter)'}
                     className={botonEnviar.enviar}
                   >
                     <ArrowUp strokeWidth={2.5} aria-hidden />

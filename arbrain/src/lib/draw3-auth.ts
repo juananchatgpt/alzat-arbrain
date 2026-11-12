@@ -21,6 +21,13 @@ export async function authenticateDraw3(request: Request): Promise<boolean> {
   const token = process.env.OPENCLAW_GATEWAY_TOKEN
   if (token && authHeader && sameSecret(authHeader.replace('Bearer ', ''), token)) return true
 
+  // 2b. Mi Arbrain (6 nov 2026): el pase de agente (contrato v2: los agentes dibujan con ARBRAIN_PASE_AGENTE). El proxy
+  //     (proxy-cliente.ts › bearerDelDaemon) ya lo deja pasar en /api/canvas, pero aquí faltaba: compile respondía y
+  //     crear o escribir páginas daba 401. Solo en /api/canvas, igual que el proxy.
+  const pase = process.env.ARBRAIN_PASE_AGENTE ?? ''
+  if (pase.length >= 32 && authHeader?.startsWith('Bearer ') && new URL(request.url).pathname.startsWith('/api/canvas/')
+    && sameSecret(authHeader.slice(7).trim(), pase)) return true
+
   // 3. Authenticated web session (Supabase cookie). server.ts also resolves the
   //    desktop bypass user, so this covers logged-in web users.
   try {

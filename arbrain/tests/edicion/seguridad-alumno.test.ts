@@ -54,7 +54,7 @@ test('la UI monta el freno y la sección, y el panel de llaves muestra el tope (
   assert.match(fuente('src/app/(main)/dashboard-shell.tsx'), /EDICION_CLIENTE && <FrenoGeneral \/>/)
   assert.match(fuente('src/features/configuracion/components/ModalAjustes.tsx'), /seccion === 'seguridad' && <SeccionSeguridad \/>/)
   assert.match(fuente('src/features/primer-arranque/components/PanelLlaves.tsx'), /<TopeDeGasto/)
-  assert.match(fuente('src/features/configuracion/secciones.ts'), /secciones: \['llaves', 'voz', 'sinfiltro', 'telefono', 'maquinas', 'avisos', 'seguridad', 'privacidad', 'apariencia'\]/)
+  assert.match(fuente('src/features/configuracion/secciones.ts'), /secciones: \['llaves', 'diseno', 'voz', 'sinfiltro', 'telefono', 'maquinas', 'avisos', 'seguridad', 'privacidad', 'apariencia'\]/)
 })
 
 // v0.2.24: el modo directo es de la instalación original. En la edición cliente no existe /api/modo-directo; prender

@@ -92,3 +92,4 @@ export function conViaUnica<T extends { PreToolUse?: HookCallbackMatcher[] }>(ho
   if (!clave || (!cliente && !viaUnicaActiva(env))) return hooks
   return { ...hooks, PreToolUse: [ganchoViaUnica(clave, subagentesSdkPermitidos(env, cliente), cliente), ...(hooks.PreToolUse ?? [])] }
 }
+

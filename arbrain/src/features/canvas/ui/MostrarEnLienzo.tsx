@@ -9,6 +9,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Theme } from '../theme/tokens'
 import { useMostrarEnLienzo } from './useMostrarEnLienzo'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 import type { MostrarEnLienzo as Mostrar } from '../state/mostrar-en-lienzo'
 
 const FILAS: Array<{ clave: keyof Mostrar; titulo: string; detalle: string }> = [
@@ -17,12 +18,13 @@ const FILAS: Array<{ clave: keyof Mostrar; titulo: string; detalle: string }> = 
   { clave: 'zoom', titulo: 'Zoom', detalle: 'El − % + de la barra inferior' },
   { clave: 'capitulos', titulo: 'Capítulos', detalle: 'Todo · 1 2 3 4' },
   { clave: 'minimapa', titulo: 'Minimapa', detalle: 'El mapa chico de la esquina' },
-  { clave: 'pideALevy', titulo: 'Pídele a Levy', detalle: 'La caja que manda tu pedido al chat' },
+  { clave: 'pideALevy', titulo: 'Pídele a {asistente}', detalle: 'La caja que manda tu pedido al chat' },
 ]
 
 export function MostrarEnLienzo({ theme: t }: { theme: Theme }) {
   const [abierto, setAbierto] = useState(false)
   const [m, poner] = useMostrarEnLienzo()
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
   const ref = useRef<HTMLDivElement>(null)
   const oscuro = t.name === 'oscuro'
 
@@ -67,7 +69,7 @@ export function MostrarEnLienzo({ theme: t }: { theme: Theme }) {
                 background: 'transparent', cursor: 'pointer', textAlign: 'left', font: 'inherit', color: 'inherit',
               }}>
               <span style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ display: 'block', color: t.text.title }}>{f.titulo}</span>
+                <span style={{ display: 'block', color: t.text.title }}>{f.titulo.replace('{asistente}', asistente)}</span>
                 <span style={{ display: 'block', font: '500 11px CanvasSans, system-ui', color: t.text.caption }}>{f.detalle}</span>
               </span>
               <span aria-hidden style={{

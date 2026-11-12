@@ -7,6 +7,7 @@ import { useIsMobile } from '@/shared/hooks/useMediaQuery'
 import { abrirPanelEnTelefono, tocarAgente, useVistaTelefono } from '@/features/cabina/panel/telefono-pestanas'
 import { AgentesTrabajando } from '@/features/cabina/panel/AgentesTrabajando'
 import { Retrato } from '@/shared/components/Retrato'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 
 /**
  * La cabecera del teléfono (10 oct 2026, Daniel: «simplifiquemos la lógica… debería estar unificado»): UNA sola en todas
@@ -18,6 +19,7 @@ export function Header() {
   const { toggleConversationsDrawer, conversationsDrawerOpen, toggleDrawSidebar } = useLayoutStore()
   const pathname = usePathname()
   const router = useRouter()
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
   const isChatPage = pathname === '/chat'
   const isDrawPage = pathname.startsWith('/draw3')
   const isMobile = useIsMobile()
@@ -78,14 +80,14 @@ export function Header() {
             onFocus={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
             onTouchStart={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
             className="flex min-w-0 items-center gap-2 rounded-lg px-1.5 py-1 select-none focus:outline-none"
-            title="Hablar con Levy en persona"
-            aria-label="Hablar con Levy en persona"
+            title={`Hablar con ${asistente} en persona`}
+            aria-label={`Hablar con ${asistente} en persona`}
           >
             <span className="relative shrink-0">
               <Retrato agente="levy" size={28} prioridad className="w-7 h-7 rounded-full object-cover border border-primary/40" />
               <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-success border border-background" />
             </span>
-            <span className="text-sm font-semibold text-foreground leading-none">Levy</span>
+            <span className="text-sm font-semibold text-foreground leading-none">{asistente}</span>
           </button>
           {/* Agentes de esta conversación y lo que te pregunta un modelo (5 oct 2026): la misma píldora del escritorio, compacta. */}
           <AgentesTrabajando compacta />
@@ -108,7 +110,7 @@ export function Header() {
             <PanelRight size={18} />
           </button>
         ) : (
-          <button onClick={() => tocarAgente(pathname, url => router.push(url))} title="Volver a Levy" aria-label="Volver a Levy"
+          <button onClick={() => tocarAgente(pathname, url => router.push(url))} title={`Volver a ${asistente}`} aria-label={`Volver a ${asistente}`}
             className="icon-btn size-9" data-boton-agente>
             <Bot size={18} />
           </button>

@@ -39,7 +39,8 @@ async function caminar(base: string, dir: string, profundo: boolean, out: string
   try { entradas = await readdir(path.join(base, dir), { withFileTypes: true }) } catch { return }
   for (const e of entradas) {
     if (e.name.startsWith('.') || e.name === 'node_modules') continue
-    const rel = path.join(dir, e.name)
+    // posix (mi Arbrain, 27 oct 2026): en Windows path.join daba «\» y el filtro de `/SKILL.md` contaba 0 habilidades.
+    const rel = path.posix.join(dir, e.name)
     if (e.isDirectory() && profundo && nivel < 3) await caminar(base, rel, profundo, out, nivel + 1)
     else if (e.isFile() && e.name.endsWith('.md') && !VETADO.test(rel)) out.push(rel)
   }
@@ -62,7 +63,7 @@ export async function GET(request: Request) {
     const pedida = new URL(request.url).searchParams.get('ruta')
 
     if (pedida) {
-      const limpia = path.normalize(pedida).replace(/^(\.\.(\/|\\|$))+/, '')
+      const limpia = path.posix.normalize(pedida.replace(/\\/g, '/')).replace(/^(\.\.(\/|\\|$))+/, '')
       const ok = limpia.endsWith('.md') && !VETADO.test(limpia) && (PERMITIDAS.some(p => limpia.startsWith(p.dir + '/')) || INSTRUCCIONES.some(x => x.ruta === limpia))
       const abs = path.join(base, limpia)
       if (!ok || !abs.startsWith(base + path.sep)) return Response.json({ error: 'Ese archivo no es del cerebro.' }, { status: 403 })

@@ -13,6 +13,7 @@ import { ArrowUp, Sparkles } from 'lucide-react'
 import type { Theme } from '../theme/tokens'
 import { mensajeLienzo } from '../state/pide-a-levy'
 import { useRouter } from 'next/navigation'
+import { useNombreAsistente } from '@/lib/mi-marca-cliente'
 
 export function PideALevy({ theme: t, paginaId, nombre, abajo, angosto, antesDeIr }: {
   theme: Theme; paginaId: string; nombre: string; abajo: number; angosto: boolean
@@ -20,6 +21,7 @@ export function PideALevy({ theme: t, paginaId, nombre, abajo, angosto, antesDeI
   antesDeIr?: () => Promise<unknown>
 }) {
   const router = useRouter()
+  const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño (fábrica: Levy).
   const [abierto, setAbierto] = useState(false)
   const [texto, setTexto] = useState('')
   const [aviso, setAviso] = useState<string | null>(null)
@@ -55,22 +57,22 @@ export function PideALevy({ theme: t, paginaId, nombre, abajo, angosto, antesDeI
 
   if (!abierto) return <div style={{ ...base, display: 'flex', alignItems: 'center', borderRadius: 999, padding: 3 }} {...parar}>
     {aviso && <span role="status" style={{ padding: '0 6px 0 10px', color: t.text.caption, font: '500 12px CanvasSans, system-ui' }}>{aviso}</span>}
-    <button type="button" data-pide-a-levy onClick={() => setAbierto(true)} title="Pídele a Levy algo sobre este lienzo"
+    <button type="button" data-pide-a-levy onClick={() => setAbierto(true)} title={`Pídele a ${asistente} algo sobre este lienzo`}
       style={{ display: 'flex', alignItems: 'center', gap: 7, height: 32, padding: '0 13px 0 11px', borderRadius: 999, border: 'none', cursor: 'pointer',
         background: 'transparent', color: t.text.title, font: '650 12.5px CanvasSans, system-ui' }}>
-      <Sparkles size={14} color={t.accent} aria-hidden /> Pídele a Levy
+      <Sparkles size={14} color={t.accent} aria-hidden /> Pídele a {asistente}
     </button>
   </div>
 
-  return <form role="dialog" aria-label="Pídele a Levy" {...parar}
+  return <form role="dialog" aria-label={`Pídele a ${asistente}`} {...parar}
     onSubmit={e => { e.preventDefault(); void enviar() }}
     style={{ ...base, width: angosto ? 'calc(100% - 20px)' : 'min(440px, calc(100% - 28px))', borderRadius: 14, padding: 10, borderColor: t.accent }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '0 2px 8px', color: t.text.caption, font: '600 11px CanvasSans, system-ui', letterSpacing: '.06em', textTransform: 'uppercase' }}>
-      <Sparkles size={12} color={t.accent} aria-hidden /> Pídele a Levy
+      <Sparkles size={12} color={t.accent} aria-hidden /> Pídele a {asistente}
       {nombre && <span style={{ marginLeft: 'auto', textTransform: 'none', letterSpacing: 0, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '60%' }} title={nombre}>{nombre}</span>}
     </div>
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-      <textarea ref={caja} value={texto} rows={2} aria-label="Lo que quieres que Levy haga en este lienzo"
+      <textarea ref={caja} value={texto} rows={2} aria-label={`Lo que quieres que ${asistente} haga en este lienzo`}
         placeholder="Arma la clase del lunes con estos tres bloques…"
         onChange={e => setTexto(e.target.value)}
         onKeyDown={e => {
@@ -79,7 +81,7 @@ export function PideALevy({ theme: t, paginaId, nombre, abajo, angosto, antesDeI
           if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) { e.preventDefault(); void enviar() }
         }}
         style={{ flex: 1, minWidth: 0, resize: 'none', maxHeight: 120, border: 'none', outline: 'none', background: 'transparent', color: t.text.body, font: '500 14px CanvasSans, system-ui', lineHeight: 1.4 }} />
-      <button type="submit" disabled={!texto.trim()} aria-label="Mandar a Levy" title="Mandar (Enter)"
+      <button type="submit" disabled={!texto.trim()} aria-label={`Mandar a ${asistente}`} title="Mandar (Enter)"
         style={{ width: 32, height: 32, flexShrink: 0, borderRadius: 999, border: 'none', display: 'grid', placeItems: 'center',
           cursor: texto.trim() ? 'pointer' : 'default', background: texto.trim() ? t.accent : t.roles.sticky.fill, color: texto.trim() ? '#fff' : t.text.caption }}>
         <ArrowUp size={16} aria-hidden />
