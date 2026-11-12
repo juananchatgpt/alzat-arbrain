@@ -13,7 +13,7 @@ export function PanelCaminos({ actual }: { actual: Camino }) {
   const c = CAMINOS[elegido]
   return (
     <div>
-      <div role="radiogroup" aria-label="Dónde vive tu Arbrain" className="grid gap-2">
+      <div role="radiogroup" aria-label="Dónde vive tu Alzat" className="grid gap-2">
         {ORDEN_CAMINOS.map(id => {
           const activa = id === elegido
           return (

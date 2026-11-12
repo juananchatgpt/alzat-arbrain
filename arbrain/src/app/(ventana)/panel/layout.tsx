@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { isDesktopAuthBypassFromHeaders } from '@/lib/desktop-auth-server'
 import { createClient } from '@/lib/supabase/server'
 
-export const metadata: Metadata = { title: 'Panel · Arbrain' }
+export const metadata: Metadata = { title: 'Panel · Alzat' }
 
 /** La ventana desprendida del panel: misma sesión que la app, sin barra ni chat. */
 export default async function VentanaLayout({ children }: { children: React.ReactNode }) {

@@ -63,12 +63,12 @@ export function ConectaReloj({ x, onVolver }: { x: DatosSalud; onVolver?: () => 
     <header className={`${h.conectaCabeza} ${mov.entra}`} style={escalon(0)}>
       {onVolver && <button className={l.enlace} onClick={onVolver}><ArrowLeft size={12} aria-hidden /> Volver a tu cuerpo</button>}
       <p className={l.ceja}>Salud · <b>Conecta tu reloj</b></p>
-      <h3 className={`${h.palabra} ${l.serif}`}>Tu cuerpo, en tu Arbrain</h3>
-      <p className={h.hacer}>Tu Apple Watch manda tu sueño, tu HRV y tu pulso a tu Arbrain cada hora, y aquí ves cómo está tu cuerpo hoy contra tu propio normal. Solo tú ves tus datos.</p>
+      <h3 className={`${h.palabra} ${l.serif}`}>Tu cuerpo, en tu Alzat</h3>
+      <p className={h.hacer}>Tu Apple Watch manda tu sueño, tu HRV y tu pulso a tu Alzat cada hora, y aquí ves cómo está tu cuerpo hoy contra tu propio normal. Solo tú ves tus datos.</p>
     </header>
 
     {x.fuente === 'studio' && <p className={`${h.nota} ${h.recuadro} ${mov.entra}`} style={escalon(1)}>
-      Tu reloj ya llega por tu receptor del Studio (Tailscale) desde el 24 jul y esta vista lo lee de ahí. Estos pasos son la ruta estándar de cualquier usuario de Arbrain. Si un día te pasas a ella, crea una <b>segunda</b> automatización; la primera sigue intacta hasta comparar 14 días.
+      Tu reloj ya llega por tu receptor del Studio (Tailscale) desde el 24 jul y esta vista lo lee de ahí. Estos pasos son la ruta estándar de cualquier usuario de Alzat. Si un día te pasas a ella, crea una <b>segunda</b> automatización; la primera sigue intacta hasta comparar 14 días.
     </p>}
 
     <ol className={h.pasos}>
@@ -84,10 +84,10 @@ export function ConectaReloj({ x, onVolver }: { x: DatosSalud; onVolver?: () => 
       <li className={mov.entra} style={escalon(3)}>
         <span className={`${h.numero} ${l.serif}`}>2</span>
         <div>
-          <h4>Crea la automatización hacia tu Arbrain</h4>
+          <h4>Crea la automatización hacia tu Alzat</h4>
           <p>En la app: <b>Automations → nueva → REST API</b>. Pega estos dos datos:</p>
           <Campo nombre="URL" valor={url} />
-          {esLocal(url) && <p className={l.aviso}>Esta dirección solo existe en esta computadora: tu iPhone no la alcanza. Abre Arbrain por su dirección pública para copiar la buena.</p>}
+          {esLocal(url) && <p className={l.aviso}>Esta dirección solo existe en esta computadora: tu iPhone no la alcanza. Abre Alzat por su dirección pública para copiar la buena.</p>}
           {token ? <Campo nombre="Encabezado" valor={`Authorization: Bearer ${token}`} />
             : con?.tieneToken ? <Campo nombre="Encabezado" valor="" oculto={`Authorization: Bearer ••••${con.pista ?? ''}`} />
             : null}

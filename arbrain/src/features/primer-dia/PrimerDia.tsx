@@ -29,14 +29,14 @@ async function pedir(cuerpo: Record<string, unknown>): Promise<{ mensaje?: strin
   try {
     const r = await fetch(URL_PRIMER_DIA, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo), cache: 'no-store' })
     const j = await r.json().catch(() => ({}))
-    return r.ok ? j : { error: j.error ?? 'No pude hablar con tu Arbrain.' }
-  } catch { return { error: 'No pude hablar con tu Arbrain.' } }
+    return r.ok ? j : { error: j.error ?? 'No pude hablar con tu Alzat.' }
+  } catch { return { error: 'No pude hablar con tu Alzat.' } }
 }
 
 export function PrimerDia({ demo, onRutinas }: { demo?: { avance: Avance }; onRutinas?: () => void }) {
   const lectura = usePrimerDia()
   const datos = demo ? { activo: true as const, avance: demo.avance, ofrecer: false, oculto: false } : lectura.data
-  if (!datos) return <div className={c.vista} aria-busy="true"><p className={c.nota}>{lectura.error ? 'Tu Arbrain no respondió. Vuelvo a intentar en unos segundos.' : 'Leyendo tu primer día…'}</p></div>
+  if (!datos) return <div className={c.vista} aria-busy="true"><p className={c.nota}>{lectura.error ? 'Tu Alzat no respondió. Vuelvo a intentar en unos segundos.' : 'Leyendo tu primer día…'}</p></div>
   if (!datos.activo) return null
   return <Vista avance={datos.avance} demo={!!demo} onRutinas={onRutinas} />
 }

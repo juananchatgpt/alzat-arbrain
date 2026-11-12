@@ -27,7 +27,7 @@ function pedir(ruta: string): Promise<Estado> {
       if (r.status >= 500 || r.status === 401) cache.delete(ruta)
       return { tipo: 'error', motivo: j.error || 'No se pudo abrir este archivo.' } as Estado
     })
-    .catch(() => { cache.delete(ruta); return { tipo: 'error', motivo: 'Sin conexión con tu Arbrain.' } as Estado })
+    .catch(() => { cache.delete(ruta); return { tipo: 'error', motivo: 'Sin conexión con tu Alzat.' } as Estado })
   cache.set(ruta, { en: Date.now(), p })
   return p
 }

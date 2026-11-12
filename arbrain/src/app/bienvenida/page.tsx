@@ -5,7 +5,7 @@ import { isDesktopAuthBypassFromHeaders } from '@/lib/desktop-auth-server'
 import { irABienvenida, reaceptacionCorta } from '@/features/primer-arranque/lib/estado'
 import { PrimerArranque } from '@/features/primer-arranque/components/PrimerArranque'
 
-export const metadata: Metadata = { title: 'Bienvenida · Arbrain' }
+export const metadata: Metadata = { title: 'Bienvenida · Alzat' }
 export const dynamic = 'force-dynamic'
 
 /** Primer arranque de la edición cliente (11 oct 2026). En la instalación de Daniel no existe. */

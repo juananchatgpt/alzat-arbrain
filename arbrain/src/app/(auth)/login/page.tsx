@@ -14,7 +14,7 @@ export default function LoginPage() {
         <div className="titanium-screen p-6 sm:p-8">
 
           <div className="text-center mb-8">
-            <p className={`${s.marca} mov-aparece`}>Arbrain<i aria-hidden /></p>
+            <p className={`${s.marca} mov-aparece`}>Alzat<i aria-hidden /></p>
             <h1 className={`mt-4 text-2xl font-bold tracking-tight text-foreground mov-entra`} style={escalon(1)}>Hola de nuevo</h1>
             <p className={`mt-2 text-sm text-muted mov-entra`} style={escalon(1)}>Levy te espera en el chat.</p>
           </div>

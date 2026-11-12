@@ -267,7 +267,7 @@ export function MetabolismoRoom() {
                     poda que TÚ firmas — nada se mata solo.
                   </p>
                   <button
-                    onClick={() => pedirALevy('Dispara una corrida del órgano metabolismo del Arbrain para que escriba mi primera lectura metabólica y sus propuestas.')}
+                    onClick={() => pedirALevy('Dispara una corrida del órgano metabolismo del Alzat para que escriba mi primera lectura metabólica y sus propuestas.')}
                     className="mt-2 flex items-center gap-1.5 rounded-lg border border-gold/40 px-2.5 py-1.5 text-[10px] font-bold text-gold transition-colors hover:bg-gold/10"
                   >
                     <MessageCircle className="size-3" />

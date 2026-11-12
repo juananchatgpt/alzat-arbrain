@@ -199,7 +199,7 @@ export function PlasticidadRoom() {
                     declara con evidencia repetida.
                   </p>
                   <button
-                    onClick={() => pedirALevy('Dispara una corrida del órgano plasticidad-lectura del Arbrain para que escriba mi primera lectura de patrones.')}
+                    onClick={() => pedirALevy('Dispara una corrida del órgano plasticidad-lectura del Alzat para que escriba mi primera lectura de patrones.')}
                     className="mt-2 flex items-center gap-1.5 rounded-lg border border-gold/40 px-2.5 py-1.5 text-[10px] font-bold text-gold transition-colors hover:bg-gold/10"
                   >
                     <MessageCircle className="size-3" />

@@ -78,7 +78,7 @@ const themeInitScript = `
 const CLIENTE = esEdicionCliente()
 
 export const metadata: Metadata = {
-  title: 'Arbrain',
+  title: 'Alzat',
   description: 'AI-powered business dashboard',
   manifest: CLIENTE ? '/manifest-cliente.json' : '/manifest.json',
   icons: {
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: CLIENTE ? 'Tu Arbrain' : 'Arbrain',
+    title: CLIENTE ? 'Tu Alzat' : 'Alzat',
   },
 }
 

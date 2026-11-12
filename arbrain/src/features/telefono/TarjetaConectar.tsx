@@ -105,7 +105,7 @@ export function TarjetaConectar() {
       </h3>
       <p className="mt-1 text-[13px] leading-relaxed text-muted">
         Escanea el QR con la cámara de tu celular y entras directo a tu Levy, desde cualquier lugar. No necesitas Tailscale ni
-        abrir puertos: esta máquina se conecta sola al relay privado de Arbrain y solo entra quien tiene tu QR o tu código.
+        abrir puertos: esta máquina se conecta sola al relay privado de Alzat y solo entra quien tiene tu QR o tu código.
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-2" role="status" aria-live="polite">
@@ -125,8 +125,8 @@ export function TarjetaConectar() {
         ))}
       </div>
 
-      {sinServidor && <Aviso tono="info" className="mt-3">{estado?.error ?? 'Esta función es de Arbrain en modo servidor. Pídele a Claude Code «Pon mi cerebro en mi teléfono».'}</Aviso>}
-      {estado?.estado === 'apagado' && !estado.relay && <Aviso tono="info" className="mt-3">Falta la dirección del relay de Arbrain en esta copia (prototipo: se da con `npm run servidor -- conectar encender --relay …`).</Aviso>}
+      {sinServidor && <Aviso tono="info" className="mt-3">{estado?.error ?? 'Esta función es de Alzat en modo servidor. Pídele a Claude Code «Pon mi cerebro en mi teléfono».'}</Aviso>}
+      {estado?.estado === 'apagado' && !estado.relay && <Aviso tono="info" className="mt-3">Falta la dirección del relay de Alzat en esta copia (prototipo: se da con `npm run servidor -- conectar encender --relay …`).</Aviso>}
 
       {listo && estado?.url && (
         <div className="mt-4 grid gap-4 sm:grid-cols-[auto_1fr] sm:items-start">

@@ -71,7 +71,7 @@ function LineaEncargo({ e }: { e: EncargoVivo }) {
         setError(typeof j.error === 'string' ? j.error : 'No se pudo mandar la orden.')
         setEnviada(null)
       }
-    } catch { setError('Sin conexión con Arbrain.'); setEnviada(null) }
+    } catch { setError('Sin conexión con Alzat.'); setEnviada(null) }
   }
 
   const reloj = relojEncargo(e, ahora)

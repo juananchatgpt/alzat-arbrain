@@ -1,6 +1,6 @@
 {
-  "name": "Tu Arbrain",
-  "short_name": "Tu Arbrain",
+  "name": "Tu Alzat",
+  "short_name": "Tu Alzat",
   "description": "Tu cerebro artificial: tu Levy, tu día y tu plan, desde tu computadora o tu servidor",
   "start_url": "/chat",
   "display": "standalone",

@@ -37,7 +37,7 @@ const OPCIONES: Record<Modo, { titulo: string; resumen: string; etiqueta?: strin
     titulo: 'Pegar una llave de OpenRouter', resumen: 'Si ya tienes una llave «sk-or-» creada a mano.',
     pasos: [
       'Entra a openrouter.ai, crea tu cuenta y agrega crédito.',
-      'Ve a «Keys» y crea una llave nueva. Ponle un nombre como «Arbrain».',
+      'Ve a «Keys» y crea una llave nueva. Ponle un nombre como «Alzat».',
       'Cópiala y pégala aquí. Empieza con «sk-or-».',
     ],
     placeholder: 'sk-or-v1-…', tipo: 'openrouter', nombre: 'OPENROUTER_API_KEY',
@@ -46,7 +46,7 @@ const OPCIONES: Record<Modo, { titulo: string; resumen: string; etiqueta?: strin
     titulo: 'API key de Anthropic', resumen: 'Directo con Anthropic; pagas solo lo que usas.',
     pasos: [
       'Entra a console.anthropic.com e inicia sesión (o crea tu cuenta).',
-      'Ve a «API keys» y crea una nueva. Ponle un nombre como «Arbrain».',
+      'Ve a «API keys» y crea una nueva. Ponle un nombre como «Alzat».',
       'Cópiala y pégala aquí. Empieza con «sk-ant-».',
     ],
     placeholder: 'sk-ant-api03-…', tipo: 'claude', nombre: 'ANTHROPIC_API_KEY',
@@ -170,10 +170,10 @@ export function PanelLlaves({ onEstado, compacto = false, control }: { onEstado?
   useReprobarAlVolver(app && listo && reprobarAlVolver(prueba), probar)
 
   if (!app) {
-    return <Aviso tono="info">Las llaves se guardan desde la app de Arbrain, en el llavero de tu sistema. Ábrela para continuar; este navegador no puede guardarlas.</Aviso>
+    return <Aviso tono="info">Las llaves se guardan desde la app de Alzat, en el llavero de tu sistema. Ábrela para continuar; este navegador no puede guardarlas.</Aviso>
   }
   if (estado && !estado.disponible) {
-    return <Aviso tono="alerta">Tu sistema no tiene un llavero disponible{estado.error ? ` (${estado.error})` : ''}. En Linux instala GNOME Keyring o KWallet y vuelve a abrir Arbrain. Por seguridad, Arbrain no guarda llaves en archivos.</Aviso>
+    return <Aviso tono="alerta">Tu sistema no tiene un llavero disponible{estado.error ? ` (${estado.error})` : ''}. En Linux instala GNOME Keyring o KWallet y vuelve a abrir Alzat. Por seguridad, Alzat no guarda llaves en archivos.</Aviso>
   }
   const almacen = NOMBRE_ALMACEN[estado?.almacen ?? ''] ?? 'el llavero de tu sistema'
   const actual = OPCIONES[modo]
@@ -186,8 +186,8 @@ export function PanelLlaves({ onEstado, compacto = false, control }: { onEstado?
         <p className="flex items-start gap-2 text-[13px] leading-relaxed text-muted">
           <ShieldCheck className="mt-0.5 size-4 shrink-0 text-brand-ink" aria-hidden />
           <span>{estado?.almacen === 'archivo-local'
-            ? <>Se guardan en {almacen} (solo tu usuario lo lee y los agentes no tienen acceso), nunca en esta pantalla. Arbrain solo las usa para hablar con el modelo en tu nombre.</>
-            : <>Se guardan en {almacen}, nunca en un archivo ni en esta pantalla. Arbrain solo las usa para hablar con el modelo en tu nombre.</>}</span>
+            ? <>Se guardan en {almacen} (solo tu usuario lo lee y los agentes no tienen acceso), nunca en esta pantalla. Alzat solo las usa para hablar con el modelo en tu nombre.</>
+            : <>Se guardan en {almacen}, nunca en un archivo ni en esta pantalla. Alzat solo las usa para hablar con el modelo en tu nombre.</>}</span>
         </p>
       )}
 
@@ -308,7 +308,7 @@ function MiClaudeCode({ sub, buscando, onRecargar, onLogin, prueba, probando, on
       {buscando ? 'Revisando…' : 'Revisar de nuevo'}
     </button>
   )
-  const privacidad = <p className="mt-2 text-[12.5px] leading-relaxed text-muted">Arbrain no ve ni guarda tu sesión: la abre tu propio Claude Code. Tampoco le pasa llaves de API, aunque tengas <code className="font-mono">ANTHROPIC_API_KEY</code> en tu sistema: así usa tu plan y no te cobra aparte. Las rutinas automáticas no corren con tu plan.</p>
+  const privacidad = <p className="mt-2 text-[12.5px] leading-relaxed text-muted">Alzat no ve ni guarda tu sesión: la abre tu propio Claude Code. Tampoco le pasa llaves de API, aunque tengas <code className="font-mono">ANTHROPIC_API_KEY</code> en tu sistema: así usa tu plan y no te cobra aparte. Las rutinas automáticas no corren con tu plan.</p>
 
   if (sub.activo) {
     return (
@@ -362,7 +362,7 @@ function MiClaudeCode({ sub, buscando, onRecargar, onLogin, prueba, probando, on
         {botonEntrar(true)}
         {revisar}
       </div>
-      {sub.codex?.sesion && <p className="mt-2 text-[12.5px] text-muted">También encontré Codex con tu cuenta de ChatGPT; Arbrain todavía no lo usa (llega cuando tenga la misma guardia que Claude).</p>}
+      {sub.codex?.sesion && <p className="mt-2 text-[12.5px] text-muted">También encontré Codex con tu cuenta de ChatGPT; Alzat todavía no lo usa (llega cuando tenga la misma guardia que Claude).</p>}
     </section>
   )
 }
@@ -498,7 +498,7 @@ export function EstadoGuardada({ vista }: { vista: string | null }) {
 }
 
 const MENSAJE_PRUEBA: Record<string, string> = {
-  falta_llave: 'Tu Arbrain todavía no ve la llave. Espera unos segundos y prueba de nuevo.',
+  falta_llave: 'Tu Alzat todavía no ve la llave. Espera unos segundos y prueba de nuevo.',
   llave_invalida: 'La llave no es válida o venció. Revísala y pégala de nuevo.',
   sin_saldo: 'La llave funciona, pero tu cuenta no tiene saldo o crédito. Recarga en tu proveedor (OpenRouter o Anthropic).',
   saturado: 'Claude está saturado en este momento. Tu llave está bien; prueba en un minuto.',

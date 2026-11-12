@@ -34,7 +34,7 @@ const BOOKS: Book[] = [
     // así el manual del sistema queda dentro del sistema y sin la trampa del deploy.
     slug: 'manual-dueno',
     title: 'El Manual del Dueño',
-    subtitle: 'Cómo funciona tu sistema · el Arbrain órgano por órgano',
+    subtitle: 'Cómo funciona tu sistema · el Alzat órgano por órgano',
     cover: '/library-covers/manual-dueno.webp',
     url: '/manual-dueno/index.html',
   },
@@ -120,7 +120,7 @@ const PERGAMINOS: Book[] = [
 const CONECTOMAS: Book[] = [
   {
     slug: 'conectoma-arbrain',
-    title: 'Arbrain — el grafo de grafos',
+    title: 'Alzat — el grafo de grafos',
     subtitle: 'El sistema completo: dominios, superficies y el mundo · los nodos ⊞ abren su propio conectoma',
     cover: '/library-covers/conectoma-arbrain.webp',
     url: '/conectoma/index.html?g=arbrain',

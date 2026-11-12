@@ -19,7 +19,7 @@ export function SeccionPrivacidad() {
     <div className="space-y-6">
       <section>
         <h3 className="mb-1 text-sm font-semibold text-foreground/90">Conectar con arbrain.ai (opcional)</h3>
-        <p className="mb-3 text-xs leading-snug text-muted">Tu Arbrain le manda a tu programa una señal mínima de tu avance, una vez al día, solo si lo conectas. Tus conversaciones nunca salen.</p>
+        <p className="mb-3 text-xs leading-snug text-muted">Tu Alzat le manda a tu programa una señal mínima de tu avance, una vez al día, solo si lo conectas. Tus conversaciones nunca salen.</p>
         <PanelConexionArbrain />
       </section>
       {conMonitoreo && (

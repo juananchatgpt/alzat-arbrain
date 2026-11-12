@@ -67,7 +67,7 @@ export function Engrane({ ajustes, poner, diasActual, leyenda, drip, matriz, acc
         </Fila>
         <Interruptor etiqueta="Enfoque" ayuda="Sin categorías ni subtítulos; las horas más altas" valor={ajustes.enfoque} onCambio={v => poner({ enfoque: v })} />
         <Interruptor etiqueta="Fines de semana" valor={ajustes.finDeSemana} onCambio={v => poner({ finDeSemana: v })} />
-        {/* Pantalla compartida (25 oct 2026, pedido del dueño): Arbrain no sabe cuándo se graba o se comparte, así que es un interruptor
+        {/* Pantalla compartida (25 oct 2026, pedido del dueño): Alzat no sabe cuándo se graba o se comparte, así que es un interruptor
             de este equipo (el mismo modo presentación de «Hábitos de hoy»). Prendido, un hábito privado se ve como «Hábito privado». */}
         <Interruptor etiqueta="Pantalla compartida" ayuda="Al grabar o compartir: los hábitos privados se ven como «Hábito privado»" valor={presentacion.activo} onCambio={v => { if (v !== presentacion.activo) presentacion.alternar() }} />
         <Fila etiqueta="Semana"><Segmentos valor={ajustes.vistaSemana} opciones={[{ v: 'horas', t: 'Horas' }, { v: 'agenda', t: 'Agenda' }]} onCambio={v => poner({ vistaSemana: v })} nombre="Ver la semana como" /></Fila>

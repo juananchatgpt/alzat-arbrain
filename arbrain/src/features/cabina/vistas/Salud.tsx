@@ -254,7 +254,7 @@ function Pie({ x, cargando, onConectar }: { x: DatosSalud; cargando: boolean; on
   async function actualizar() { setOcupado(true); try { await fetch(`${URL_SALUD}?fresco=1`, { cache: 'no-store' }); await releer(URL_SALUD) } finally { setOcupado(false) } }
   const hr = horaLectura(x.leidoEn)
   return <footer className={h.pie}>
-    <span>{hr ? `Leído a las ${hr}` : ''} · {x.fuente === 'studio' ? 'desde tu receptor del Studio' : 'desde tu Arbrain'}</span>
+    <span>{hr ? `Leído a las ${hr}` : ''} · {x.fuente === 'studio' ? 'desde tu receptor del Studio' : 'desde tu Alzat'}</span>
     <span className={h.pieAcciones}>
       <button className={l.enlace} onClick={onConectar}><Watch size={12} aria-hidden /> Conecta tu reloj</button>
       <button className={l.enlace} onClick={() => void actualizar()} disabled={ocupado || cargando}><RefreshCw size={12} className={ocupado ? 'animate-spin' : undefined} aria-hidden /> Actualizar</button>

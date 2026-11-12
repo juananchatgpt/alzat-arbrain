@@ -54,7 +54,7 @@ export function SeccionMaquinas() {
           <h3 className="flex-1 text-sm font-semibold text-foreground">Dónde corre tu Levy</h3>
           <button type="button" className="btn-secondary !px-2 !py-1 text-[12px]" aria-label="Revisar de nuevo" onClick={() => void leer()}><RefreshCw className="size-3.5" aria-hidden /></button>
         </div>
-        <p className="mt-1 text-[13px] leading-relaxed text-muted">Cada computadora o servidor donde vive tu Arbrain, con su dirección privada. Desde cualquiera puedes abrir las demás.</p>
+        <p className="mt-1 text-[13px] leading-relaxed text-muted">Cada computadora o servidor donde vive tu Alzat, con su dirección privada. Desde cualquiera puedes abrir las demás.</p>
         <LineaConversaciones />
 
         {maquinas === null && !error && <p className="mt-3 flex items-center gap-2 text-[13px] text-muted"><Loader2 className="size-3.5 animate-spin" aria-hidden /> Revisando…</p>}
@@ -91,7 +91,7 @@ export function SeccionMaquinas() {
 
       <section className="rounded-2xl border border-border-subtle bg-surface/70 p-4" aria-label="Agregar otra máquina">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground"><Plus className="size-4" aria-hidden /> Agregar otra máquina</h3>
-        <p className="mt-1 text-[13px] leading-relaxed text-muted">¿Tienes Arbrain también en tu servidor o en otra computadora? Pide aquí un código y escríbelo allá, en Ajustes › Máquinas. Sirve una vez y 10 minutos.</p>
+        <p className="mt-1 text-[13px] leading-relaxed text-muted">¿Tienes Alzat también en tu servidor o en otra computadora? Pide aquí un código y escríbelo allá, en Ajustes › Máquinas. Sirve una vez y 10 minutos.</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <button type="button" className="btn-secondary !px-3 !py-1.5 text-[13px]" disabled={!!ocupado} onClick={() => void accion('codigo', async () => setCodigo(await pedir<{ codigo: string; vence: string }>('POST', { accion: 'codigo-maquina' })))}>
             {ocupado === 'codigo' ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Plus className="size-3.5" aria-hidden />} Código para otra máquina

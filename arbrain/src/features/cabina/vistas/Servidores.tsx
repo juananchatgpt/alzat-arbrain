@@ -22,7 +22,7 @@ export const URL_SERVIDORES = '/api/cabina/servidores'
 
 const GRUPOS: { id: Grupo; titulo: string; nota: string }[] = [
   { id: 'miembros', titulo: 'Lo que usan tus miembros', nota: 'comprobado desde afuera, como lo abriría un miembro' },
-  { id: 'cerebro', titulo: 'Tu cerebro', nota: 'lo que hace funcionar a Levy y a Arbrain' },
+  { id: 'cerebro', titulo: 'Tu cerebro', nota: 'lo que hace funcionar a Levy y a Alzat' },
   { id: 'maquinas', titulo: 'Las máquinas', nota: 'vivas, disco y memoria' },
 ]
 const ETIQUETA: Record<Semaforo, string> = { ok: 'Bien', lento: 'Atención', caido: 'Caído', 'sin-dato': 'Sin dato' }

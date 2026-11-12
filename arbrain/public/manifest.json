@@ -1,6 +1,6 @@
 {
-  "name": "Arbrain",
-  "short_name": "Arbrain",
+  "name": "Alzat",
+  "short_name": "Alzat",
   "description": "Tu día, tu agenda, tu dinero y tu socio Levy en un solo lugar",
   "start_url": "/chat",
   "display": "standalone",

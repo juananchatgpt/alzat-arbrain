@@ -57,7 +57,7 @@ async function pedir(url: string, init: RequestInit): Promise<string | null> {
     if (r.ok) return null
     const j = await r.json().catch(() => ({})) as { error?: string }
     return j.error ?? 'No se pudo. Intenta de nuevo.'
-  } catch { return 'Tu Arbrain local no responde. Intenta en unos segundos.' }
+  } catch { return 'Tu Alzat local no responde. Intenta en unos segundos.' }
 }
 
 function RutinasDelDueno({ incrustada = false, sinLoops = false }: { incrustada?: boolean; sinLoops?: boolean }) {
@@ -83,10 +83,10 @@ function RutinasDelDueno({ incrustada = false, sinLoops = false }: { incrustada?
     {lista.length > 0 && <p className={c.nota}>Tu computadora debe estar encendida para que corran. También puedes pedírselas a Levy en el chat.</p>}
     {deArbrain.length > 0 && <section className={c.arbrain} aria-labelledby="rutinas-de-arbrain">
       <div className={c.cabecera}>
-        <p className={c.ceja} id="rutinas-de-arbrain">De Arbrain</p>
+        <p className={c.ceja} id="rutinas-de-arbrain">De Alzat</p>
         {nuevos.length > 0 && <span className={c.nuevo} role="status">{nuevos.length === 1 ? '1 reporte nuevo' : `${nuevos.length} reportes nuevos`}</span>}
       </div>
-      <p className={c.nota}>Rutinas que Arbrain preparó para ti. Vienen en pausa: actívalas en un clic. Cada una deja su reporte en tu cerebro y te avisa al terminar, en tu computadora y en tu teléfono si lo conectaste.</p>
+      <p className={c.nota}>Rutinas que Alzat preparó para ti. Vienen en pausa: actívalas en un clic. Cada una deja su reporte en tu cerebro y te avisa al terminar, en tu computadora y en tu teléfono si lo conectaste.</p>
       {data.suscripcion && <p className={c.aviso} role="note">Con tu suscripción de Claude estas rutinas no corren solas, ni siquiera al probarlas: la suscripción es para tu uso directo. Para que corran, conecta una llave en Ajustes › Llaves.</p>}
       <ul className={c.lista}>{deArbrain.map(r => <Fila key={r.id} r={r} nuevo={nuevos.includes(r)} alVer={() => marcarVisto(r.id, porId.get(r.id)?.last_run ?? 0)} />)}</ul>
     </section>}
@@ -96,7 +96,7 @@ function RutinasDelDueno({ incrustada = false, sinLoops = false }: { incrustada?
 function Vacia({ onCrear, conArbrain }: { onCrear: () => void; conArbrain: boolean }) {
   // Con las «De Arbrain» abajo, el vacío no se explica entero: basta con decir que puede crear la suya.
   if (conArbrain) return <div className={c.vacia}>
-    <p><b>Aún no tienes rutinas propias.</b> Abajo están las de Arbrain, listas para activar. También puedes crear la tuya o pedírsela a Levy en el chat.</p>
+    <p><b>Aún no tienes rutinas propias.</b> Abajo están las de Alzat, listas para activar. También puedes crear la tuya o pedírsela a Levy en el chat.</p>
     <button type="button" className={c.nueva} onClick={onCrear}><Plus size={14} aria-hidden />Crear mi primera rutina</button>
   </div>
   return <div className={c.vacia}>

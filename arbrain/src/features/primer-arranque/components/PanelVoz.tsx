@@ -20,7 +20,7 @@ import { mejorVozEspanol } from '@/features/chat/lib/chat-speech'
 import { consejoSinVozEspanol, idiomaDeRespaldo, idiomaPreferido, plataformaDe } from '@/features/chat/lib/voz-sistema'
 
 const MENSAJE: Record<string, string> = {
-  falta_llave: 'Tu Arbrain todavía no ve la llave. Espera unos segundos y prueba de nuevo.',
+  falta_llave: 'Tu Alzat todavía no ve la llave. Espera unos segundos y prueba de nuevo.',
   llave_invalida: 'Groq no reconoce esa llave. Quítala, crea una nueva en console.groq.com/keys y pégala otra vez.',
   saturado: 'Groq está ocupado en este momento. Tu llave está bien; prueba en un minuto.',
   sin_red: 'No hay conexión a internet o algo la bloquea.',
@@ -67,8 +67,8 @@ export function PanelVoz() {
     } finally { enCurso.current = false; setProbando(false) }
   }, [])
 
-  if (!app) return <Aviso tono="info">La llave de voz se guarda desde la app de Arbrain, en el llavero de tu sistema. Ábrela para continuar.</Aviso>
-  if (estado && !estado.disponible) return <Aviso tono="alerta">Tu sistema no tiene un llavero disponible{estado.error ? ` (${estado.error})` : ''}. Por seguridad, Arbrain no guarda llaves en archivos.</Aviso>
+  if (!app) return <Aviso tono="info">La llave de voz se guarda desde la app de Alzat, en el llavero de tu sistema. Ábrela para continuar.</Aviso>
+  if (estado && !estado.disponible) return <Aviso tono="alerta">Tu sistema no tiene un llavero disponible{estado.error ? ` (${estado.error})` : ''}. Por seguridad, Alzat no guarda llaves en archivos.</Aviso>
 
   return (
     <div className="space-y-4">
@@ -82,7 +82,7 @@ export function PanelVoz() {
         <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
           <Mic className="size-4 text-brand-ink" aria-hidden /> Voz · llave de Groq <span className="rounded-full bg-success/12 px-2 py-0.5 text-[11px] font-medium text-success">gratis</span>
         </h3>
-        <p className="mt-1 text-[13px] leading-relaxed text-muted">Con ella dictas tus mensajes desde el micrófono del chat y, si escuchas las respuestas con LemonFox, el resaltado sigue la voz palabra por palabra. Groq convierte la voz en texto; Arbrain solo usa la llave para eso y la guarda en el llavero de tu sistema, nunca en un archivo.</p>
+        <p className="mt-1 text-[13px] leading-relaxed text-muted">Con ella dictas tus mensajes desde el micrófono del chat y, si escuchas las respuestas con LemonFox, el resaltado sigue la voz palabra por palabra. Groq convierte la voz en texto; Alzat solo usa la llave para eso y la guarda en el llavero de tu sistema, nunca en un archivo.</p>
 
         {guardada ? (
           <div className="mt-3 space-y-2">
@@ -102,7 +102,7 @@ export function PanelVoz() {
               : <Aviso tono="alerta">{(prueba.code && MENSAJE[prueba.code]) || prueba.error || 'No pude probar la llave.'}</Aviso>)}
           </div>
         ) : appVieja ? (
-          <Aviso tono="alerta" className="mt-3">Esta versión de la app todavía no guarda la llave de voz. Actualiza Arbrain y vuelve aquí.</Aviso>
+          <Aviso tono="alerta" className="mt-3">Esta versión de la app todavía no guarda la llave de voz. Actualiza Alzat y vuelve aquí.</Aviso>
         ) : (
           <>
             <ol className="mt-4 space-y-2 text-[13px] leading-relaxed text-muted">
@@ -110,7 +110,7 @@ export function PanelVoz() {
                 <button type="button" className="btn-secondary mt-1.5 flex min-h-9 !px-3 text-[13px]" onClick={() => { setError(null); void abrirEnNavegador(CONSOLA_GROQ).catch(e => setError(e instanceof Error ? e.message : 'No pude abrir tu navegador.')) }}>
                   <ExternalLink className="size-3.5" aria-hidden /> Abrir console.groq.com/keys
                 </button></span></li>
-              <li className="flex gap-2"><Paso n={2} /><span>Pulsa «Create API Key» y ponle un nombre como «Arbrain».</span></li>
+              <li className="flex gap-2"><Paso n={2} /><span>Pulsa «Create API Key» y ponle un nombre como «Alzat».</span></li>
               <li className="flex gap-2"><Paso n={3} /><span>Cópiala y pégala aquí. Empieza con «gsk_».</span></li>
             </ol>
             <CampoGroq onError={setError} onGuardada={(e) => { setEstado(e); setPrueba(null); avisarCambio(true); void probar(true) }} />
@@ -145,7 +145,7 @@ function VozDeRespuestas({ estado, onEstado, onError }: { estado: EstadoLlaves |
         <Volume2 className="size-4 text-brand-ink" aria-hidden /> Voz de las respuestas
       </h3>
       <p className="mt-1 text-[13px] leading-relaxed text-muted">
-        «Escuchar» una respuesta no necesita llave: Arbrain elige la mejor voz en español de tu computadora (en Windows, si tienes una voz «Natural», la usa). Si quieres una voz más humana, pega tu llave de LemonFox (de pago, por uso).
+        «Escuchar» una respuesta no necesita llave: Alzat elige la mejor voz en español de tu computadora (en Windows, si tienes una voz «Natural», la usa). Si quieres una voz más humana, pega tu llave de LemonFox (de pago, por uso).
       </p>
       {!llave?.presente && <VozDelSistema />}
       {!soportada ? null : llave?.presente ? (

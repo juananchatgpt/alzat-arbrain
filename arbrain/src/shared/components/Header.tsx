@@ -125,7 +125,7 @@ function BrandBadge() {
     <div className="relative flex items-center gap-2 px-3 py-1 rounded-full titanium-panel overflow-hidden">
       <span className="absolute inset-x-2 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
       <span className="font-sans text-[11px] font-semibold tracking-[0.18em] uppercase text-foreground">
-        Arbrain
+        Alzat
       </span>
       <span className="block w-1 h-1 rounded-full bg-gold shadow-glow-gold" />
     </div>

@@ -168,7 +168,7 @@ export function VistaTrabajos({ agenteId, grande }: { agenteId?: number; grande?
   return <div className={s.trabajos}>
     {data.fuente && data.fuente !== 'motor' && <p className={s.aviso}>Terminales leídas de {fuenteEnPalabras(data)}. {data.error ? `(${data.error})` : ''}</p>}
     {m && <div className={s.motorBarra}>
-      <p className={s.motorLinea}><i aria-hidden /><b>Motor de Arbrain</b><span>{m.propias} {m.propias === 1 ? 'sesión propia' : 'sesiones propias'}{m.adoptadas ? ` · ${m.adoptadas} abiertas por ti` : ''}{m.sfterm === 'desconectado' ? ' · tus terminales sin enlace' : ''} · vivo desde {hora(m.desde)}{m.relevos ? ` · ${m.relevos} relevo${m.relevos > 1 ? 's' : ''} sin cortes` : ''}</span></p>
+      <p className={s.motorLinea}><i aria-hidden /><b>Motor de Alzat</b><span>{m.propias} {m.propias === 1 ? 'sesión propia' : 'sesiones propias'}{m.adoptadas ? ` · ${m.adoptadas} abiertas por ti` : ''}{m.sfterm === 'desconectado' ? ' · tus terminales sin enlace' : ''} · vivo desde {hora(m.desde)}{m.relevos ? ` · ${m.relevos} relevo${m.relevos > 1 ? 's' : ''} sin cortes` : ''}</span></p>
       {tp && <div className={s.medidores}>
         <Medidor etiqueta="Subagentes en paralelo" usado={tp.paralelo.vivos} max={tp.paralelo.max} texto={`${tp.paralelo.vivos} de ${tp.paralelo.max}`} />
         {tp.paralelo.vivos >= tp.paralelo.max && <p className={s.topeLleno}>Tope lleno: Levy no lanza otro subagente hasta que cierres uno.</p>}

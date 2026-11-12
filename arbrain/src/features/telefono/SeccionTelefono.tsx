@@ -50,8 +50,8 @@ const TITULO: Record<string, string> = {
   'falta-https': 'Falta activar HTTPS en tu red de Tailscale',
   'falta-permiso': 'Falta un permiso de Tailscale',
   desfasado: 'Hay que volver a encenderlo',
-  'servidor-viejo': 'Actualiza Arbrain',
-  'sin-modo-servidor': 'Solo con Arbrain en modo servidor',
+  'servidor-viejo': 'Actualiza Alzat',
+  'sin-modo-servidor': 'Solo con Alzat en modo servidor',
 }
 
 const dormir = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -152,10 +152,10 @@ export function SeccionTelefono() {
       <section className="mt-3 rounded-2xl border border-border-subtle bg-surface/70 p-4" aria-label="Tu cerebro en el teléfono">
         <h3 className="flex flex-wrap items-center gap-2 text-sm font-semibold text-foreground">
           <Smartphone className="size-4 text-brand-ink" aria-hidden /> Por Tailscale
-          <span className="rounded-full bg-brand/12 px-2 py-0.5 text-[11px] font-medium text-brand-ink">Tu Arbrain</span>
+          <span className="rounded-full bg-brand/12 px-2 py-0.5 text-[11px] font-medium text-brand-ink">Tu Alzat</span>
         </h3>
         <p className="mt-1 text-[13px] leading-relaxed text-muted">
-          Abre <strong className="text-foreground">tu Arbrain</strong>, el que vive en esta computadora (tu Levy, tu día, tu plan), desde tu
+          Abre <strong className="text-foreground">tu Alzat</strong>, el que vive en esta computadora (tu Levy, tu día, tu plan), desde tu
           celular y en cualquier lugar. Viaja por tu red privada de Tailscale, cifrada y sin abrir nada a internet. No es el
           «Agente Arbrain» del sitio del programa: esa es otra app.
         </p>
@@ -199,7 +199,7 @@ export function SeccionTelefono() {
         {estado?.estado === 'apagado' && !estado.paso && (
           <p className="mt-3 text-[13px] text-muted">Tailscale está listo en esta computadora. Pulsa «Encender» y aparecerá aquí la dirección para tu teléfono.</p>
         )}
-        {sinServidor && <Aviso tono="info" className="mt-3">Esta función es de Arbrain instalado con su prompt (modo servidor). Pídele a Claude Code «Pon mi cerebro en mi teléfono».</Aviso>}
+        {sinServidor && <Aviso tono="info" className="mt-3">Esta función es de Alzat instalado con su prompt (modo servidor). Pídele a Claude Code «Pon mi cerebro en mi teléfono».</Aviso>}
 
         {encendido && estado?.url && (
           <div className="mt-4 grid gap-4 sm:grid-cols-[auto_1fr] sm:items-start">
@@ -236,19 +236,19 @@ export function SeccionTelefono() {
         <Pasos titulo="iPhone" pasos={[
           'Instala Tailscale desde la App Store y entra con la misma cuenta que en tu computadora.',
           'Escanea el QR con la Cámara y abre la dirección en Safari.',
-          'Toca Compartir › «Agregar a pantalla de inicio». Se llama «Tu Arbrain».',
-          'Abre «Tu Arbrain» desde tu pantalla y entra con el código de aquí (o tu contraseña). Dura 30 días.',
+          'Toca Compartir › «Agregar a pantalla de inicio». Se llama «Tu Alzat».',
+          'Abre «Tu Alzat» desde tu pantalla y entra con el código de aquí (o tu contraseña). Dura 30 días.',
         ]} />
         <Pasos titulo="Android" pasos={[
           'Instala Tailscale desde Google Play y entra con la misma cuenta que en tu computadora.',
           'Escanea el QR con la cámara y abre la dirección en Chrome.',
           'Entra con el código de aquí (o tu contraseña).',
-          'Menú ⋮ › «Instalar app» (o «Agregar a la pantalla principal»). Se llama «Tu Arbrain».',
+          'Menú ⋮ › «Instalar app» (o «Agregar a la pantalla principal»). Se llama «Tu Alzat».',
         ]} />
       </section>
 
       <p className="text-[12.5px] leading-relaxed text-muted">
-        Funciona mientras esta computadora esté prendida, con internet y con Arbrain corriendo. Si la apagas, el teléfono no
+        Funciona mientras esta computadora esté prendida, con internet y con Alzat corriendo. Si la apagas, el teléfono no
         tiene a quién preguntar. Solo entran los equipos de tu cuenta de Tailscale y, además, con tu código o contraseña.
       </p>
       </details>

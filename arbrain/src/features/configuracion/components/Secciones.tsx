@@ -86,7 +86,7 @@ export function SeccionCuenta() {
   }
 
   return (
-    <Tarjeta titulo="Perfil" detalle="Tu nombre y tu foto en Arbrain.">
+    <Tarjeta titulo="Perfil" detalle="Tu nombre y tu foto en Alzat.">
       <div className="space-y-4">
         {mensaje && (
           <p role="status" className={`rounded-lg px-3 py-2 text-xs ${mensaje.tipo === 'ok' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`}>{mensaje.texto}</p>

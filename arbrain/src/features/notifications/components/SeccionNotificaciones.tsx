@@ -27,7 +27,7 @@ function RequisitosIphone() {
       <h3 id="notificaciones-iphone" className="text-sm font-semibold text-foreground/90">En iPhone</h3>
       <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-muted">
         <li><strong className="font-medium text-foreground/85">iOS 16.4 o más.</strong> Lo ves en Ajustes › General › Información.</li>
-        <li><strong className="font-medium text-foreground/85">Tu Arbrain en la pantalla de inicio.</strong> Apple solo entrega avisos a una app agregada desde Safari (Compartir › Agregar a pantalla de inicio).</li>
+        <li><strong className="font-medium text-foreground/85">Tu Alzat en la pantalla de inicio.</strong> Apple solo entrega avisos a una app agregada desde Safari (Compartir › Agregar a pantalla de inicio).</li>
         <li><strong className="font-medium text-foreground/85">Entrando por tu dirección de Tailscale.</strong> La que empieza con <code className="text-xs">https://</code> y termina en <code className="text-xs">.ts.net</code>; sin HTTPS el iPhone no deja activarlos.</li>
       </ul>
       <button type="button" onClick={() => ir('telefono')} className="mt-3 text-sm font-medium text-brand-ink underline-offset-2 hover:underline">
@@ -90,7 +90,7 @@ export function SeccionNotificaciones() {
           {activo && (
             <>
               <p className="flex items-center gap-2 rounded-xl bg-success/10 px-3 py-2 text-sm text-success">
-                <CheckCircle2 className="size-4 shrink-0" aria-hidden /> Listo. Te llegan aunque Arbrain esté cerrado.
+                <CheckCircle2 className="size-4 shrink-0" aria-hidden /> Listo. Te llegan aunque Alzat esté cerrado.
               </p>
               <div className="flex gap-2">
                 <button type="button" onClick={() => void mandarPrueba()} disabled={probando} className="btn-secondary flex min-h-11 flex-1 items-center justify-center gap-2 text-sm">
@@ -107,11 +107,11 @@ export function SeccionNotificaciones() {
 
           {estado === 'ios-instalar' && (
             <div className="space-y-3">
-              <p className="text-sm text-muted">Apple solo entrega notificaciones a {CLIENTE ? 'Tu Arbrain' : 'Arbrain'} cuando vive en tu pantalla de inicio. Son 20 segundos:</p>
+              <p className="text-sm text-muted">Apple solo entrega notificaciones a {CLIENTE ? 'Tu Alzat' : 'Alzat'} cuando vive en tu pantalla de inicio. Son 20 segundos:</p>
               <ol className="space-y-2.5">
                 <Paso n={1}>Toca <Share className="-mt-0.5 inline size-4 text-brand-ink" aria-label="Compartir" /> <strong>Compartir</strong> en la barra de Safari{CLIENTE ? ' (con esta misma dirección de Tailscale abierta)' : ''}.</Paso>
                 <Paso n={2}>Elige <SquarePlus className="-mt-0.5 inline size-4 text-brand-ink" aria-hidden /> <strong>Agregar a pantalla de inicio</strong> y luego <strong>Agregar</strong>.</Paso>
-                <Paso n={3}>Abre <strong>{CLIENTE ? 'Tu Arbrain' : 'Arbrain'}</strong> desde el ícono nuevo, entra a <strong>Ajustes › Notificaciones</strong> y toca <strong>Activar notificaciones</strong>.</Paso>
+                <Paso n={3}>Abre <strong>{CLIENTE ? 'Tu Alzat' : 'Alzat'}</strong> desde el ícono nuevo, entra a <strong>Ajustes › Notificaciones</strong> y toca <strong>Activar notificaciones</strong>.</Paso>
               </ol>
               <p className="text-xs text-muted">Tu sesión se queda iniciada. Necesitas iOS 16.4 o más.</p>
             </div>
@@ -119,7 +119,7 @@ export function SeccionNotificaciones() {
 
           {estado === 'navegador-interno' && (
             <div className="space-y-3">
-              <p className="text-sm text-muted">Estás dentro de otra app (WhatsApp, Instagram…). Abre este enlace en <strong>Safari</strong> y agrega Arbrain a tu pantalla de inicio.</p>
+              <p className="text-sm text-muted">Estás dentro de otra app (WhatsApp, Instagram…). Abre este enlace en <strong>Safari</strong> y agrega Alzat a tu pantalla de inicio.</p>
               <button type="button" onClick={() => void copiarEnlace()} className="btn-secondary flex min-h-11 w-full items-center justify-center gap-2 text-sm">
                 <Copy className="size-4" aria-hidden /> {copiado ? 'Enlace copiado' : 'Copiar enlace'}
               </button>
@@ -131,7 +131,7 @@ export function SeccionNotificaciones() {
               <p className="flex items-start gap-2 text-gold"><AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden /> Las bloqueaste antes y el teléfono no deja volver a preguntar.</p>
               <p className="flex items-start gap-2">
                 <Smartphone className="mt-0.5 size-4 shrink-0 text-brand-ink" aria-hidden />
-                <span>iPhone: <strong>Ajustes › Notificaciones › Arbrain › Permitir notificaciones</strong>. Android o computadora: el candado junto a la dirección › Notificaciones › Permitir.</span>
+                <span>iPhone: <strong>Ajustes › Notificaciones › Alzat › Permitir notificaciones</strong>. Android o computadora: el candado junto a la dirección › Notificaciones › Permitir.</span>
               </p>
               <p>Luego vuelve aquí: el estado se actualiza solo.</p>
             </div>
@@ -139,13 +139,13 @@ export function SeccionNotificaciones() {
 
           {estado === 'ios-actualizar' && <p className="text-sm text-muted">Actualiza tu iPhone en Ajustes › General › Actualización de software y vuelve aquí.</p>}
           {estado === 'en-computadora' && (
-            <p className="text-sm text-muted">Los avisos de Levy llegan a tu teléfono. Abre tu Arbrain ahí por tu dirección de Tailscale (en iPhone, desde la pantalla de inicio) y actívalos en esta misma sección. Aquí en tu computadora sigues viendo todo en la app.</p>
+            <p className="text-sm text-muted">Los avisos de Levy llegan a tu teléfono. Abre tu Alzat ahí por tu dirección de Tailscale (en iPhone, desde la pantalla de inicio) y actívalos en esta misma sección. Aquí en tu computadora sigues viendo todo en la app.</p>
           )}
           {estado === 'no-soportado' && (CLIENTE
-            ? <p className="text-sm text-muted">Este navegador no recibe notificaciones. Abre tu Arbrain en tu teléfono por tu dirección de Tailscale (en iPhone, desde la pantalla de inicio) y actívalos ahí.</p>
-            : <p className="text-sm text-muted">Aquí los avisos llegan a la campana. Para recibirlos en el teléfono, abre Arbrain ahí (en iPhone, desde la pantalla de inicio) y actívalos en esta misma sección.</p>)}
+            ? <p className="text-sm text-muted">Este navegador no recibe notificaciones. Abre tu Alzat en tu teléfono por tu dirección de Tailscale (en iPhone, desde la pantalla de inicio) y actívalos ahí.</p>
+            : <p className="text-sm text-muted">Aquí los avisos llegan a la campana. Para recibirlos en el teléfono, abre Alzat ahí (en iPhone, desde la pantalla de inicio) y actívalos en esta misma sección.</p>)}
           {estado === 'sin-configurar' && (CLIENTE
-            ? <p className="text-sm text-muted">A tu Arbrain le faltan sus llaves de avisos. Dile a Levy «actualiza mi Arbrain»: al reiniciarse las genera solo.</p>
+            ? <p className="text-sm text-muted">A tu Alzat le faltan sus llaves de avisos. Dile a Levy «actualiza mi Alzat»: al reiniciarse las genera solo.</p>
             : <p className="text-sm text-muted">A este servidor le faltan las claves de notificaciones. Mientras tanto los avisos llegan a la campana.</p>)}
 
           {error && <p role="alert" className="text-sm text-error">{error}</p>}
@@ -173,7 +173,7 @@ export function SeccionNotificaciones() {
           <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-muted">
             <li><strong className="font-medium text-foreground/85">Reportes:</strong> los que Levy te prepara (por ejemplo, el de la mañana).</li>
             <li><strong className="font-medium text-foreground/85">Avisos:</strong> cuando Levy termina un trabajo o necesita tu respuesta.</li>
-            <li>Al tocar una, Arbrain abre su conversación. Todo queda también en la campana.</li>
+            <li>Al tocar una, Alzat abre su conversación. Todo queda también en la campana.</li>
           </ul>
         )}
       </section>

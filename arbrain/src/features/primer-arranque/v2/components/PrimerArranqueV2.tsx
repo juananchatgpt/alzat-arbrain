@@ -193,7 +193,7 @@ export function PrimerArranqueV2() {
 
             {paso === 'entra' && (
               <section data-paso="entra">
-                <Encabezado refTitulo={titulo} titulo="Entra a Arbrain" sub="Con tu cuenta de Google. Así tu socio sabe quién eres y trae lo que ya llenaste de tu expediente." />
+                <Encabezado refTitulo={titulo} titulo="Entra a Alzat" sub="Con tu cuenta de Google. Así tu socio sabe quién eres y trae lo que ya llenaste de tu expediente." />
                 {!e.cuenta ? (
                   <button type="button" onClick={entrarConGoogle} disabled={entrando}
                     className="inline-flex min-h-12 w-full max-w-[360px] items-center justify-center gap-3 rounded-xl border border-foreground/15 bg-white px-5 text-[15px] font-semibold text-[#1f1f1f] shadow-sm hover:bg-white/90 disabled:opacity-70">

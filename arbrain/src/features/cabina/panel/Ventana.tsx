@@ -89,7 +89,7 @@ function useTituloDeVentana(id: string) {
     return f ? titulo(f.input) : null
   })
   useEffect(() => {
-    const t = `${nombre ?? nombreVentana(id)} · Arbrain`
+    const t = `${nombre ?? nombreVentana(id)} · Alzat`
     const poner = () => { if (document.title !== t) document.title = t }
     poner()
     // El título de la ruta llega con la hidratación: se reafirma.

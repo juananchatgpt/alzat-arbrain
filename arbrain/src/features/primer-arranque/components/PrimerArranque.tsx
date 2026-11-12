@@ -98,7 +98,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
       if (j.estado) { setEstado(j.estado); setNombre(j.estado.nombre ?? ''); setAcepto(j.estado.aceptado?.version === VERSION_TEXTOS) }
       // Contrato v3 §6.1: sin sandbox (Windows, Linux sin bubblewrap) cada comando de terminal pide clic; se avisa al final.
       if (j.sandbox && typeof j.sandbox.disponible === 'boolean') setSandbox(j.sandbox)
-    }).catch(() => setError('No pude hablar con tu Arbrain local. Cierra y vuelve a abrir la app.'))
+    }).catch(() => setError('No pude hablar con tu Alzat local. Cierra y vuelve a abrir la app.'))
     fetch('/api/monitoreo', { cache: 'no-store' }).then(r => r.ok ? r.json() : null)
       .then((j: { endpoint_configurado?: boolean } | null) => setConMonitoreo(j?.endpoint_configurado === true))
       .catch(() => setConMonitoreo(false))
@@ -144,7 +144,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
         // El nivel va al daemon con el secreto de la app (la ruta lo pone). Autónomo lleva la versión y la huella del texto
         // que la persona leyó; si el daemon tiene otro texto, responde 409 y se vuelve a cargar.
         const cuerpo = modo === 'autonomo' && !vigente ? (permisos?.texto ? cuerpoAceptacion(permisos.texto, 'bienvenida') : null) : { modo, via: 'bienvenida' }
-        if (!cuerpo) throw new Error('No pude leer el texto del modo Autónomo de tu Arbrain. Cierra y vuelve a abrir la app, o elige otro nivel.')
+        if (!cuerpo) throw new Error('No pude leer el texto del modo Autónomo de tu Alzat. Cierra y vuelve a abrir la app, o elige otro nivel.')
         if (!demo) {
           const r = await fetch('/api/seguridad/permisos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) })
           if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error ?? 'No pude guardar tu nivel de permisos.')
@@ -208,7 +208,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
                 <div aria-hidden className="absolute inset-0 rounded-full bg-brand/30 blur-2xl" />
                 <Retrato agente="levy" size={96} prioridad className="relative size-24 rounded-full object-cover ring-2 ring-brand/40" alt="Levy" />
               </div>
-              <h1 ref={titulo} tabIndex={-1} className="font-sans text-[26px] font-semibold tracking-tight outline-none sm:text-[30px]">Bienvenido a Arbrain</h1>
+              <h1 ref={titulo} tabIndex={-1} className="font-sans text-[26px] font-semibold tracking-tight outline-none sm:text-[30px]">Bienvenido a Alzat</h1>
               <p className="mx-auto mt-2 max-w-[440px] text-[15px] leading-relaxed text-muted">Tu cerebro artificial. Vive en {enServidor ? 'tu servidor' : 'tu computadora'}, aprende cómo trabajas y te ayuda a decidir y a ejecutar.</p>
               <ul className="mx-auto mt-6 grid max-w-[460px] gap-2.5 text-left">
                 <Punto icono={<HardDrive className="size-4" />} titulo="Es tuyo">Tu memoria, tus conversaciones y tus archivos se quedan en {enServidor ? 'tu servidor, rentado a tu nombre' : 'esta computadora'}.</Punto>
@@ -226,7 +226,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
             <div>
               <Encabezado refTitulo={titulo} titulo={reaceptacion ? 'Actualizamos los textos' : 'Antes de empezar'} sub={reaceptacion
                 ? 'Léelos con calma y acéptalos para seguir. Tu nombre, tus llaves y lo demás que elegiste se quedan como estaban.'
-                : 'Léelos con calma. Arbrain corre en tu computadora y tus datos son tuyos.'} />
+                : 'Léelos con calma. Alzat corre en tu computadora y tus datos son tuyos.'} />
               <DocumentosLegales />
               <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-border-subtle bg-surface/70 p-4">
                 <input type="checkbox" checked={acepto} onChange={e => setAcepto(e.target.checked)} className="mt-0.5 size-4 shrink-0 accent-[var(--brand)]" />
@@ -255,7 +255,7 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
                         ? (vigente
                           ? <p className="mt-2 rounded-xl border border-brand/30 bg-brand/[0.05] px-3 py-2 text-[12.5px] text-muted">Ya aceptaste este texto (versión {permisos.consentimiento?.version}). Continuar lo deja en Autónomo.</p>
                           : <div className="mt-2 rounded-xl border border-brand/30 bg-brand/[0.05] p-3"><ConsentimientoAutonomia texto={permisos.texto} marcadas={casillas} onMarcadas={setCasillas} deshabilitado={ocupado} /></div>)
-                        : <p className="mt-2 text-[12.5px] text-amber-300">No pude leer el texto del modo Autónomo de tu Arbrain. Elige otro nivel o cierra y vuelve a abrir la app.</p>
+                        : <p className="mt-2 text-[12.5px] text-amber-300">No pude leer el texto del modo Autónomo de tu Alzat. Elige otro nivel o cierra y vuelve a abrir la app.</p>
                     )}
                   </div>
                 ))}
@@ -275,16 +275,16 @@ export function PrimerArranque({ reaceptacion = false }: { reaceptacion?: boolea
 
           {paso === 'monitoreo' && (
             <div>
-              <Encabezado refTitulo={titulo} titulo="Tu avance en el programa" sub="Si quieres, Arbrain le comparte a tu programa cifras de tu avance para acompañarte. Viene apagado." />
+              <Encabezado refTitulo={titulo} titulo="Tu avance en el programa" sub="Si quieres, Alzat le comparte a tu programa cifras de tu avance para acompañarte. Viene apagado." />
               <PanelMonitoreo pendiente={monitoreo} onPendiente={setMonitoreo} />
             </div>
           )}
 
           {paso === 'donde' && (
             <div>
-              <Encabezado refTitulo={titulo} titulo="¿Dónde vive tu Arbrain?" sub={enServidor
-                ? 'Tu Arbrain vive en tu servidor: lo abres desde cualquier navegador o tu teléfono con Tailscale, aunque tu computadora esté apagada. Estos son los tres caminos; cambiar o sumar otro es pegar un prompt en Claude Code.'
-                : 'Tu Arbrain vive en esta computadora. Estos son los tres caminos; cambiar o sumar tu servidor es pegar un prompt en Claude Code.'} />
+              <Encabezado refTitulo={titulo} titulo="¿Dónde vive tu Alzat?" sub={enServidor
+                ? 'Tu Alzat vive en tu servidor: lo abres desde cualquier navegador o tu teléfono con Tailscale, aunque tu computadora esté apagada. Estos son los tres caminos; cambiar o sumar otro es pegar un prompt en Claude Code.'
+                : 'Tu Alzat vive en esta computadora. Estos son los tres caminos; cambiar o sumar tu servidor es pegar un prompt en Claude Code.'} />
               <PanelCaminos actual={caminoActual(enServidor)} />
             </div>
           )}

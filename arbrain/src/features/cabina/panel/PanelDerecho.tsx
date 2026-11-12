@@ -634,7 +634,7 @@ function Pie({ leidoEn, error, data }: { leidoEn?: number; error?: string; data?
   const respaldo = !cliente && data && data.fuente && data.fuente !== 'motor'
   return <footer className={s.pie}>
     <span className={s.vivo} data-error={error ? '' : undefined} data-respaldo={respaldo || undefined} aria-hidden />
-    <span>{error ? (cliente ? 'Sin conexión con tu Arbrain' : 'Sin conexión con el Studio') : leidoEn ? `En vivo · ${data ? fuenteEnPalabras(data, cliente) : cliente ? 'tu Arbrain' : 'Studio'} · leído ${hace(leidoEn)}` : 'Leyendo…'}</span>
+    <span>{error ? (cliente ? 'Sin conexión con tu Alzat' : 'Sin conexión con el Studio') : leidoEn ? `En vivo · ${data ? fuenteEnPalabras(data, cliente) : cliente ? 'tu Alzat' : 'Studio'} · leído ${hace(leidoEn)}` : 'Leyendo…'}</span>
   </footer>
 }
 
@@ -681,7 +681,7 @@ function DetalleTerminal({ id, onVolver }: { id: number; onVolver: () => void })
     </> : <>
     {(t || !data) && <TerminalViva id={id} onEstado={e => setSoloLectura(!!e.soloLectura)} />}
     <p className={s.vivaPie}>
-      <span>{soloLectura ? 'Solo lectura: esta terminal no acepta escritura desde aquí.' : 'En vivo desde el motor de Arbrain. Escribe directo en la terminal.'}</span>
+      <span>{soloLectura ? 'Solo lectura: esta terminal no acepta escritura desde aquí.' : 'En vivo desde el motor de Alzat. Escribe directo en la terminal.'}</span>
     </p>
     </>}
   </div>

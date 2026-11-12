@@ -44,10 +44,10 @@ export function ColaMemoriaTaller() {
     try {
       const r = await fetch(URL_COLA_MEMORIA, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo), signal: AbortSignal.timeout(12_000) })
       const b = await r.json().catch(() => null) as VistaCola & { error?: string } | null
-      if (!r.ok || !b) throw new Error(b?.error ?? 'No pude hablar con tu Arbrain.')
+      if (!r.ok || !b) throw new Error(b?.error ?? 'No pude hablar con tu Alzat.')
       setLocal(b)
       void releer(URL_COLA_MEMORIA)
-    } catch (e) { setError(e instanceof Error ? e.message : 'No pude hablar con tu Arbrain.') }
+    } catch (e) { setError(e instanceof Error ? e.message : 'No pude hablar con tu Alzat.') }
   }
   // Las admitidas van primero en la lista y no se mueven: la posición de arrastre cuenta solo las que esperan.
   const admitidas = esperan.filter(e => e.estado === 'admitido').length

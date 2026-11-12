@@ -40,7 +40,7 @@ async function pedir(url: string, init: RequestInit): Promise<string | null> {
     if (r.ok) return null
     const j = await r.json().catch(() => ({})) as { error?: string }
     return j.error ?? 'No se pudo. Intenta de nuevo.'
-  } catch { return 'Tu Arbrain local no responde. Intenta en unos segundos.' }
+  } catch { return 'Tu Alzat local no responde. Intenta en unos segundos.' }
 }
 const refrescar = () => { void releer(URL_LOOPS); void releer(URL_RUTINAS) }
 

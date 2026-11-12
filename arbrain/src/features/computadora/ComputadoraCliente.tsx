@@ -22,7 +22,7 @@ async function cerrar(id: string, forzar: boolean): Promise<RespuestaCierre> {
     const r = await fetch(`${URL_COMPUTADORA}/cerrar`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, forzar }), cache: 'no-store' })
     const j = await r.json().catch(() => ({})) as RespuestaCierre
     return r.ok ? j : { error: j.error ?? 'No se pudo. Intenta de nuevo.' }
-  } catch { return { error: 'Tu Arbrain local no responde. Intenta en unos segundos.' } }
+  } catch { return { error: 'Tu Alzat local no responde. Intenta en unos segundos.' } }
 }
 
 export function ComputadoraCliente() {
@@ -52,7 +52,7 @@ export function ComputadoraCliente() {
     {data.apps.length === 0
       ? <p className={c.nota}>No pude leer las apps abiertas.</p>
       : <ul className={c.lista}>{data.apps.map(a => <FilaApp key={a.id} a={a} />)}</ul>}
-    <p className={c.nota}>Cerrar una app es como cerrarla tú: te pide guardar si hace falta. Arbrain y lo del sistema no se pueden cerrar desde aquí.</p>
+    <p className={c.nota}>Cerrar una app es como cerrarla tú: te pide guardar si hace falta. Alzat y lo del sistema no se pueden cerrar desde aquí.</p>
   </div>
 }
 

@@ -31,7 +31,7 @@ function Movimiento({ p, ahora }: { p: PersonaVivo | null; ahora: number }) {
   if (!m) return <p className={e.movimiento} data-sin>Último movimiento: sin dato</p>
   const reciente = ahora - Date.parse(m.en) < 15 * 60_000
   return <p className={e.movimiento} data-vivo={reciente || undefined}>
-    <i aria-hidden />{m.que === 'entro' ? 'Entró a Arbrain' : 'En Arbrain'} {hace(m.en, ahora)}
+    <i aria-hidden />{m.que === 'entro' ? 'Entró a Alzat' : 'En Alzat'} {hace(m.en, ahora)}
   </p>
 }
 
@@ -69,7 +69,7 @@ function Vacante({ i }: { i: number }) {
       <span className={e.foto} data-vacia aria-hidden>+</span>
       <div className={e.quien}><h3>Próxima contratación</h3><p className={e.rol}>Puesto por definir</p></div>
     </header>
-    <p className={e.nota}>Cuando contrates, su cuenta de Arbrain aparece aquí con su reporte, sus avisos y su último movimiento.</p>
+    <p className={e.nota}>Cuando contrates, su cuenta de Alzat aparece aquí con su reporte, sus avisos y su último movimiento.</p>
   </article>
 }
 

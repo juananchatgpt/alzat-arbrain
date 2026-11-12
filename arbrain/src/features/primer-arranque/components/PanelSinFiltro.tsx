@@ -38,7 +38,7 @@ export function PanelSinFiltro() {
     try { await esperarDaemon(30_000) } finally { setReiniciando(false) }
   }
 
-  if (!app) return <Aviso tono="info">La llave se guarda desde tu Arbrain (la app de escritorio o tu servidor). Ábrelo para continuar.</Aviso>
+  if (!app) return <Aviso tono="info">La llave se guarda desde tu Alzat (la app de escritorio o tu servidor). Ábrelo para continuar.</Aviso>
   if (estado && !estado.disponible) return <Aviso tono="alerta">Tu sistema no tiene dónde guardar llaves de forma segura{estado.error ? ` (${estado.error})` : ''}.</Aviso>
 
   return (
@@ -63,11 +63,11 @@ export function PanelSinFiltro() {
               </span>
             </div>
             {reiniciando
-              ? <p className="flex items-center gap-2 text-[12.5px] text-muted" role="status"><Loader2 className="size-3.5 animate-spin" aria-hidden /> Tu Arbrain se reinicia unos segundos para tomar el cambio…</p>
+              ? <p className="flex items-center gap-2 text-[12.5px] text-muted" role="status"><Loader2 className="size-3.5 animate-spin" aria-hidden /> Tu Alzat se reinicia unos segundos para tomar el cambio…</p>
               : <ComoUsarlo />}
           </div>
         ) : vieja ? (
-          <Aviso tono="alerta" className="mt-3">Tu Arbrain todavía no conoce esta llave. Actualízalo (dile a Levy «jala los últimos cambios») y vuelve aquí.</Aviso>
+          <Aviso tono="alerta" className="mt-3">Tu Alzat todavía no conoce esta llave. Actualízalo (dile a Levy «jala los últimos cambios») y vuelve aquí.</Aviso>
         ) : (
           <>
             <ol className="mt-4 space-y-2 text-[13px] leading-relaxed text-muted">
@@ -76,9 +76,9 @@ export function PanelSinFiltro() {
                   <ExternalLink className="size-3.5" aria-hidden /> Abrir abliteration.ai/console
                 </button></span></li>
               <li className="flex gap-2"><Paso n={2} /><span>Si tu cuenta no tiene saldo, carga crédito en su sección de facturación. Se cobra por uso; no hay mensualidad.</span></li>
-              <li className="flex gap-2"><Paso n={3} /><span>Entra a «API keys», crea una llave nueva y ponle de nombre «Arbrain».</span></li>
+              <li className="flex gap-2"><Paso n={3} /><span>Entra a «API keys», crea una llave nueva y ponle de nombre «Alzat».</span></li>
               <li className="flex gap-2"><Paso n={4} /><span>Cópiala completa y pégala aquí abajo. Empieza con «ak_». Pégala solo aquí: nunca en el chat.</span></li>
-              <li className="flex gap-2"><Paso n={5} /><span>Al guardarla, tu Arbrain se reinicia unos segundos. Luego, en el chat, abre el selector de modelo y elige «DeepSeek V4.1 Flash · abliterated».</span></li>
+              <li className="flex gap-2"><Paso n={5} /><span>Al guardarla, tu Alzat se reinicia unos segundos. Luego, en el chat, abre el selector de modelo y elige «DeepSeek V4.1 Flash · abliterated».</span></li>
             </ol>
             <CampoLlave onError={setError} onGuardada={(e) => void alGuardar(e)} />
           </>
@@ -90,7 +90,7 @@ export function PanelSinFiltro() {
           <ShieldAlert className="size-4 text-warning" aria-hidden /> Lo que tienes que saber
         </h3>
         <ul className="mt-2 list-disc space-y-1.5 pl-5 text-[13px] leading-relaxed text-muted">
-          <li><strong className="font-medium text-foreground/85">No es Claude.</strong> El modelo no se niega a nada; los frenos de tu Arbrain sí siguen: los permisos, la pregunta antes de mandar mensajes, borrar o publicar, y nada de dinero.</li>
+          <li><strong className="font-medium text-foreground/85">No es Claude.</strong> El modelo no se niega a nada; los frenos de tu Alzat sí siguen: los permisos, la pregunta antes de mandar mensajes, borrar o publicar, y nada de dinero.</li>
           <li><strong className="font-medium text-foreground/85">Tus mensajes de esa conversación van a abliteration.ai,</strong> un servicio de terceros. No le pases contraseñas ni datos de tus clientes que no quieras compartir.</li>
           <li><strong className="font-medium text-foreground/85">Cuánto cuesta:</strong> 1 USD por millón de tokens de entrada y 2 USD por millón de salida. Medido el 3 nov 2026: abrir una conversación cuesta unos 6 centavos de dólar y cada mensaje corto que sigue, menos de 1 centavo. Preguntar varias cosas en la misma conversación rinde mucho más.</li>
           <li><strong className="font-medium text-foreground/85">Lo que le pidas es tuyo.</strong> Úsalo con criterio y dentro de la ley.</li>

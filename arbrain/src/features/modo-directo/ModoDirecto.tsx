@@ -83,7 +83,7 @@ const TAPA = [
   'El visor no abre .env, llaves ni rutas sensibles (~/.ssh, ~/.aws, credenciales, fichas de clientes).',
   'Llaves, tokens y contraseñas en el chat, en los textos de herramientas y en la terminal.',
 ]
-const NO_TAPA = 'No tapa lo que no es texto (imágenes, PDF, video, lienzos dibujados, otras apps: comparte solo la ventana de Arbrain) ni nombres que no estén en las fichas de clientes, como prospectos o tu equipo: agrégalos, uno por línea, en ~/.config/arbrain/modo-directo-nombres.txt.'
+const NO_TAPA = 'No tapa lo que no es texto (imágenes, PDF, video, lienzos dibujados, otras apps: comparte solo la ventana de Alzat) ni nombres que no estén en las fichas de clientes, como prospectos o tu equipo: agrégalos, uno por línea, en ~/.config/arbrain/modo-directo-nombres.txt.'
 
 export function SeccionDirecto() {
   const prendido = useDirecto()

@@ -60,7 +60,7 @@ export function BarraTour({ sesionId, onMensaje, onEnCurso }: {
       {!plan.enCurso && (
         <p className="pb-2 text-[13px] text-muted">
           {plan.modo === 'novedades'
-            ? <>Novedades en tu Arbrain: <b className="font-medium text-foreground">{plan.pendientes.join(', ')}</b>. Te las enseño en un minuto, una sola vez.</>
+            ? <>Novedades en tu Alzat: <b className="font-medium text-foreground">{plan.pendientes.join(', ')}</b>. Te las enseño en un minuto, una sola vez.</>
             : <>Levy te enseña la app en unos tres minutos, por capítulos. Se ve una sola vez.</>}
         </p>
       )}

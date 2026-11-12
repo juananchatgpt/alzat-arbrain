@@ -128,7 +128,7 @@ export function BarraDelLector({ state, avisoGroq }: { state: SpeechState; aviso
           <div className="chat-prose flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 pb-2.5 text-center" role="status">
             <p className="text-[11px] leading-snug text-muted">
               Con una llave gratis de Groq, el resaltado sigue la voz palabra por palabra. Créala en console.groq.com/keys
-              y pégala en Arbrain › Ajustes › Voz (nunca en el chat).
+              y pégala en Alzat › Ajustes › Voz (nunca en el chat).
             </p>
             <span className="flex gap-2">
               <button

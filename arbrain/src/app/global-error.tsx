@@ -13,7 +13,7 @@ export default function ErrorGlobal({ error }: { error: Error & { digest?: strin
   return (
     <html lang="es">
       <body style={{ margin: 0 }}>
-        <PaginaError titulo="Arbrain tuvo un problema" mensaje={MENSAJE_ERROR} codigo={codigoDeError(error)} limpiar />
+        <PaginaError titulo="Alzat tuvo un problema" mensaje={MENSAJE_ERROR} codigo={codigoDeError(error)} limpiar />
       </body>
     </html>
   )

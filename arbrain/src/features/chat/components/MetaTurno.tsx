@@ -31,7 +31,7 @@ export function VueltasMeta({ meta, streaming = false }: { meta: MetaTurno | nul
             {v.texto.trim() && <p className={s.texto}>{v.texto.trim()}</p>}
           </div>
         ))}
-        {meta.frenada === 'repeticion' && <p className={s.nota}>Arbrain frenó la meta: el mismo veredicto se repitió sin acción nueva. Vuelve a revisarse cuando escribas.</p>}
+        {meta.frenada === 'repeticion' && <p className={s.nota}>Alzat frenó la meta: el mismo veredicto se repitió sin acción nueva. Vuelve a revisarse cuando escribas.</p>}
         {meta.frenada === 'pausa' && <p className={s.nota}>La meta está en pausa: no se revisa hasta que la reanudes.</p>}
       </div>}
     </div>

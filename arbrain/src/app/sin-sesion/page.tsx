@@ -6,7 +6,7 @@ import { llegaPorTelefono } from '@/features/telefono/host-telefono'
 import { esEdicionCliente } from '@/lib/edicion'
 import { esModoServidor } from '@/lib/modo-servidor'
 
-export const metadata: Metadata = { title: 'Arbrain' }
+export const metadata: Metadata = { title: 'Alzat' }
 // El modo servidor se sabe en tiempo de ejecución (`ARBRAIN_MODO_SERVIDOR`): la página no se congela al compilar.
 export const dynamic = 'force-dynamic'
 
@@ -38,21 +38,21 @@ export default async function SinSesionPage({ searchParams }: { searchParams: Pr
     return (
       <PantallaSistema className="grid min-h-[100dvh] place-items-center px-6">
         <form method="post" action="/api/desktop/entrar" className="glass-panel-strong w-full max-w-md space-y-4 p-8">
-          <h1 className="text-xl font-semibold tracking-tight">Entra a tu Arbrain</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Entra a tu Alzat</h1>
           {telefono && enServidor ? (
             <p className="text-[14px] leading-relaxed text-muted" data-telefono="1" data-servidor="1">
-              Es tu Arbrain, servido por tu servidor. Pídele a tu Claude Code «dame un código para entrar» (o corre{' '}
+              Es tu Alzat, servido por tu servidor. Pídele a tu Claude Code «dame un código para entrar» (o corre{' '}
               <code className="rounded bg-surface px-1">nube.sh codigo</code> en tu servidor), o sácalo de un dispositivo
               donde ya entraste: Ajustes › Tu cerebro en el teléfono › «Código para entrar». Escríbelo aquí.
             </p>
           ) : telefono ? (
             <p className="text-[14px] leading-relaxed text-muted" data-telefono="1">
-              Es tu Arbrain, servido por tu computadora. En ella abre Ajustes › Tu cerebro en el teléfono, pulsa
+              Es tu Alzat, servido por tu computadora. En ella abre Ajustes › Tu cerebro en el teléfono, pulsa
               «Código para entrar» y escríbelo aquí. También sirve tu contraseña.
             </p>
           ) : (
             <p className="text-[14px] leading-relaxed text-muted">
-              Escribe tu contraseña. Si no la tienes a mano, en la terminal donde corre Arbrain escribe{' '}
+              Escribe tu contraseña. Si no la tienes a mano, en la terminal donde corre Alzat escribe{' '}
               <code className="rounded bg-surface px-1">npm run servidor -- contrasena</code>.
             </p>
           )}
@@ -72,8 +72,8 @@ export default async function SinSesionPage({ searchParams }: { searchParams: Pr
   return (
     <PantallaSistema className="grid min-h-[100dvh] place-items-center px-6">
       <div className="glass-panel-strong max-w-md p-8 text-center">
-        <h1 className="text-xl font-semibold tracking-tight">Abre Arbrain desde la app</h1>
-        <p className="mt-3 text-[14px] leading-relaxed text-muted">Por seguridad, tu Arbrain solo responde a su app de escritorio. Esta página no puede abrirse desde un navegador.</p>
+        <h1 className="text-xl font-semibold tracking-tight">Abre Alzat desde la app</h1>
+        <p className="mt-3 text-[14px] leading-relaxed text-muted">Por seguridad, tu Alzat solo responde a su app de escritorio. Esta página no puede abrirse desde un navegador.</p>
       </div>
     </PantallaSistema>
   )

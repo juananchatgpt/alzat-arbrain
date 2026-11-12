@@ -205,7 +205,7 @@ function ImagenRemotaBloqueada({ src, dominio, alt }: { src: string; dominio: st
   return (
     <span className="my-2 inline-flex max-w-full flex-wrap items-center gap-1.5 rounded-xl border border-border-subtle bg-card/60 px-3 py-2 text-xs text-muted">
       <ZoomIn size={12} aria-hidden />
-      <span>{alt ? `«${alt}»: imagen` : 'Imagen'} de <strong className="font-medium text-foreground/80">{dominio}</strong> sin cargar. Arbrain no carga imágenes de internet por su cuenta.</span>
+      <span>{alt ? `«${alt}»: imagen` : 'Imagen'} de <strong className="font-medium text-foreground/80">{dominio}</strong> sin cargar. Alzat no carga imágenes de internet por su cuenta.</span>
       <a href={src} target="_blank" rel="noopener noreferrer" className="text-brand-ink underline underline-offset-2 hover:opacity-80">Abrir en el navegador</a>
     </span>
   )

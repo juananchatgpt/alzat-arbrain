@@ -68,7 +68,7 @@ export function PanelMonitoreo({ pendiente, onPendiente }: { pendiente?: boolean
       </div>
 
       {estado && !estado.endpoint_configurado && (
-        <Aviso tono="info">Este Arbrain no tiene configurado a dónde enviar. Aunque lo actives, no sale nada hasta que tu programa lo configure en una actualización.</Aviso>
+        <Aviso tono="info">Este Alzat no tiene configurado a dónde enviar. Aunque lo actives, no sale nada hasta que tu programa lo configure en una actualización.</Aviso>
       )}
 
       <div className="rounded-2xl border border-border-subtle">
@@ -108,7 +108,7 @@ function Lista({ titulo, items, tono }: { titulo: string; items: string[]; tono:
 }
 
 function Muestra({ dias, instalacion }: { dias: Dia[]; instalacion?: string }) {
-  if (!dias.length) return <p className="text-[13px] text-muted">Todavía no hay días con actividad. Cuando uses Arbrain, aquí verás las cifras de cada día antes de que salgan.</p>
+  if (!dias.length) return <p className="text-[13px] text-muted">Todavía no hay días con actividad. Cuando uses Alzat, aquí verás las cifras de cada día antes de que salgan.</p>
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-[12.5px]">

@@ -52,7 +52,7 @@ export function PaginaError({ titulo, mensaje, codigo, alRecargar, sinRecargar =
   return (
     <PantallaSistema style={S.fondo} data-pagina-error>
       <div style={S.tarjeta} className="ps-placa" role="alert">
-        <p style={S.marca}>Arbrain</p>
+        <p style={S.marca}>Alzat</p>
         <h1 style={S.titulo}>{titulo}</h1>
         <p style={S.mensaje}>{mensaje}</p>
         <div style={S.acciones}>

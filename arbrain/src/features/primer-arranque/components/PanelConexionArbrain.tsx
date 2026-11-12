@@ -29,13 +29,13 @@ interface Estado {
   detalle?: string
 }
 
-const SE_ENVIA = ['Que tu Arbrain está instalado y su versión', 'Si tienes meta del mes, la semana y el día (el texto solo si lo permites)', 'Tus hábitos activos y cuántos días los cumpliste en 7 días', 'Cuántas conversaciones tuviste con Levy en 7 días (solo el número)', 'Cuántos eventos tiene tu calendario', 'Ofertas y conversaciones de venta, si las anotas abajo']
+const SE_ENVIA = ['Que tu Alzat está instalado y su versión', 'Si tienes meta del mes, la semana y el día (el texto solo si lo permites)', 'Tus hábitos activos y cuántos días los cumpliste en 7 días', 'Cuántas conversaciones tuviste con Levy en 7 días (solo el número)', 'Cuántos eventos tiene tu calendario', 'Ofertas y conversaciones de venta, si las anotas abajo']
 const NUNCA = ['El texto de tus conversaciones', 'Tu memoria ni tus archivos', 'Nombres o datos de tus clientes', 'Tus llaves']
 
 async function pedir(cuerpo?: Record<string, unknown>): Promise<Estado> {
   const r = await fetch('/api/progreso', cuerpo ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) } : { cache: 'no-store' })
   const j = await r.json().catch(() => ({}))
-  if (!r.ok) throw new Error(j.error ?? 'No pude hablar con tu Arbrain local.')
+  if (!r.ok) throw new Error(j.error ?? 'No pude hablar con tu Alzat local.')
   return j as Estado
 }
 
@@ -146,7 +146,7 @@ export function PanelConexionArbrain() {
       ) : (
         <div className="space-y-3 rounded-2xl border border-border-subtle bg-surface/70 p-4">
           <p className="text-[13px] text-foreground/90">
-            Conectado con <span className="font-mono">{estado!.pista}…</span> a <span className="font-mono text-[12px]">{estado!.url}</span>. Se envía una vez al día mientras Arbrain está abierto.
+            Conectado con <span className="font-mono">{estado!.pista}…</span> a <span className="font-mono text-[12px]">{estado!.url}</span>. Se envía una vez al día mientras Alzat está abierto.
           </p>
           <p className="text-[12.5px] text-muted">
             {estado!.ultimo_envio ? `Último envío: ${new Date(estado!.ultimo_envio).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })}.` : 'Todavía no se ha enviado nada.'}
@@ -175,7 +175,7 @@ export function PanelConexionArbrain() {
             <button type="button" disabled={ocupado} onClick={() => accion({ accion: 'desconectar' }, () => 'Desconectado. Ya no sale nada.')}
               className="min-h-10 rounded-lg border border-border-subtle px-4 text-[13px] hover:bg-foreground/[0.04] disabled:opacity-50">Desconectar</button>
           </div>
-          <p className="text-[12px] text-muted">«Enviar ahora» manda tu avance y, de paso, vuelve a traer de arbrain.ai tu expediente (tu meta a 90 días) y tu camino en el programa a la memoria de tu Levy. Si editaste esos archivos a mano, no se tocan. También llega solo al conectar, al abrir Arbrain y una vez al día.</p>
+          <p className="text-[12px] text-muted">«Enviar ahora» manda tu avance y, de paso, vuelve a traer de arbrain.ai tu expediente (tu meta a 90 días) y tu camino en el programa a la memoria de tu Levy. Si editaste esos archivos a mano, no se tocan. También llega solo al conectar, al abrir Alzat y una vez al día.</p>
         </div>
       )}
 

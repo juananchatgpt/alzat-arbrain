@@ -204,7 +204,7 @@ export function Ventana({ grande }: { grande?: boolean }) {
 
 function Conversacion({ id, activa }: { id: string | null; activa: string | null }) {
   const titulo = useTituloConversacion(id ?? '')
-  if (!id) return <p className={l.aviso}>Aún no hay una conversación de Arbrain medida: abre una en el chat.</p>
+  if (!id) return <p className={l.aviso}>Aún no hay una conversación de Alzat medida: abre una en el chat.</p>
   return <p className={m.conversacion}>{activa ? 'Esta conversación' : 'La conversación más reciente'} · <b>{titulo}</b></p>
 }
 

@@ -409,8 +409,8 @@ export function AccionesRoom() {
                                 <button
                                   onClick={() => pedirALevy(
                                     o.stats.errors > 0
-                                      ? `El órgano ${o.id} del Arbrain falló en su última corrida. Investiga el error y proponme el fix.`
-                                      : `Sobre el órgano ${o.id} del Arbrain (${o.funcion.toLowerCase()}): `,
+                                      ? `El órgano ${o.id} del Alzat falló en su última corrida. Investiga el error y proponme el fix.`
+                                      : `Sobre el órgano ${o.id} del Alzat (${o.funcion.toLowerCase()}): `,
                                   )}
                                   className="flex items-center gap-1.5 rounded-lg border border-gold/40 px-2.5 py-1.5 text-[10px] font-bold text-gold transition-colors hover:bg-gold/10"
                                 >

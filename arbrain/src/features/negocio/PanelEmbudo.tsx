@@ -228,7 +228,7 @@ function TarjetaEtapa({ et, corrida, enfocada }: { et: Etapa; corrida: (r: Rutin
 }
 
 function Vacio({ errores, ruta }: { errores?: string[]; ruta: string }) {
-  const pedir = () => redactar(errores?.length ? `Corrige mi embudo (${ruta}): ` : 'Arma mi embudo completo en el estándar de Arbrain, con mis skills y rutinas en cada etapa.')
+  const pedir = () => redactar(errores?.length ? `Corrige mi embudo (${ruta}): ` : 'Arma mi embudo completo en el estándar de Alzat, con mis skills y rutinas en cada etapa.')
   return <div className={e.vacio}>
     {errores?.length
       ? <><p><b>Tu embudo tiene detalles por corregir.</b> Levy lo arregla en un momento:</p><ul>{errores.map(x => <li key={x}>{x}</li>)}</ul></>

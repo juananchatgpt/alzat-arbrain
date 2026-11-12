@@ -148,7 +148,7 @@ export function TopeDeGasto({ compacto = false }: { compacto?: boolean }) {
         </p>
       ) : (
         <ol className="mt-3 space-y-1.5 text-[12.5px] leading-relaxed text-muted">
-          <li><b className="text-foreground/90">OpenRouter:</b> abre tus llaves, pulsa la de Arbrain y fija su «credit limit» (puede reiniciarse cada día, semana o mes). <Enlace url={ENLACES_TOPE.openrouterLlaves}>Abrir mis llaves</Enlace></li>
+          <li><b className="text-foreground/90">OpenRouter:</b> abre tus llaves, pulsa la de Alzat y fija su «credit limit» (puede reiniciarse cada día, semana o mes). <Enlace url={ENLACES_TOPE.openrouterLlaves}>Abrir mis llaves</Enlace></li>
           <li><b className="text-foreground/90">Anthropic:</b> en la consola, Settings › Billing › Spend limits, fija tu límite mensual. Anthropic no deja ver el gasto con una llave normal: revísalo en su consola. <Enlace url={ENLACES_TOPE.anthropicLimite}>Poner límite</Enlace> · <Enlace url={ENLACES_TOPE.anthropicUso}>Ver uso</Enlace></li>
         </ol>
       )}
@@ -258,7 +258,7 @@ function ModoDePermisos({ p }: { p: Permisos }) {
       {estado?.consentimiento && (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border-subtle px-3 py-2 text-[12.5px] text-muted" data-consentimiento-guardado>
           <span>
-            Aceptaste el modo Autónomo el {horaDe(estado.consentimiento.ts)} (texto {estado.consentimiento.version}{estado.consentimiento.app ? `, Arbrain ${estado.consentimiento.app}` : ''}, por {estado.consentimiento.via}).
+            Aceptaste el modo Autónomo el {horaDe(estado.consentimiento.ts)} (texto {estado.consentimiento.version}{estado.consentimiento.app ? `, Alzat ${estado.consentimiento.app}` : ''}, por {estado.consentimiento.via}).
             {estado.reaceptar ? ' El texto cambió: vuelve a aceptarlo para seguir en Autónomo.' : ''}
           </span>
           <button type="button" onClick={() => void retirar()} disabled={!!ocupado} className="btn-secondary shrink-0 !px-2.5 !py-1 text-[12px]">{ocupado === 'retirar' && <Loader2 className="size-3 animate-spin" aria-hidden />} Retirar mi consentimiento</button>
@@ -323,7 +323,7 @@ function Carpetas() {
   return (
     <Tarjeta titulo="Carpetas a las que tu cerebro puede entrar" icono={FolderOpen}>
       <p className="text-[13px] leading-relaxed text-muted">
-        Levy trabaja dentro de tu cerebro de Arbrain. Si necesita otra carpeta (un proyecto, tus documentos de clientes), agrégala aquí, una por una: podrá leerla sin preguntarte y escribir en ella según el nivel de arriba (en «Preguntar siempre» te pide permiso). Fuera de estas carpetas nunca escribe. Nunca entra a tus llaves, contraseñas, navegadores ni carteras, aunque agregues su carpeta.
+        Levy trabaja dentro de tu cerebro de Alzat. Si necesita otra carpeta (un proyecto, tus documentos de clientes), agrégala aquí, una por una: podrá leerla sin preguntarte y escribir en ella según el nivel de arriba (en «Preguntar siempre» te pide permiso). Fuera de estas carpetas nunca escribe. Nunca entra a tus llaves, contraseñas, navegadores ni carteras, aunque agregues su carpeta.
       </p>
       <ul className="mt-3 space-y-1.5">
         {carpetas?.length === 0 && <li className="text-[12.5px] text-muted">Ninguna. Levy solo ve tu cerebro.</li>}
@@ -361,7 +361,7 @@ function LoQueHizoLevy() {
   const tono = { ok: 'text-success', aviso: 'text-amber-300', freno: 'text-red-300' } as const
   return (
     <Tarjeta titulo="Lo que hizo Levy" icono={ScrollText}>
-      <p className="text-[13px] leading-relaxed text-muted">Cada acción con efecto (escribir, ejecutar comandos, abrir páginas, lo que te pidió confirmar y lo que Arbrain bloqueó). Queda solo en tu computadora, sin llaves ni contraseñas.</p>
+      <p className="text-[13px] leading-relaxed text-muted">Cada acción con efecto (escribir, ejecutar comandos, abrir páginas, lo que te pidió confirmar y lo que Alzat bloqueó). Queda solo en tu computadora, sin llaves ni contraseñas.</p>
       {error && <p className="mt-2 text-[12.5px] text-red-300">{error}</p>}
       {acciones?.length === 0 && <p className="mt-3 text-[12.5px] text-muted">Todavía nada.</p>}
       {!!acciones?.length && (

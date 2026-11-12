@@ -74,7 +74,7 @@ export function VistaPantalla() {
         setSrc(url); setFase('viva'); setError(null); setCuadros(n => n + 1)
         siguiente(PAUSA_VIVA_MS)
       } catch {
-        setError('Tu Arbrain no respondió.'); setFase('error'); siguiente(PAUSA_APAGADA_MS)
+        setError('Tu Alzat no respondió.'); setFase('error'); siguiente(PAUSA_APAGADA_MS)
       }
     }
     void pedir()
@@ -133,7 +133,7 @@ export function VistaPantalla() {
             <p className="max-w-sm text-sm leading-snug text-muted">
               {fase === 'cargando' && 'Conectando con la pantalla de tu servidor…'}
               {fase === 'apagada' && 'La pantalla está apagada. Se enciende sola cuando Levy la usa (por ejemplo, cuando le pides abrir un sitio) y se apaga tras un rato sin uso.'}
-              {fase === 'sin_pantalla' && 'Este Arbrain no tiene pantalla virtual. En tu servidor se instala con: bash arbrain/scripts/instalar/nube.sh pantalla'}
+              {fase === 'sin_pantalla' && 'Este Alzat no tiene pantalla virtual. En tu servidor se instala con: bash arbrain/scripts/instalar/nube.sh pantalla'}
               {fase === 'error' && (error ?? 'Sin señal de la pantalla.')}
             </p>
           </div>
