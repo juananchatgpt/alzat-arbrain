@@ -6,6 +6,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { raizWorkspace } from '@/lib/rutas-instalacion'
+import { dirMiMarca, leerMiMarca } from '@/lib/mi-marca'
 import { separarRutinas, type ListaRutinas } from '@/lib/rutinas-cliente'
 import { GUION_INCORPORADO } from '../textos/tour-guion'
 import { guardarPrimerArranque, leerPrimerArranque } from './estado'
@@ -77,7 +78,11 @@ export async function entregarSiguiente(opciones: { raiz?: string; ahora?: strin
   const c = r.capitulo
   const manuales = c.texto.includes('{{manuales}}') ? textoManuales(leerManuales(opciones.raiz)) : undefined
   const rutinas = c.texto.includes('{{rutinas}}') ? textoRutinas(opciones.rutinas ? await opciones.rutinas().catch(() => null) : null) : undefined
+  // ALZAT: el recorrido habla con el nombre de Ajustes › Diseño (o «Alzat») en vez de «Levy» y de «Arbrain».
+  const asistente = (await leerMiMarca(dirMiMarca()).catch(() => null))?.nombre ?? 'Alzat'
   const texto = textoCapitulo(c, { manuales, rutinas, nombre: e.nombre }, r)
+    .replace(/\bLevy\b/g, asistente)
+    .replace(/\bArbrain\b(?![.\-/]\w)/g, 'Alzat')
   guardarPrimerArranque({ tour: r.estado })
   return { capitulo: c, texto, plan: planTour(r.estado, g) }
 }

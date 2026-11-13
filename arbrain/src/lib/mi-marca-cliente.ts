@@ -9,7 +9,8 @@ import { useSyncExternalStore } from 'react'
 
 export interface MarcaVentana { nombre: string | null; logo: string | null }
 
-export const NOMBRE_DE_FABRICA = 'Levy'
+// ALZAT: sin nombre en Ajustes › Diseño, el asistente se llama Alzat (no «Levy»).
+export const NOMBRE_DE_FABRICA = 'Alzat'
 const CLAVE = 'arbrain:mi-marca'
 const VACIA: MarcaVentana = { nombre: null, logo: null }
 let estado: MarcaVentana = VACIA

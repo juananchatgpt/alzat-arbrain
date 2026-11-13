@@ -49,7 +49,7 @@ export const RUTINA_MANANA = 'arbrain-reporte-manana'
  * hagan igual.
  */
 export const HABILIDADES_DE_ARBRAIN = [
-  'actualizar-arbrain', 'artificial-brain', 'autoresearch', 'bajar-a-tierra', 'canvas', 'clientes', 'code-animation',
+  'actualizar-arbrain', 'alzat-actualizar', 'artificial-brain', 'autoresearch', 'bajar-a-tierra', 'canvas', 'clientes', 'code-animation',
   'goal-compiler', 'google-workspace', 'habit-system', 'image-generation', 'knowledge-search', 'libro-os', 'memory-manager',
   'oferta', 'os-audit', 'presentaciones', 'sistema-viable', 'skill-creator', 'tour-bienvenida',
 ] as const

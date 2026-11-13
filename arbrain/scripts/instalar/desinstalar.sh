@@ -87,11 +87,11 @@ case "$SO" in
       [ -d "$D" ] && mover "$D" "Arbrain-app"
       INICIO="$(cygpath -u "$APPDATA")/Microsoft/Windows/Start Menu/Programs/Arbrain.lnk"
       ESCRITORIO="$(cygpath -u "$(powershell.exe -NoProfile -Command "[Environment]::GetFolderPath('Desktop')" | tr -d '\r')")/Arbrain.lnk"
-      for l in "$INICIO" "$ESCRITORIO"; do
+      for l in "$INICIO" "$ESCRITORIO" "${INICIO%Arbrain.lnk}Alzat.lnk" "${ESCRITORIO%Arbrain.lnk}Alzat.lnk"; do
         [ -f "$l" ] || continue
         # Solo el acceso que apunta a la app del alumno (el de la app 0.1.x u otra se queda).
         destino="$(powershell.exe -NoProfile -Command "(New-Object -ComObject WScript.Shell).CreateShortcut('$(cygpath -w "$l")').TargetPath" | tr -d '\r')"
-        [ "$destino" = "$APP" ] && mover "$l" "$(basename "$(dirname "$l")")-Arbrain.lnk"
+        [ "$destino" = "$APP" ] && mover "$l" "$(basename "$(dirname "$l")")-$(basename "$l")"
       done
     fi
     ;;

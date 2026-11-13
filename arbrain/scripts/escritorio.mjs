@@ -186,7 +186,7 @@ const psTexto = (s) => `'${String(s).replaceAll("'", "''")}'`
 function instalarWindows(armado) {
   const base = opcion('--destino') ? resolve(opcion('--destino')) : join(process.env.LOCALAPPDATA || join(HOME, 'AppData', 'Local'), 'Programs', 'Arbrain')
   const exe = join(base, 'Arbrain.exe')
-  const inicio = join(process.env.APPDATA || join(HOME, 'AppData', 'Roaming'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Arbrain.lnk')
+  const inicio = join(process.env.APPDATA || join(HOME, 'AppData', 'Roaming'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Alzat.lnk')
   // ¿Un acceso «Arbrain» de otra app (la 0.1.x)? No se pisa sin permiso.
   if (existsSync(inicio)) {
     const r = powershell(`(New-Object -ComObject WScript.Shell).CreateShortcut(${psTexto(inicio)}).TargetPath`)
@@ -207,13 +207,26 @@ function instalarWindows(armado) {
     try { renameSync(exe, viejo) } catch { renameSync(exe, join(base, `Arbrain.anterior-${Date.now()}.exe`)) }
   }
   copyFileSync(join(armado, 'Arbrain.exe'), exe)
+  // ALZAT: los accesos se llaman «Alzat» y llevan el isotipo de ALZAT (src-tauri/icons/icon.ico, copiado junto a la
+  // app). Los «Arbrain.lnk» que apunten a ESTA app (de una instalación anterior) se guardan en ~/Arbrain-respaldos.
+  const ico = join(base, 'alzat.ico')
+  try { copyFileSync(join(ARBRAIN, 'src-tauri', 'icons', 'icon.ico'), ico) } catch { /* sin icono: el de la app */ }
+  const icono = existsSync(ico) ? `${ico},0` : `${exe},0`
+  const rViejos = respaldo()
   const r = powershell(`
 $ErrorActionPreference = 'Stop'
 Unblock-File -LiteralPath ${psTexto(exe)} -ErrorAction SilentlyContinue
 $s = New-Object -ComObject WScript.Shell
-foreach ($l in @(${psTexto(inicio)}, (Join-Path ([Environment]::GetFolderPath('Desktop')) 'Arbrain.lnk'))) {
+$esc = [Environment]::GetFolderPath('Desktop'); $menu = Split-Path ${psTexto(inicio)}
+foreach ($v in @((Join-Path $menu 'Arbrain.lnk'), (Join-Path $esc 'Arbrain.lnk'))) {
+  if ((Test-Path -LiteralPath $v) -and ($s.CreateShortcut($v).TargetPath -eq ${psTexto(exe)})) {
+    New-Item -ItemType Directory -Force -Path ${psTexto(rViejos)} | Out-Null
+    Move-Item -LiteralPath $v -Destination (Join-Path ${psTexto(rViejos)} ((Split-Path (Split-Path $v) -Leaf) + '-Arbrain.lnk')) -Force
+  }
+}
+foreach ($l in @(${psTexto(inicio)}, (Join-Path $esc 'Alzat.lnk'))) {
   $a = $s.CreateShortcut($l); $a.TargetPath = ${psTexto(exe)}; $a.WorkingDirectory = ${psTexto(base)}
-  $a.IconLocation = ${psTexto(exe + ',0')}; $a.Description = 'Arbrain'; $a.Save()
+  $a.IconLocation = ${psTexto(icono)}; $a.Description = 'Alzat'; $a.Save()
 }`)
   if (r.status !== 0) di(`Aviso: no pude crear los accesos directos (${(r.stderr || '').trim().split('\n').pop()}). La app está en ${exe}.`)
   return exe

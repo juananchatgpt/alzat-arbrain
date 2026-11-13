@@ -274,7 +274,8 @@ test('alumno que actualiza (ya usaba Arbrain antes del recorrido): solo Novedade
       ids.push(e.capitulo.id)
     }
     assert.deepEqual(ids, nuevos.map(c => c.id))
-    assert.match(primero, /^\*\*Novedades de esta versión de tu Arbrain\.\*\*/)
+    // ALZAT: el recorrido entregado dice «Alzat» (tour-servidor.ts cambia «Arbrain» y «Levy» al entregar).
+    assert.match(primero, /^\*\*Novedades de esta versión de tu Alzat\.\*\*/)
     assert.equal(planActual(), null, 'una sola vez')
     const t = leerPrimerArranque().tour as EstadoTour
     assert.deepEqual([...t.vistos].sort(), v1.capitulos.map(c => c.id).sort())
