@@ -29,7 +29,7 @@ F=(-c gpg.format=ssh -c gpg.ssh.program=ssh-keygen -c gpg.ssh.allowedSignersFile
 ID=(); git config user.email >/dev/null || ID=(-c user.name=Alzat -c user.email=alzat@localhost)
 A="$(git config --get remote.alzat.url)"
 if [ "$(git branch --show-current)" != mi-arbrain ]; then echo "ALZAT_FALTA rama $(git branch --show-current)"
-elif [ -f .git/MERGE_HEAD ]; then echo "ALZAT_FALTA mezcla-a-medias"
+elif git rev-parse -q --verify MERGE_HEAD >/dev/null; then echo "ALZAT_FALTA mezcla-a-medias"
 elif [ -n "$A" ] && [ "$A" != "$U" ]; then echo "ALZAT_REMOTO_AJENO $A"
 else
   [ -n "$A" ] || git remote add alzat "$U"
