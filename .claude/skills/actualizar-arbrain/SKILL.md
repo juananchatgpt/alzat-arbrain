@@ -9,6 +9,10 @@ description: >
   instalado.
 ---
 
+> **ALZAT:** si `git config --get remote.alzat.url` responde `https://github.com/juananchatgpt/alzat-arbrain(.git)`,
+> esta copia es Alzat: no sigas esta skill, sigue `.claude/skills/alzat-actualizar/SKILL.md`. De esta solo se usa el
+> PASO 6 (reinicio), cuando aquella te lo diga.
+
 # Actualizar Arbrain
 
 Objetivo: traer la versión nueva de Arbrain a la copia del dueño, sin perder nada suyo, sin terminal y sin pedirle
