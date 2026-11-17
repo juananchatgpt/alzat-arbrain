@@ -4,6 +4,16 @@ Cada versión dice qué trae y qué tienes que hacer tú. Para actualizar, abre 
 «jala los últimos cambios». Las versiones siguen `MAYOR.MENOR.PARCHE`: un cambio en MENOR trae funciones
 nuevas; uno en PARCHE, arreglos.
 
+## Alzat · 17 nov 2026 · OpenRouter funciona sin token de Claude
+
+**Qué trae**
+- Si tienes configurada una API de OpenRouter, puedes usar DeepSeek, GLM y los demás modelos compatibles aunque no tengas token de Claude.
+- En Windows, Alzat encuentra automáticamente la instalación de Codex de la aplicación.
+- Los errores de arranque de Codex muestran ahora la causa técnica (`ENOENT`, por ejemplo), para poder diagnosticarla.
+
+**Qué tienes que hacer**
+- Dile a tu Alzat «actualiza mi Alzat». Después comprueba en Ajustes que tu API de OpenRouter siga configurada.
+
 ## v0.2.26 · 9 nov 2026 · Presentaciones como las de las clases, con una frase
 
 **Qué trae**

@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, afterEach } from 'vitest'
+import { join } from 'node:path'
 import { REGISTRO, cuentasChat, esCuentaApi, esCuentaChat, registroPublico, rutaDeCuenta, rutasApi } from './registro.js'
 import { catalogoJson, configToml, entornoDeRuta } from './codex-proveedor.js'
 import { CodexRuntimePool } from '../chat-runtime/codex-pool.js'
@@ -53,7 +54,7 @@ describe('plantilla del proveedor propio', () => {
     expect(toml).toContain('env_key = "OPENROUTER_API_KEY"')
     expect(toml).toContain('wire_api = "responses"')
     expect(toml).toContain('web_search = "disabled"')
-    expect(toml).toContain('model_catalog_json = "/tmp/home-x/models.json"')
+    expect(toml).toContain(`model_catalog_json = "${join('/tmp/home-x', 'models.json').replaceAll('\\', '\\\\')}"`)
   })
 
   it('el catálogo usa el slug de la ruta y quita apply_patch', () => {

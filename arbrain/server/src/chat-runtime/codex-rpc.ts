@@ -226,7 +226,10 @@ export function spawnCodexRpc(options: { bin: string; cwd: string; home: string;
     input: child.stdin, output: child.stdout,
     onClose(listener) {
       const exit = () => listener(new RpcConnectionError('App Server process exited; reconcile pending operations'))
-      const error = () => listener(new RpcConnectionError('Could not start App Server'))
+      const error = (cause: NodeJS.ErrnoException) => {
+        const code = typeof cause.code === 'string' ? ` (${cause.code})` : ''
+        listener(new RpcConnectionError(`Could not start App Server${code}`))
+      }
       child.on('close', exit); child.on('error', error)
       return () => { child.off('close', exit); child.off('error', error) }
     },

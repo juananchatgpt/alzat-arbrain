@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { NativeTurnEvent } from './codex-turn.js'
 import type { SSEEvent } from '../agent.js'
 import { RpcConnectionError } from './codex-rpc.js'
@@ -21,6 +21,7 @@ beforeEach(() => {
   f.respond.mockReturnValue(true)
   f.events = [{ type: 'started', threadId: 'thread', turnId: 'turn' }, { type: 'update', update: { type: 'terminal', status: 'completed', error: null } }]
 })
+afterEach(() => { vi.unstubAllEnvs() })
 
 describe('daemon OpenAI runner integration', () => {
   it('executes the frozen selection even when legacy overrides differ', async () => {
@@ -29,6 +30,14 @@ describe('daemon OpenAI runner integration', () => {
     expect(f.validateSelection).toHaveBeenCalledWith('yt', selection)
     expect(f.request).toHaveBeenCalledWith('thread/start', expect.objectContaining({ model: selection.model }))
     expect(f.execute.mock.calls[0][1]).toMatchObject(selection)
+  })
+  it('allows an OpenRouter API route in the client edition', async () => {
+    vi.stubEnv('ARBRAIN_EDICION', 'cliente')
+    vi.stubEnv('ARBRAIN_MOTOR_API', '1')
+    const events = await collect(runCodexStream('Hola', undefined, undefined, undefined, 'web', [], overrides, 'deepseek'))
+    expect(f.connection).toHaveBeenCalledWith('deepseek')
+    expect(f.request).toHaveBeenCalledWith('thread/start', expect.objectContaining({ model: 'deepseek/deepseek-v4.1-flash', modelProvider: 'openrouter' }))
+    expect(events.at(-1)).toMatchObject({ type: 'result', terminalReason: 'completed' })
   })
   it('rejects an expired frozen capability before any native mutation', async () => {
     f.validateSelection.mockRejectedValueOnce(new Error('This model does not support the selected service tier'))

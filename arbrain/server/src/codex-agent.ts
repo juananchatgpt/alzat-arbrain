@@ -3,6 +3,7 @@ import { ejecutarCabina, cabinaDynamicTools } from './cabina/tools.js'
 // Persistent App Server transport, isolated by subscription account.
 // Existing SSE consumers receive a compatibility projection plus native ordered items.
 import { randomUUID } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { RpcConnectionError } from './chat-runtime/codex-rpc.js'
 import { CodexRuntimePool, type CodexSelection } from './chat-runtime/codex-pool.js'
 import { codexContextConfig } from './chat-runtime/codex-context.js'
@@ -50,6 +51,11 @@ const codexAccountHomes = (): Record<string, string> => {
  *  (motor estándar, 2 oct 2026): mismo App Server, otro proveedor. */
 export function isCodexAccount(account?: string | null): boolean {
   return account === CODEX_ACCOUNT || (account === CODEX_YT_ACCOUNT && !!dirCodexAlterna()) || !!rutaDeCuenta(account)
+}
+
+/** En la edición cliente solo se permiten rutas con API propia; las cuentas ChatGPT conservan la guardia antigua. */
+function codexPermitidoEnCliente(account?: string | null): boolean {
+  return !esEdicionCliente() || !!rutaDeCuenta(account)
 }
 
 /** CODEX_HOME del espacio: 'yt' → su carpeta alterna; espacio por API → ~/.codex-<espacio>;
@@ -115,13 +121,28 @@ export function isCodexModel(id: string | null | undefined): boolean {
   return !!id && /^(gpt-|codex-|o[1-9])/i.test(id)
 }
 
-/** Binario del CLI. launchd NO hereda el PATH del shell (el plist apunta a nvm +
- *  homebrew), así que resolvemos rutas conocidas antes de caer al PATH. */
+/** Busca el ejecutable de Codex instalado como paquete de Windows. */
+function codexDeWindowsApp(): string | undefined {
+  if (process.platform !== 'win32') return undefined
+  const powershell = path.join(process.env['SystemRoot'] ?? 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe')
+  try {
+    const installLocation = execFileSync(powershell, [
+      '-NoProfile', '-NonInteractive', '-Command',
+      "(Get-AppxPackage -Name 'OpenAI.Codex' | Select-Object -First 1 -ExpandProperty InstallLocation)",
+    ], { encoding: 'utf8', timeout: 3_000, windowsHide: true }).trim()
+    const bin = installLocation ? path.join(installLocation, 'app', 'resources', 'codex.exe') : ''
+    return bin && existsSync(bin) ? bin : undefined
+  } catch {
+    return undefined
+  }
+}
+
 export function resolveCodexBin(): string {
   const candidates = [
     process.env['CODEX_BIN'],
     path.join(os.homedir(), '.local', 'bin', 'codex'),
-    // Edición cliente: solo CODEX_BIN, ~/.local/bin o el PATH del alumno; nada de rutas de Homebrew ni apps de Daniel.
+    codexDeWindowsApp(),
+    // Edición cliente: no usamos rutas de Homebrew ni apps de Daniel.
     ...(esEdicionCliente() ? [] : ['/opt/homebrew/bin/codex', '/usr/local/bin/codex', '/Applications/ChatGPT.app/Contents/Resources/codex']),
   ].filter((p): p is string => !!p)
   for (const p of candidates) if (existsSync(p)) return p
@@ -187,7 +208,7 @@ export function codexRuntime(): CodexRuntimePool {
 /** Bifurca el hilo Codex de una conversación (menú «⋯ → Bifurcar», 1 oct 2026): devuelve el id del hilo nuevo,
  *  con toda la historia del original. Mismos parámetros de ejecución que un turno normal de esa cuenta. */
 export async function forkCodexThread(threadId: string, account: string): Promise<string> {
-  if (esEdicionCliente()) throw new Error(MENSAJE_CODEX_CLIENTE)
+  if (!codexPermitidoEnCliente(account)) throw new Error(MENSAJE_CODEX_CLIENTE)
   const pool = codexRuntime()
   const model = codexCurrentModel(account)
   const runtimeModel = await pool.validateSelection(account, { model, effort: configEffort(codexHomeFor(account)) })
@@ -224,9 +245,9 @@ export async function* runCodexStream(
   selection?: CodexSelection,
   live?: LiveToolbox,
 ): AsyncGenerator<SSEEvent> {
-  // Seguridad noche 21 oct (carril 2): en la edición cliente Codex correría con `approvalPolicy: 'never'` y sin la guardia
-  // de Arbrain (confirmación humana, secretos negados, contenido de afuera = datos). Hasta que tenga su propia guardia, no corre.
-  if (esEdicionCliente()) { yield { type: 'error', message: MENSAJE_CODEX_CLIENTE }; return }
+  // Las rutas API tienen sandbox de workspace y su propia llave. Las cuentas ChatGPT siguen bloqueadas en cliente:
+  // todavía no tienen la guardia de Arbrain (confirmación humana, secretos negados, contenido externo = datos).
+  if (!codexPermitidoEnCliente(account)) { yield { type: 'error', message: MENSAJE_CODEX_CLIENTE }; return }
   const pool = codexRuntime()
   const home = codexHomeFor(account)
   const model = selection ? selection.model : codexCurrentModel(account, overrides?.model)

@@ -354,6 +354,20 @@ function conPath(env) {
   return o
 }
 
+/** El daemon empaquetado no carga `.env`; este interruptor no secreto sí debe llegarle. */
+function motorApiConfigurado() {
+  if (process.env.ARBRAIN_MOTOR_API !== undefined) return process.env.ARBRAIN_MOTOR_API
+  try {
+    const linea = readFileSync(join(SERVER, '.env'), 'utf8').split(/\r?\n/).find((x) => /^\s*ARBRAIN_MOTOR_API\s*=/.test(x))
+    if (!linea) return undefined
+    let valor = linea.slice(linea.indexOf('=') + 1).trim()
+    if ((valor.startsWith('"') && valor.endsWith('"')) || (valor.startsWith("'") && valor.endsWith("'"))) valor = valor.slice(1, -1)
+    return valor
+  } catch {
+    return undefined
+  }
+}
+
 function abrirLog(nombre) {
   const ruta = join(R.logs, nombre)
   try { if (statSync(ruta).size > 5 * 1024 * 1024) renameSync(ruta, `${ruta}.1`) } catch { /* */ }
@@ -392,6 +406,7 @@ const S = {
 }
 
 function entornoComun() {
+  const motorApi = motorApiConfigurado()
   return {
     ...conPath(entornoLimpio(process.env)),
     ARBRAIN_EDICION: 'cliente',
@@ -401,6 +416,7 @@ function entornoComun() {
     NODE_ENV: 'production',
     ARBRAIN_SECRETOS: 'stdin',
     ARBRAIN_VIGILAR_STDIN: '1',
+    ...(motorApi === undefined ? {} : { ARBRAIN_MOTOR_API: motorApi }),
     // Puente con arbrain.ai (21 oct 2026): la señal opcional dice qué versión corre (el daemon compilado vive fuera del repo).
     ARBRAIN_VERSION: versionArbrain(),
   }

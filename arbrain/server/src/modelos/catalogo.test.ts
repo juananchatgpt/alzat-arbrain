@@ -27,11 +27,11 @@ describe('catálogo de modelos', () => {
     }
   })
 
-  it('por defecto solo enciende Opus 5.5, Sonnet 5.5, Haiku 5.5, DeepSeek y GPT-6 Luna', () => {
+  it('por defecto enciende Claude, DeepSeek, GLM-5.3 y GPT-6 Luna', () => {
     const db = new Database(':memory:')
-    expect(leerHabilitados(db)).toEqual(['opus-5.5', 'sonnet-5.5', 'haiku-5.5', 'deepseek-v4.1-flash', 'gpt-6-luna'])
+    expect(leerHabilitados(db)).toEqual(['opus-5.5', 'sonnet-5.5', 'haiku-5.5', 'deepseek-v4.1-flash', 'glm-5.3', 'gpt-6-luna'])
     const vista = catalogoPublico(entorno())
-    expect(vista.modelos.filter(m => m.habilitado && m.via !== 'abliterated').map(m => m.id)).toEqual(['opus-5.5', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
+    expect(vista.modelos.filter(m => m.habilitado && m.via !== 'abliterated').map(m => m.id)).toEqual(['opus-5.5', 'glm-5.3', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
   })
 
   it('Anthropic solo pide ids fijos de versión: un alias suelto de un SDK viejo nunca baja de generación (8 oct 2026)', () => {
@@ -72,9 +72,9 @@ describe('catálogo de modelos', () => {
 
   it('los interruptores se guardan en orden de catálogo e ignoran ids desconocidos', () => {
     const db = new Database(':memory:')
-    expect(guardarHabilitado(db, 'fable-5.1', true)).toEqual(['opus-5.5', 'fable-5.1', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
-    expect(guardarHabilitado(db, 'opus-5.5', false)).toEqual(['fable-5.1', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
-    expect(leerHabilitados(db)).toEqual(['fable-5.1', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
+    expect(guardarHabilitado(db, 'fable-5.1', true)).toEqual(['opus-5.5', 'fable-5.1', 'glm-5.3', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
+    expect(guardarHabilitado(db, 'opus-5.5', false)).toEqual(['fable-5.1', 'glm-5.3', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
+    expect(leerHabilitados(db)).toEqual(['fable-5.1', 'glm-5.3', 'deepseek-v4.1-flash', 'sonnet-5.5', 'haiku-5.5', 'gpt-6-luna'])
     expect(() => guardarHabilitado(db, 'otro', true)).toThrow()
   })
 

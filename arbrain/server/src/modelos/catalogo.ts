@@ -62,7 +62,7 @@ export const CATALOGO: EntradaCatalogo[] = [
 ]
 
 /** Encendidos mientras Daniel no toque ningún interruptor. */
-export const HABILITADOS_POR_DEFECTO = ['opus-5.5', 'sonnet-5.5', 'haiku-5.5', 'deepseek-v4.1-flash', 'gpt-6-luna']
+export const HABILITADOS_POR_DEFECTO = ['opus-5.5', 'sonnet-5.5', 'haiku-5.5', 'deepseek-v4.1-flash', 'glm-5.3', 'gpt-6-luna']
 
 export const rutaDeEntrada = (e: EntradaCatalogo): Ruta | undefined => e.ruta ? REGISTRO.rutas.find(r => r.id === e.ruta) : undefined
 
