@@ -49,6 +49,7 @@ import { apartarMarcadoresVacios } from './servidor/marcadores-sandbox.mjs'
 import * as telefono from './servidor/telefono.mjs'
 import * as conectar from './servidor/conectar.mjs'
 import { avisoCaida, trasCaida } from './servidor/reintentos.mjs'
+import { correrConPlazo, repararCandadoWindows } from './servidor/reparar.mjs'
 import { abrirOEnfocarApp, elegirApertura, leerConfigEscritorio } from './servidor/ventanas.mjs'
 // Modo espejo (beta, apagado por defecto): el rol del daemon sale de lider.json; la lógica vive en espejo/.
 import { arrancarCiclo as arrancarEspejo, entornoDaemon as entornoEspejo } from './espejo/supervisor.mjs'
@@ -304,7 +305,9 @@ async function compilarWeb(forzar) {
   // Hasta 3 intentos: `next/font/google` baja las fuentes al compilar y a veces Google responde mal (22 oct 2026: tumbó
   // 4 corridas de CI con «loader.js:122»). Un error real del código falla igual las tres veces.
   for (let intento = 1; ; intento++) {
-    const codigo = correr(process.execPath, [next, 'build', '--webpack'], ARBRAIN, env)
+    // Mi Arbrain (20 nov 2026): con plazo; si se cuelga, se corta y cuenta como intento fallido (servidor/reparar.mjs).
+    const { codigo } = await correrConPlazo(process.execPath, [next, 'build', '--webpack'], { cwd: ARBRAIN, env,
+      alVencer: (ms) => registrar(`Reparación automática: la compilación de la web lleva más de ${ms / 60_000} min sin terminar; la corto y vuelvo a intentarlo.`) })
     restaurarNextEnv()
     if (codigo === 0) break
     if (intento >= 3) { marcadores.devolver(); fallar('Falló la compilación de la web. El detalle está arriba.') }
@@ -533,7 +536,8 @@ function vigilar(nombre, hijo) {
  * candado es un node que corre un daemon de ESTA carpeta de datos. Windows: sin `ps`; el candado lo resuelve el daemon.
  */
 function apagarHuerfano() {
-  if (WIN) return
+  // Mi Arbrain (20 nov 2026): en Windows también se revisa el candado (pid reutilizado por otro programa).
+  if (WIN) { repararCandadoWindows({ archivo: join(R.store, 'claudeclaw.pid'), programa: R.programa, registrar }); return }
   const pid = Number.parseInt((() => { try { return readFileSync(join(R.store, 'claudeclaw.pid'), 'utf8') } catch { return '' } })().trim(), 10)
   if (!Number.isInteger(pid) || pid <= 1 || pid === process.pid) return
   const cmd = spawnSync('ps', ['-o', 'command=', '-p', String(pid)], { encoding: 'utf8' }).stdout ?? ''
