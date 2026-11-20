@@ -14,7 +14,10 @@ import { existsSync, readFileSync, renameSync } from 'node:fs'
 
 const WIN = process.platform === 'win32'
 
-/** Plazo de cada compilación: 5 min por defecto (lo normal es ~1 min); `ARBRAIN_PLAZO_COMPILAR_MIN` lo cambia. */
+/**
+ * Plazo de cada compilación: 5 min por defecto (lo normal es ~1 min); `ARBRAIN_PLAZO_COMPILAR_MIN` lo cambia.
+ * @param {Record<string, string | undefined>} [env]
+ */
 export function plazoCompilarMs(env = process.env) {
   const min = Number.parseFloat(env.ARBRAIN_PLAZO_COMPILAR_MIN ?? '')
   return (Number.isFinite(min) && min > 0 ? min : 5) * 60_000
@@ -31,6 +34,10 @@ export function matarArbol(pid) {
 /**
  * Como `correr` (salida a la terminal y al log), pero con plazo. Si vence, avisa, corta el árbol entero y devuelve
  * `{ codigo: 124, vencido: true }` para que quien llama lo trate como un intento fallido.
+ * @param {string} cmd
+ * @param {string[]} args
+ * @param {{ cwd?: string, env?: Record<string, string | undefined>, plazoMs?: number, alVencer?: (ms: number) => void }} [opciones]
+ * @returns {Promise<{ codigo: number, vencido: boolean, error?: unknown }>}
  */
 export function correrConPlazo(cmd, args, { cwd, env = process.env, plazoMs = plazoCompilarMs(env), alVencer } = {}) {
   return new Promise((ok) => {
