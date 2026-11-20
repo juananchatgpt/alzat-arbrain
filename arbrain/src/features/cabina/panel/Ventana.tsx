@@ -24,6 +24,8 @@ import { Contenido } from './PanelDerecho'
 import { useAtajosCtrl } from '@/shared/hooks/useAtajosCtrl'
 import { claveZoomVentana, ZoomController } from '@/shared/components/ZoomController'
 import s from './panel.module.css'
+import { tr } from '@/shared/i18n'
+import { esAltGr, modPrincipal } from '@/shared/navigation/teclas-plataforma'
 
 /**
  * Botones de la cabecera: en la columna, pantalla completa; en una ventana aparte dividida, esconder y mostrar su
@@ -35,14 +37,14 @@ export function ControlesPanel({ modo, columna }: { modo: 'lateral' | 'ventana';
   const enfoque = useLayoutStore(st => st.enfoquePanel)
   if (modo === 'ventana') return <>
     {columna && <button className={s.icono} onClick={columna.alternar} data-testid="alternar-columna" aria-pressed={!columna.oculta}
-      title={`${columna.oculta ? 'Mostrar' : 'Esconder'} la columna lateral (⌘B) · devolver las pestañas al panel principal: clic derecho en una pestaña (⌘⌥B)`}
-      aria-label={columna.oculta ? 'Mostrar la columna lateral' : 'Esconder la columna lateral'}>
+      title={columna.oculta ? tr('Mostrar la columna lateral (⌘B) · devolver las pestañas al panel principal: clic derecho en una pestaña (⌘⌥B)') : tr('Esconder la columna lateral (⌘B) · devolver las pestañas al panel principal: clic derecho en una pestaña (⌘⌥B)')}
+      aria-label={columna.oculta ? tr('Mostrar la columna lateral') : tr('Esconder la columna lateral')}>
       {columna.oculta ? <PanelRightOpen size={15} /> : <PanelRightClose size={15} />}</button>}
     {error && <p className={s.errorVentana} role="alert">{error}</p>}
   </>
   return <>
     {modo === 'lateral' && <button className={s.icono} onClick={alternarPantallaCompleta} data-testid="enfoque-panel" aria-pressed={enfoque}
-      title={enfoque ? 'Volver (Esc · ⌘.)' : 'Pantalla completa (⌘.) · Levy sigue a la mano con ⌘J'} aria-label={enfoque ? 'Volver' : 'Pantalla completa'}>
+      title={enfoque ? tr('Volver (Esc · ⌘.)') : tr('Pantalla completa (⌘.) · Levy sigue a la mano con ⌘J')} aria-label={enfoque ? tr('Volver') : tr('Pantalla completa')}>
       {enfoque ? <Minimize2 size={15} /> : <Maximize2 size={15} />}</button>}
     {error && modo === 'lateral' && <p className={s.errorVentana} role="alert">{error}</p>}
   </>
@@ -62,7 +64,8 @@ function VentanaConTira({ id }: { id: string }) {
     cargar()
     const fin = [vidaDeVentana(id), atenderVentana(), seguirLlegadas()]
     // ⌘⌥B: todas sus pestañas de vuelta al panel principal (la ventana se cierra sola).
-    const k = (e: KeyboardEvent) => { if (e.code === 'KeyB' && e.metaKey && e.altKey && !e.ctrlKey) { e.preventDefault(); if (!e.repeat) devolverAlPanel(id) } }
+    // Fuera de Mac, Ctrl+Alt+B (17 nov 2026; AltGr no cuenta).
+    const k = (e: KeyboardEvent) => { if (e.code === 'KeyB' && modPrincipal(e) && e.altKey && !esAltGr(e)) { e.preventDefault(); if (!e.repeat) devolverAlPanel(id) } }
     window.addEventListener('keydown', k)
     return () => { fin.forEach(f => f()); window.removeEventListener('keydown', k) }
   }, [cargar, id])
@@ -83,8 +86,8 @@ function useTituloDeVentana(id: string) {
     const tira = tiraDe(todasLasClaves(st.orden, st.taller), st.enVentana, id)
     const a = tira.includes(st.activa) ? st.activa : tira[0]
     if (!a) return null
-    if (a === 'tareas') return 'Tareas'
-    if (a === 'taller') return 'Taller'
+    if (a === 'tareas') return tr('Tareas')
+    if (a === 'taller') return tr('Taller')
     const f = st.fijadas.find(x => x.id === a)
     return f ? titulo(f.input) : null
   })
@@ -107,5 +110,5 @@ function VentanaVieja() {
     const t = setTimeout(() => { void cerrarEstaVentana('') }, 1500)
     return () => clearTimeout(t)
   }, [params])
-  return <p className={s.calma}>Esta ventana es de la versión anterior. Sus pestañas ya están en el panel principal; arrástralas fuera para abrir una ventana nueva.</p>
+  return <p className={s.calma}>{tr('Esta ventana es de la versión anterior. Sus pestañas ya están en el panel principal; arrástralas fuera para abrir una ventana nueva.')}</p>
 }

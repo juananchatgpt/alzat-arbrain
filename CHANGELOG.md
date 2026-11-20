@@ -14,6 +14,90 @@ nuevas; uno en PARCHE, arreglos.
 **Qué tienes que hacer**
 - Dile a tu Alzat «actualiza mi Alzat». Después comprueba en Ajustes que tu API de OpenRouter siga configurada.
 
+## v0.2.29 · 18 nov 2026 · Atajos con Ctrl en Windows y cuatro mejoras que tú prendes
+
+**Qué trae**
+- **En Windows (y Linux), los atajos van con Ctrl.** Ajustes › Atajos, la ayuda de `?` y los títulos de los botones
+  dicen Ctrl, Alt y Shift en vez de `⌘`, `⌥` y `⇧`, y los atajos responden: Ctrl+B abre y cierra el panel,
+  Ctrl+Shift+B la barra de conversaciones, Ctrl+Alt+B saca la pestaña del panel a su propia ventana y Ctrl+, abre
+  Ajustes. Antes esperaban la tecla de Windows, que el sistema se queda. Escribiendo, en el Lienzo o en una pizarra,
+  Ctrl+B sigue siendo negrita, y lo que escribes con AltGr (@, #, [, ]) no dispara nada. En Mac todo sigue igual.
+- **Ajustes › Mejoras, nueva sección:** un interruptor por mejora. **Todas vienen apagadas** y, apagadas, Arbrain se
+  queda exactamente como estaba. Lo que prendas vale en todas tus ventanas y en tu teléfono.
+  - **Panel derecho que se pliega:** un asa en el borde para esconderlo y volver a mostrarlo, y la tecla `]` (fuera
+    de un campo de texto), como `[` con las conversaciones.
+  - **Micrófono y «+» mientras trabaja:** dictas o adjuntas sin esperar a que Levy termine; entra a la fila, como lo
+    que escribes.
+  - **Nota de voz como borrador:** al detener la grabación, lo que dijiste queda escrito en tu mensaje para corregirlo,
+    sumarle texto, fotos u otra nota, y lo mandas con Enviar. Si prefieres que se mande sola, en Ajustes › Voz
+    está «Enviar la nota de voz al detenerla».
+  - **Elegir la voz de LemonFox:** con tu llave de LemonFox guardada, en Ajustes › Voz eliges entre sus voces en
+    español (hombre o mujer) la que te lee las respuestas, y la escuchas antes con «Probar» (con la app en español).
+- **El aviso del sistema en Windows ya no se rompe** cuando la respuesta de Levy trae comillas tipográficas (’).
+- Los atajos de Windows y las cuatro mejoras son el aporte de un fundador de la cohorte. Gracias.
+
+**Qué tienes que hacer**
+- Actualizar («actualiza mi Arbrain»). No pierdes nada tuyo.
+- Todo viene apagado: préndelo en Ajustes › Mejoras (Ajustes se abre con Ctrl+, en Windows y con ⌘, en Mac).
+
+## v0.2.28 · 16 nov 2026 · Windows sin secciones en blanco, tus habilidades a la vista y «Ver tu cerebro»
+
+**Qué trae**
+- **En Windows, el Lienzo, los documentos y el Taller ya abren.** Las piezas vivas del Lienzo (las páginas HTML que
+  Levy pone dentro de un lienzo), lo que Levy te muestra en el panel, abrir un archivo desde el Explorador y
+  Taller › Memoria (Habilidades, Documentos e Instrucciones) salían en blanco o con un error: Arbrain comparaba las
+  rutas como si tu computadora fuera una Mac. Ya entiende las rutas de Windows (`C:\Users\…`).
+- **Tus habilidades, con nombre y apellido.** Taller › Memoria › Habilidades lista cada habilidad con para qué sirve y
+  si «Viene con Arbrain» o es «Tuya» (las que creaste tú). Sale aunque tu memoria todavía esté vacía, y la cifra de
+  memorias de arriba ya no se queda en «—».
+- **«Ver tu cerebro» funciona.** En Taller › Memoria, el mapa de tu cerebro (memorias, habilidades y documentos) ya se
+  pinta; antes decía «El servidor respondió 404». Si un día no puede leerlo, te dice qué pasó y qué hacer.
+- **Tu negocio, Estrategia y Business Intelligence leen tu cerebro en la app instalada** (Windows y Mac). Buscaban tus
+  archivos en la carpeta equivocada y salían vacíos o con «No se encontró la raíz del cerebro».
+- **Levy vuelve a dibujar en tu Lienzo.** «Dibújame el mapa de mi negocio» crea el lienzo; la habilidad `canvas`
+  apuntaba a una dirección que no era la de tu app.
+- **Una frase en vez de un blanco.** Si el Lienzo no puede leer tus lienzos, lo dice (antes decía «Aún no hay
+  lienzos»). En Windows la terminal de abajo todavía no existe: ahora te lo dice y te da la salida (pedirle el comando
+  a Levy o abrir PowerShell en tu carpeta).
+- **Lo que sigue igual en Windows:** Ajustes › Atajos pinta los símbolos de Mac (`⌘`, `⌥`); es solo la etiqueta.
+
+**Qué tienes que hacer**
+- Actualizar («actualiza mi Arbrain»). No pierdes nada tuyo. Si después de actualizar ves alguna sección en blanco,
+  dile a Levy cuál y en qué sistema estás.
+
+## v0.2.27 · 15 nov 2026 · Arbrain en inglés
+
+**Qué trae**
+- **Ajustes › Idioma: Español o English.** Toda la app cambia de idioma: pantallas, chat, panel, calendario, Taller,
+  Tu negocio, Business Intelligence, bandeja de decisiones, avisos, el recorrido de bienvenida y la voz (voz y dictado
+  en inglés de EE. UU.). Fechas y números en formato de EE. UU. Levy te contesta en el idioma que elijas desde la
+  siguiente conversación; las que ya tenías conservan el suyo.
+- **Para instalarle Arbrain a un cliente que habla inglés:** desde la primera pantalla puede elegir English, y la copia
+  en inglés nace con su cerebro, su memoria semilla y sus manuales en inglés.
+- **Lo que todavía llega en español:** las skills, los prompts de instalación de la app y la guía de instalación
+  publicada (con sus capturas y su video) llegan en inglés en las próximas versiones. Mientras tanto Levy usa sus
+  skills en español y te contesta en inglés. Los textos legales del primer arranque se quedan en español: son los
+  que valen.
+- **El visor de documentos abre Word, Excel y CSV.** Tablas grandes con ordenar, filtrar por columna, buscar y suma o
+  promedio de lo que seleccionas; Word con índice y búsqueda; y el PDF se lee como libro, con su índice y el capítulo
+  en curso. Todo se lee en tu computadora. Botón «Abrir en su app» para el original.
+- **Botón «Descargar»** en el visor: baja el archivo original (video, audio, PDF, imagen, documento) para verlo en otro
+  aparato.
+- **Taller › Agentes:** cada agente que terminó trae «Ver resultados» (su resumen y lo que entregó: imágenes, videos,
+  PDFs, páginas), una palomita de «Recibido» y una X para cerrarlo, para que no se te acumulen.
+- **Calendario:** en el Día ya puedes arrastrar un evento a otra hora, como en la Semana. Si el evento tiene invitados,
+  te pregunta antes de moverlo, porque ellos verán la nueva hora.
+- **La conversación, más cómoda:** botones, letra y compositor un poco más grandes; las pestañas del panel se ven más
+  limpias.
+- **Lienzo:** los capítulos se agrupan en temas con nombre, con un minipanel abajo a la derecha para saltar entre ellos.
+- **Arreglos:** la campana ya abre en tu navegador los enlaces de fuera y «Te toca decidir» trae todas las tarjetas
+  pendientes de la bandeja; pausar el lector ya no cierra su barra; en el teléfono, el lector, el dictado y los videos
+  gastan menos datos.
+
+**Qué tienes que hacer**
+- Actualizar («actualiza mi Arbrain»). Para cambiar el idioma: Ajustes › Idioma. Si cambias a English, abre una
+  conversación nueva para que Levy te conteste en inglés.
+
 ## v0.2.26 · 9 nov 2026 · Presentaciones como las de las clases, con una frase
 
 **Qué trae**

@@ -9,6 +9,8 @@
  *  · Lenguaje de la casa (docs/lenguaje-de-movimiento.md): oro solo para lo que cambió en 48 h; morado y neutro para
  *    lo demás; las neuronas entran escalonadas una sola vez; las cifras cuentan una sola vez.
  *  · Solo lectura: lee `.claude/memory`, `.claude/skills` y `docs/business-os` del Studio. Las credenciales no entran.
+ *  · Edición del alumno (16 nov 2026, «El servidor respondió 404»): lee SU cerebro (`ARBRAIN_HOME`), sin síntesis, y
+ *    cuando no hay qué pintar lo dice en una frase con qué hacer (features/cerebro/aviso.ts).
  *
  * Reúsa los lienzos y paneles de la sección vieja (GraphCanvas, Graph3D, NodePanel, SynthesisPanel); CerebroPage queda
  * como linaje (regla de preservación) y /segundo-cerebro redirige aquí.
@@ -18,31 +20,34 @@ import dynamic from 'next/dynamic'
 import { RefreshCw, Search, Sparkles, X } from 'lucide-react'
 import { Cifra, escalon, mov } from '@/shared/movimiento'
 import type { CerebroGraph, CerebroNodeType } from '../types'
-import { CAPAS_BASE, TYPE_META, esDelAhora } from '../types'
+import { TYPE_META, URL_GRAFO, esDelAhora } from '../types'
+import { avisoCerebro, sintesisDisponible } from '../aviso'
+import { esEdicionCliente } from '@/lib/edicion'
 import { GraphCanvas } from './GraphCanvas'
 import { NodePanel } from './NodePanel'
 import { SynthesisPanel } from './SynthesisPanel'
 import { TIPOS_CLARO } from './lienzo-casa'
+import { localeIntl, tr, trMarca, trn } from '@/shared/i18n'
+import { trNodos } from '@/shared/i18n'
 import c from './cerebro.module.css'
 
 const Graph3D = dynamic(() => import('./Graph3D').then((m) => m.Graph3D), {
   ssr: false,
-  loading: () => <p className={c.estado}>Encendiendo la constelación…</p>,
+  loading: () => <p className={c.estado}>{tr('Encendiendo la constelación…')}</p>,
 })
 
 type Vista = '2d' | '3d'
 type Panel = 'node' | 'synthesis' | null
 const LLAVE_VISTA = 'arbrain:cerebro:vista'
-const URL_GRAFO = `/api/cerebro/graph?capas=${CAPAS_BASE.join(',')}`
 
 /** Los tipos que muestra el Taller, agrupados como los lee Daniel. Knowledge compilado queda fuera (≈1,000 notas). */
 const GRUPOS: { titulo: string; tipos: CerebroNodeType[] }[] = [
-  { titulo: 'Memoria', tipos: ['user', 'project', 'feedback', 'reference'] },
-  { titulo: 'Skills', tipos: ['skill'] },
-  { titulo: 'Documentos', tipos: ['documento'] },
+  { titulo: trMarca('Memoria'), tipos: ['user', 'project', 'feedback', 'reference'] },
+  { titulo: trMarca('Skills'), tipos: ['skill'] },
+  { titulo: trMarca('Documentos'), tipos: ['documento'] },
 ]
 const TIPOS = GRUPOS.flatMap((g) => g.tipos)
-const miles = (n: number) => Math.round(n).toLocaleString('es-MX')
+const miles = (n: number) => Math.round(n).toLocaleString(localeIntl())
 
 function useOscuro() {
   const [oscuro, setOscuro] = useState(true)
@@ -59,7 +64,7 @@ function useOscuro() {
 export function VerTuCerebro({ grande }: { grande?: boolean }) {
   const [graph, setGraph] = useState<CerebroGraph | null>(null)
   const [cargando, setCargando] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<{ status: number } | null>(null)
   const [vista, setVista] = useState<Vista>('2d')
   const [visibles, setVisibles] = useState<CerebroNodeType[]>(TIPOS)
   const [q, setQ] = useState('')
@@ -78,10 +83,11 @@ export function VerTuCerebro({ grande }: { grande?: boolean }) {
     setCargando(true); setError(null)
     try {
       const res = await fetch(`${URL_GRAFO}${refrescar ? '&refresh=1' : ''}`, { cache: 'no-store' })
-      if (!res.ok) throw new Error(res.status === 403 ? 'Solo el dueño puede ver el cerebro.' : `El servidor respondió ${res.status}.`)
+      // Nunca un código solo (16 nov 2026, el alumno veía «El servidor respondió 404»): la frase sale de avisoCerebro.
+      if (!res.ok) { setError({ status: res.status }); return }
       setGraph(await res.json())
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo leer el cerebro.')
+    } catch {
+      setError({ status: 0 })
     } finally { setCargando(false) }
   }, [])
   useEffect(() => { void cargar() }, [cargar])
@@ -104,7 +110,8 @@ export function VerTuCerebro({ grande }: { grande?: boolean }) {
   const recientes = useMemo(() => (graph?.nodes ?? []).filter((n) => esDelAhora(n)).length, [graph])
 
   const elegir = useCallback((id: string | null, sumar: boolean) => {
-    if (id && sumar) {
+    // Sin síntesis (edición del alumno) shift + clic abre la neurona como un clic: nunca una hoja vacía.
+    if (id && sumar && sintesisDisponible(esEdicionCliente())) {
       setSlice((p) => (p.includes(id) ? p.filter((s) => s !== id) : [...p, id]))
       setPanel((p) => p ?? 'synthesis')
       return
@@ -132,70 +139,76 @@ export function VerTuCerebro({ grande }: { grande?: boolean }) {
 
   const capas = graph?.meta.capas
   const listo = graph?.ok
+  const cliente = esEdicionCliente()
+  const conSintesis = sintesisDisponible(cliente)
+  const aviso = avisoCerebro({ grafo: graph, error, cliente })
 
   return <div className={c.vista} data-grande={grande || undefined}>
     <header className={`${c.cabeza} ${mov.entra}`} style={escalon(0)}>
-      <p className={c.ceja}>Ver tu cerebro · <b>lo que sé de ti, conectado</b></p>
+      <p className={c.ceja}>{trNodos('Ver tu cerebro · {lema}', { lema: <b>{tr('lo que sé de ti, conectado')}</b> })}</p>
       {listo && <p className={c.cifras}>
-        <span><Cifra valor={capas?.memoria ?? cuenta.user + cuenta.project + cuenta.feedback + cuenta.reference} clave={`cerebro-mem-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> memorias</span>
-        <span><Cifra valor={capas?.skills ?? cuenta.skill} clave={`cerebro-skills-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> skills</span>
-        <span><Cifra valor={capas?.documentos ?? cuenta.documento} clave={`cerebro-docs-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> documentos</span>
-        <span className={c.tenue}><Cifra valor={graph.edges.length} clave={`cerebro-aristas-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> conexiones</span>
-        {recientes > 0 && <span className={c.ahora} title="Cambiaron en las últimas 48 horas"><i aria-hidden />{recientes} {recientes === 1 ? 'cambió' : 'cambiaron'} en 48 h</span>}
+        <span><Cifra valor={capas?.memoria ?? cuenta.user + cuenta.project + cuenta.feedback + cuenta.reference} clave={`cerebro-mem-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> {tr('memorias')}</span>
+        <span><Cifra valor={capas?.skills ?? cuenta.skill} clave={`cerebro-skills-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> {tr('skills')}</span>
+        <span><Cifra valor={capas?.documentos ?? cuenta.documento} clave={`cerebro-docs-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> {tr('documentos')}</span>
+        <span className={c.tenue}><Cifra valor={graph.edges.length} clave={`cerebro-aristas-${graph.meta.generatedAt.slice(0, 10)}`} formato={miles} /> {tr('conexiones')}</span>
+        {recientes > 0 && <span className={c.ahora} title={tr('Cambiaron en las últimas 48 horas')}><i aria-hidden />{trn(recientes, '{n} cambió en 48 h', '{n} cambiaron en 48 h')}</span>}
       </p>}
     </header>
 
     <div className={`${c.barra} ${mov.entra}`} style={escalon(1)}>
       <label className={c.buscar}>
         <Search size={14} aria-hidden />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar una neurona" aria-label="Buscar en el cerebro" />
-        {q && <button onClick={() => setQ('')} aria-label="Borrar búsqueda"><X size={13} /></button>}
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr('Buscar una neurona')} aria-label={tr('Buscar en el cerebro')} />
+        {q && <button onClick={() => setQ('')} aria-label={tr('Borrar búsqueda')}><X size={13} /></button>}
       </label>
-      <button className={c.sintetizar} aria-pressed={panel === 'synthesis'} onClick={() => setPanel(panel === 'synthesis' ? null : 'synthesis')}
-        title="Arma un brief, una explicación o un ángulo de video con las neuronas que elijas (shift + clic)">
-        <Sparkles size={13} aria-hidden />Sintetizar{slice.length > 0 && <small>{slice.length}</small>}
-      </button>
-      <div className={c.conmutador} role="tablist" aria-label="Vista del cerebro">
-        {(['2d', '3d'] as const).map((v) => <button key={v} role="tab" aria-selected={vista === v} onClick={() => cambiarVista(v)} title={v === '3d' ? 'Constelación 3D' : 'Atlas 2D'}>{v.toUpperCase()}</button>)}
+      {conSintesis && <button className={c.sintetizar} aria-pressed={panel === 'synthesis'} onClick={() => setPanel(panel === 'synthesis' ? null : 'synthesis')}
+        title={tr('Arma un brief, una explicación o un ángulo de video con las neuronas que elijas (shift + clic)')}>
+        <Sparkles size={13} aria-hidden />{tr('Sintetizar')}{slice.length > 0 && <small>{slice.length}</small>}
+      </button>}
+      <div className={c.conmutador} role="tablist" aria-label={tr('Vista del cerebro')}>
+        {(['2d', '3d'] as const).map((v) => <button key={v} role="tab" aria-selected={vista === v} onClick={() => cambiarVista(v)} title={v === '3d' ? tr('Constelación 3D') : tr('Atlas 2D')}>{v.toUpperCase()}</button>)}
       </div>
-      <button className={c.icono} onClick={() => void cargar(true)} aria-label="Volver a leer el cerebro" title="Volver a leer">
+      <button className={c.icono} onClick={() => void cargar(true)} aria-label={tr('Volver a leer el cerebro')} title={tr('Volver a leer')}>
         <RefreshCw size={14} className={cargando ? c.gira : undefined} />
       </button>
     </div>
 
     <div className={`${c.lienzo} ${mov.aparece}`} style={escalon(2)} data-vista={vista}>
-      {!graph && cargando && <p className={c.estado}>Leyendo tu cerebro…</p>}
-      {error && <p className={c.aviso}>{error}</p>}
-      {graph && !graph.ok && <p className={c.aviso}>El cerebro vive en el disco del Studio y esta máquina no lo tiene montado. Ábrelo en el Studio o en la app de escritorio.</p>}
+      {!graph && cargando && <p className={c.estado}>{tr('Leyendo tu cerebro…')}</p>}
+      {aviso && <p className={c.aviso} role="status">{aviso}</p>}
       {listo && (vista === '3d'
         ? <Graph3D nodes={graph.nodes} edges={graph.edges} visibleTypes={visibles} query={q} selectedId={elegido} multiSelection={slice} onSelect={elegir} />
         : <GraphCanvas nodes={graph.nodes} edges={graph.edges} visibleTypes={visibles} query={q} selectedId={elegido} multiSelection={slice} onSelect={elegir} />)}
 
-      {listo && <div className={c.leyenda} role="group" aria-label="Mostrar u ocultar por tipo">
+      {listo && <div className={c.leyenda} role="group" aria-label={tr('Mostrar u ocultar por tipo')}>
         {GRUPOS.map((g) => g.tipos.map((t) => {
           const activo = visibles.includes(t)
-          return <button key={t} aria-pressed={activo} onClick={() => alternarTipo(t)} title={`${TYPE_META[t].label}: ${cuenta[t]}. Clic para ${activo ? 'ocultar' : 'mostrar'}`}>
+          return <button key={t} aria-pressed={activo} onClick={() => alternarTipo(t)} title={activo ? tr('{tipo}: {n}. Clic para ocultar', { tipo: tr(TYPE_META[t].label), n: cuenta[t] }) : tr('{tipo}: {n}. Clic para mostrar', { tipo: tr(TYPE_META[t].label), n: cuenta[t] })}>
             <i data-forma={TYPE_META[t].forma} style={{ background: muestra(t) }} aria-hidden />
-            {g.tipos.length > 1 ? TYPE_META[t].label : g.titulo}<small>{cuenta[t]}</small>
+            {g.tipos.length > 1 ? tr(TYPE_META[t].label) : tr(g.titulo)}<small>{cuenta[t]}</small>
           </button>
         }))}
       </div>}
-      {listo && !panel && <p className={c.pista}>{vista === '3d' ? 'Arrastra para orbitar · clic abre una neurona · shift + clic la suma a la síntesis' : 'Clic abre una neurona · shift + clic la suma a la síntesis · doble clic encuadra'}</p>}
+      {listo && !panel && !aviso && <p className={c.pista}>{conSintesis
+        ? (vista === '3d' ? tr('Arrastra para orbitar · clic abre una neurona · shift + clic la suma a la síntesis') : tr('Clic abre una neurona · shift + clic la suma a la síntesis · doble clic encuadra'))
+        : (vista === '3d' ? tr('Arrastra para orbitar · clic abre una neurona') : tr('Clic abre una neurona · doble clic encuadra'))}</p>}
 
       {/* Los dos paneles quedan montados mientras la hoja está abierta: abrir un nodo no aborta una síntesis en curso. */}
-      {panel && <aside className={c.hoja} aria-label={panel === 'node' ? 'Neurona' : 'Síntesis'}>
+      {panel && <aside className={c.hoja} aria-label={panel === 'node' ? tr('Neurona') : tr('Síntesis')}>
         {elegido && <div className={c.hojaCuerpo} hidden={panel !== 'node'}>
           <NodePanel nodeId={elegido} chain={cadena} onNavigate={navegar} onBack={atras}
             onClose={() => { setPanel(null); setElegido(null) }} onAddToSlice={alternarSlice}
-            onSynthesizeNeighborhood={sintetizarVecindario} inSlice={slice.includes(elegido)} />
+            onSynthesizeNeighborhood={sintetizarVecindario} conSintesis={conSintesis} inSlice={slice.includes(elegido)} />
         </div>}
-        <div className={c.hojaCuerpo} hidden={panel !== 'synthesis'}>
+        {conSintesis && <div className={c.hojaCuerpo} hidden={panel !== 'synthesis'}>
           <SynthesisPanel nodesById={porId} slice={slice} onRemoveFromSlice={alternarSlice} onClearSlice={() => setSlice([])} onClose={() => setPanel(null)} />
-        </div>
+        </div>}
       </aside>}
     </div>
 
-    <p className={c.fuente}>Lee en vivo <code>.claude/memory</code>, <code>.claude/skills</code> y <code>docs/business-os</code> del Studio. Una línea une dos neuronas cuando una enlaza o nombra a la otra; las sueltas llevan anillo punteado. Solo lectura; las credenciales nunca entran.</p>
+    {cliente
+      ? <p className={c.fuente}>{trNodos('Lee en vivo tu memoria ({memoria}) y tus habilidades ({skills}) de la carpeta de tu cerebro. Una línea une dos neuronas cuando una enlaza o nombra a la otra; las sueltas llevan anillo punteado. Solo lectura.', { memoria: <code>.claude/memory</code>, skills: <code>.claude/skills</code> })}</p>
+      : <p className={c.fuente}>{trNodos('Lee en vivo {memoria}, {skills} y {documentos} del Studio. Una línea une dos neuronas cuando una enlaza o nombra a la otra; las sueltas llevan anillo punteado. Solo lectura; las credenciales nunca entran.', { memoria: <code>.claude/memory</code>, skills: <code>.claude/skills</code>, documentos: <code>docs/business-os</code> })}</p>}
   </div>
 }
 

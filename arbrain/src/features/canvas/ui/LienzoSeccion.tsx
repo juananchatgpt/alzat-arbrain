@@ -20,6 +20,8 @@ import * as Nube from '@/features/canvas/state/nube'
 import { paginaPorDefecto } from '@/features/canvas/state/pagina-por-defecto'
 import { useTheme } from '@/shared/contexts/theme-context'
 import { useNombreAsistente } from '@/lib/mi-marca-cliente'
+import { tr } from '@/shared/i18n'
+import { avisoNoCreeLienzo, avisoNoLeiLienzos } from './lienzo-avisos'
 
 type Rect = { x: number; y: number; width: number; height: number }
 const ULTIMA = 'arbrain.lienzo.ultima'
@@ -38,6 +40,8 @@ export function LienzoSeccion() {
   const [destino, setDestino] = useState<{ pagina: string; encuadre: Rect | null } | null>(null)
   const [vacio, setVacio] = useState(false)
   const asistente = useNombreAsistente() // Mi marca: el nombre de Ajustes › Diseño.
+  /** Algo falló (16 nov 2026): se dice en una frase y qué hacer; nunca «Aún no hay lienzos» si no se pudo leer. */
+  const [aviso, setAviso] = useState<{ titulo: string; que: string } | null>(null)
 
   // Sin página en la URL: se elige una y se escribe en la URL (recargar cae en el mismo lugar).
   useEffect(() => {
@@ -50,7 +54,7 @@ export function LienzoSeccion() {
         if (id) router.replace(`${pathname}?p=${encodeURIComponent(id)}`)
         else setVacio(true)
       })
-      .catch(() => { if (vivo) setVacio(true) })
+      .catch((e: unknown) => { if (vivo) setAviso(avisoNoLeiLienzos(e)) })
     return () => { vivo = false }
   }, [p, pathname, router])
 
@@ -73,10 +77,15 @@ export function LienzoSeccion() {
     <div className="absolute inset-0 overflow-hidden" data-seccion="lienzo">
       {destino
         ? <Pizarra pagina={destino.pagina} encuadre={destino.encuadre} temaApp={resolvedTheme === 'dark' ? 'oscuro' : 'claro'} />
+        : aviso
+          ? <div role="alert" className="flex h-full flex-col items-center justify-center gap-2 px-6 text-center text-sm text-muted-foreground" data-lienzo-aviso>
+              <p className="text-foreground">{aviso.titulo}</p>
+              <p>{aviso.que}</p>
+            </div>
         : vacio
           ? <div className="flex h-full flex-col items-center justify-center gap-3 text-sm text-muted-foreground">
-              <p>Aún no hay lienzos. Pídele uno a {asistente} o empieza uno en blanco.</p>
-              <button className="btn-secondary" onClick={() => void Nube.crearPagina('Lienzo nuevo').then(pg => router.replace(`${pathname}?p=${encodeURIComponent(pg.id)}`)).catch(() => {})}>Lienzo nuevo</button>
+              <p>{tr('Aún no hay lienzos. Pídele uno a Levy o empieza uno en blanco.').replace(/Levy/g, asistente)}</p>
+              <button className="btn-secondary" onClick={() => void Nube.crearPagina(tr('Lienzo nuevo')).then(pg => router.replace(`${pathname}?p=${encodeURIComponent(pg.id)}`)).catch((e: unknown) => setAviso(avisoNoCreeLienzo(e)))}>{tr('Lienzo nuevo')}</button>
             </div>
           : null}
     </div>

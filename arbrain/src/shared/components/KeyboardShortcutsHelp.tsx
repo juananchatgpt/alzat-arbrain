@@ -2,7 +2,9 @@
 import { useEffect } from 'react'
 import { X } from 'lucide-react'
 import Link from 'next/link'
-import { ATAJOS_SHELL } from '@/shared/navigation/atajos'
+import { ATAJOS_SHELL, conMejoras } from '@/shared/navigation/atajos'
+import { tr } from '@/shared/i18n'
+import { etiquetaTecla, useEsMac } from '@/shared/navigation/teclas-plataforma'
 
 interface KeyboardShortcutsHelpProps {
   isOpen: boolean
@@ -10,6 +12,7 @@ interface KeyboardShortcutsHelpProps {
 }
 
 export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelpProps) {
+  const mac = useEsMac()
   useEffect(() => {
     if (!isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,10 +41,10 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
 
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-3 border-b border-border-subtle">
-            <h2 className="text-sm font-semibold text-foreground">Atajos de teclado</h2>
+            <h2 className="text-sm font-semibold text-foreground">{tr('Atajos de teclado')}</h2>
             <button
               onClick={onClose}
-              aria-label="Cerrar"
+              aria-label={tr('Cerrar')}
               className="p-1.5 rounded-lg hover:bg-card-active text-muted hover:text-foreground/85 transition-colors"
             >
               <X size={16} />
@@ -50,10 +53,10 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
 
           {/* Content */}
           <div className="p-5 space-y-5 max-h-[60vh] overflow-y-auto">
-            {ATAJOS_SHELL.map((group) => (
+            {conMejoras(ATAJOS_SHELL).map((group) => (
               <div key={group.id}>
                 <h3 className="text-[10px] uppercase tracking-widest text-muted/80 font-semibold mb-2">
-                  {group.titulo}
+                  {tr(group.titulo)}
                 </h3>
                 <div className="space-y-1.5">
                   {group.atajos.map((shortcut) => (
@@ -61,14 +64,14 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
                       key={shortcut.accion}
                       className="flex items-center justify-between py-1"
                     >
-                      <span className="text-xs text-foreground/70">{shortcut.accion}</span>
+                      <span className="text-xs text-foreground/70">{tr(shortcut.accion)}</span>
                       <div className="flex items-center gap-1">
                         {shortcut.teclas.map((key) => (
                           <kbd
                             key={key}
                             className="min-w-[24px] px-1.5 py-0.5 text-[10px] font-mono text-center text-foreground/75 bg-card-active border border-border rounded"
                           >
-                            {key}
+                            {etiquetaTecla(tr(key), mac)}
                           </kbd>
                         ))}
                       </div>
@@ -79,7 +82,7 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
             ))}
             {/* La lista completa, con los del Canvas, vive en Configuración → Atajos (2 oct 2026). */}
             <Link href="/settings?section=atajos" onClick={onClose} className="block text-xs text-primary hover:underline">
-              Ver todos, con los del Canvas, en Configuración
+              {tr('Ver todos, con los del Canvas, en Configuración')}
             </Link>
           </div>
         </div>

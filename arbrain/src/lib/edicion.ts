@@ -180,6 +180,12 @@ export const APIS_CLIENTE = [
   // Avisos de Levy en tu teléfono (v0.2.18, un fundador con iPhone): suscribir este dispositivo y la prueba, con la
   // sesión del dueño; `send`, solo con el token de SU daemon (avisosAlumno.ts). Sin la campana del negocio original.
   '/api/notifications/subscribe', '/api/notifications/prueba', '/api/notifications/send',
+  // Ajustes › Idioma (13 nov 2026): Español o English para la interfaz, las fechas, el agente y la voz (lib/idioma-servidor.ts).
+  '/api/idioma',
+  // Taller › Memoria › «Ver tu cerebro» (16 nov 2026, un fundador en Windows: «El servidor respondió 404»): el grafo y el
+  // panel de cada neurona, de solo lectura, sobre SU cerebro (`ARBRAIN_HOME`, features/cerebro/server/graph.ts). La
+  // síntesis (`/api/cerebro/synthesize`) sigue fuera: llama al CLI de Claude del equipo; la pantalla no ofrece el botón.
+  '/api/cerebro/graph', '/api/cerebro/node',
 ] as const
 
 function coincidePrefijo(ruta: string, prefijo: string) {

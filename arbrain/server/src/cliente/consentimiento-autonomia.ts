@@ -12,6 +12,7 @@
  * Formato: párrafos separados por línea en blanco; «## » subtítulo; «- » viñeta.
  */
 import { createHash } from 'node:crypto'
+import { tr, trMarca } from '../i18n/tr.js'
 
 export const VERSION_AUTONOMIA = 'autonomia-v1-alzat-2026-11-12'
 export const AVISO_AUTONOMIA = 'Versión del 12 de noviembre de 2026. Si cambia, te la volveremos a pedir.'
@@ -19,12 +20,12 @@ export const AVISO_AUTONOMIA = 'Versión del 12 de noviembre de 2026. Si cambia,
 /** Titular de Alzat (el mismo responsable de src/features/primer-arranque/textos/legales.ts). Alzat, 12 nov 2026. */
 export const TITULAR = 'Juanan Sánchez Lerma (ALZAT)'
 
-export const TITULO_AUTONOMIA = 'Qué significa el modo autónomo'
+export const TITULO_AUTONOMIA = trMarca('Qué significa el modo autónomo')
 
 /** Las dos casillas (clickwrap): nacen vacías; sin las dos, no se acepta. */
 export const CASILLAS_AUTONOMIA = [
-  'He leído esto y entiendo que en modo autónomo mi cerebro actúa sin pedirme un clic en cada paso.',
-  'Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.',
+  trMarca('He leído esto y entiendo que en modo autónomo mi cerebro actúa sin pedirme un clic en cada paso.'),
+  trMarca('Acepto que soy responsable de lo que le pido y de lo que hace en mi nombre.'),
 ] as const
 
 export const TEXTO_AUTONOMIA = `Alzat es un programa de código abierto, basado en Arbrain, que corre en tu computadora. Tu cerebro (con el nombre que le pongas) usa un modelo de inteligencia artificial con tu llave y actúa en tu computadora: lee y escribe archivos, corre comandos, abre páginas, usa tus aplicaciones y, si se lo pides, manda mensajes en tu nombre.
@@ -74,7 +75,12 @@ Marcas las dos casillas y pulsas «Empezar en modo autónomo». Se guarda en tu 
 export const HUELLA_AUTONOMIA = createHash('sha256').update(`${VERSION_AUTONOMIA}\n${TEXTO_AUTONOMIA}`).digest('hex')
 
 export interface TextoAutonomia { version: string; sha256: string; titulo: string; cuerpo: string; casillas: readonly string[]; aviso: string }
-export const textoAutonomia = (): TextoAutonomia => ({ version: VERSION_AUTONOMIA, sha256: HUELLA_AUTONOMIA, titulo: TITULO_AUTONOMIA, cuerpo: TEXTO_AUTONOMIA, casillas: CASILLAS_AUTONOMIA, aviso: AVISO_AUTONOMIA })
+/**
+ * Idioma (13 nov 2026): título, casillas y aviso salen en el idioma de Ajustes (no entran en la huella). El cuerpo es el
+ * texto legal revisado y firmado por su huella: queda en español hasta tener una versión inglesa revisada con su propia
+ * versión y huella.
+ */
+export const textoAutonomia = (): TextoAutonomia => ({ version: VERSION_AUTONOMIA, sha256: HUELLA_AUTONOMIA, titulo: tr(TITULO_AUTONOMIA), cuerpo: TEXTO_AUTONOMIA, casillas: CASILLAS_AUTONOMIA.map(c => tr(c)), aviso: tr(AVISO_AUTONOMIA) })
 
 /** ¿Lo que la persona aceptó es exactamente el texto empaquetado? */
 export const aceptacionCoincide = (version: unknown, sha256: unknown): boolean => version === VERSION_AUTONOMIA && sha256 === HUELLA_AUTONOMIA

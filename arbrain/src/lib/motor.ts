@@ -15,6 +15,8 @@ import { join } from 'node:path'
 import { esEdicionCliente } from '@/lib/edicion'
 import { dirConfigArbrain } from '@/lib/rutas-instalacion'
 import { saludo } from '@/lib/motor-saludo'
+import { avisoSinMotor } from '@/lib/motor-plataforma'
+import { tr } from '@/shared/i18n'
 
 const KIND_CTL = 1
 const KIND_DATA = 2
@@ -41,16 +43,19 @@ export class ConexionMotor {
   onCierre: () => void = () => {}
 
   async abrir(cliente: string) {
+    // Windows no tiene motor (16 nov 2026): una frase de persona en vez de «connect ENOENT» (lib/motor-plataforma.ts).
+    const sinMotor = avisoSinMotor(process.platform)
+    if (sinMotor) throw new MotorError(sinMotor)
     await new Promise<void>((resolve, reject) => {
       const s = connect(motorSock())
-      s.once('error', e => reject(new MotorError(`El motor no responde: ${e.message}`)))
+      s.once('error', e => reject(new MotorError(tr('El motor no responde: {detalle}', { detalle: e.message }))))
       s.once('connect', () => { this.sock = s; s.on('error', () => {}); resolve() })
       s.on('data', d => this.recibir(d))
-      s.on('close', () => { this.sock = null; for (const p of this.pendientes.values()) { clearTimeout(p.timer); p.mal(new MotorError('El motor cerró la conexión.')) } this.pendientes.clear(); this.onCierre() })
+      s.on('close', () => { this.sock = null; for (const p of this.pendientes.values()) { clearTimeout(p.timer); p.mal(new MotorError(tr('El motor cerró la conexión.'))) } this.pendientes.clear(); this.onCierre() })
     })
     // Red team 4 M4-3: en cliente el motor exige el token de esta apertura (la app se lo da a la web por stdin).
     const r = await this.pedir(saludo(cliente))
-    if (r.res !== 'hello') throw new MotorError(r.msg ?? 'El motor rechazó el saludo.')
+    if (r.res !== 'hello') throw new MotorError(r.msg ?? tr('El motor rechazó el saludo.'))
   }
 
   private recibir(d: Buffer) {
@@ -73,10 +78,10 @@ export class ConexionMotor {
 
   pedir(req: Record<string, unknown>, plazo = 5000): Promise<Res> {
     const s = this.sock
-    if (!s) return Promise.reject(new MotorError('Sin conexión con el motor.'))
+    if (!s) return Promise.reject(new MotorError(tr('Sin conexión con el motor.')))
     const id = this.next++
     return new Promise((ok, mal) => {
-      const timer = setTimeout(() => { this.pendientes.delete(id); mal(new MotorError(`El motor no respondió a ${req.op}.`)) }, plazo)
+      const timer = setTimeout(() => { this.pendientes.delete(id); mal(new MotorError(tr('El motor no respondió a {op}.', { op: String(req.op) }))) }, plazo)
       this.pendientes.set(id, { ok, mal, timer })
       s.write(marco(KIND_CTL, id, Buffer.from(JSON.stringify(req))))
     })
@@ -84,7 +89,7 @@ export class ConexionMotor {
 
   async op(req: Record<string, unknown>, plazo?: number): Promise<Res> {
     const r = await this.pedir(req, plazo)
-    if (r.res === 'err') throw new MotorError(String(r.msg ?? 'Error del motor.'))
+    if (r.res === 'err') throw new MotorError(String(r.msg ?? tr('Error del motor.')))
     return r
   }
 

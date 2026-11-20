@@ -8,6 +8,7 @@ import { abrirPanelEnTelefono, tocarAgente, useVistaTelefono } from '@/features/
 import { AgentesTrabajando } from '@/features/cabina/panel/AgentesTrabajando'
 import { Retrato } from '@/shared/components/Retrato'
 import { useNombreAsistente } from '@/lib/mi-marca-cliente'
+import { tr } from '@/shared/i18n'
 
 /**
  * La cabecera del teléfono (10 oct 2026, Daniel: «simplifiquemos la lógica… debería estar unificado»): UNA sola en todas
@@ -47,8 +48,8 @@ export function Header() {
         <button
           onClick={toggleConversationsDrawer}
           className="icon-btn relative size-9"
-          title="Conversaciones"
-          aria-label={sinLeer ? `Conversaciones, ${sinLeer} avisos sin leer` : 'Conversaciones'}
+          title={tr('Conversaciones')}
+          aria-label={sinLeer ? tr('Conversaciones, {n} avisos sin leer', { n: sinLeer }) : tr('Conversaciones')}
           aria-expanded={conversationsDrawerOpen}
         >
           <MessageSquare size={18} />
@@ -59,7 +60,7 @@ export function Header() {
           <button
             onClick={toggleDrawSidebar}
             className="icon-btn size-9"
-            title="Páginas y carpetas"
+            title={tr('Páginas y carpetas')}
           >
             <FolderTree size={18} />
           </button>
@@ -80,8 +81,8 @@ export function Header() {
             onFocus={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
             onTouchStart={() => window.dispatchEvent(new Event('openclaw:prepare-live'))}
             className="flex min-w-0 items-center gap-2 rounded-lg px-1.5 py-1 select-none focus:outline-none"
-            title={`Hablar con ${asistente} en persona`}
-            aria-label={`Hablar con ${asistente} en persona`}
+            title={tr('Hablar con Levy en persona').replace(/Levy/g, asistente)}
+            aria-label={tr('Hablar con Levy en persona').replace(/Levy/g, asistente)}
           >
             <span className="relative shrink-0">
               <Retrato agente="levy" size={28} prioridad className="w-7 h-7 rounded-full object-cover border border-primary/40" />
@@ -100,17 +101,17 @@ export function Header() {
       <div className="flex min-w-9 items-center justify-end gap-1">
         {/* El «+» de nueva conversación (10 oct 2026, noche: El dueño lo extrañó), solo en el chat, a la izquierda del panel. */}
         {enChat && (
-          <button onClick={() => window.dispatchEvent(new CustomEvent('openclaw:new-chat'))} title="Nueva conversación"
-            aria-label="Nueva conversación" className="icon-btn size-9" data-boton-nueva>
+          <button onClick={() => window.dispatchEvent(new CustomEvent('openclaw:new-chat'))} title={tr('Nueva conversación')}
+            aria-label={tr('Nueva conversación')} className="icon-btn size-9" data-boton-nueva>
             <Plus size={18} />
           </button>
         )}
         {enChat ? (
-          <button onClick={abrirPanelEnTelefono} title="Abrir el panel" aria-label="Abrir el panel" className="icon-btn size-9" data-boton-panel>
+          <button onClick={abrirPanelEnTelefono} title={tr('Abrir el panel')} aria-label={tr('Abrir el panel')} className="icon-btn size-9" data-boton-panel>
             <PanelRight size={18} />
           </button>
         ) : (
-          <button onClick={() => tocarAgente(pathname, url => router.push(url))} title={`Volver a ${asistente}`} aria-label={`Volver a ${asistente}`}
+          <button onClick={() => tocarAgente(pathname, url => router.push(url))} title={tr('Volver a Levy').replace(/Levy/g, asistente)} aria-label={tr('Volver a Levy').replace(/Levy/g, asistente)}
             className="icon-btn size-9" data-boton-agente>
             <Bot size={18} />
           </button>

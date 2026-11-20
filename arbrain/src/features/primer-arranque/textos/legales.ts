@@ -8,6 +8,7 @@
  *
  * Formato: párrafos separados por línea en blanco; una línea que empieza con «## » es un subtítulo y «- » una viñeta.
  */
+import { trMarca } from '@/shared/i18n'
 
 export const VERSION_TEXTOS = '2026-11-12-alzat'
 export const AVISO_VERSION = 'Versión del 12 de noviembre de 2026. Si cambian, Alzat te los vuelve a pedir.'
